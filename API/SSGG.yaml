@@ -1,0 +1,443 @@
+openapi: "3.0.2"
+info:
+  title: SSGG
+  version: "1.0"
+  description: This is the documentation for the backend APIs for the Sporting Scouts and Girl Guides members management app
+  contact:
+    email: ssgdts@gmail.com
+servers:
+  - url: https://api.server.test/v1
+tags:
+  - name: Members
+    description: Everything about members
+  - name: Leaders
+    description: Everything about leaders
+  - name: Teams
+    description: Everything about events
+  - name: Events
+    description: Everything about events
+paths:
+  /members/{memberID}:
+    get:
+      tags:
+        - Members
+      operationId: getMember
+      description: Gets member by ID
+      parameters:
+        - in: path
+          name: memberID
+          required: true
+          schema:
+            type: string
+          description: The member ID
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/member"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Member not found
+    patch:
+      tags:
+        - Members
+      operationId: updateMember
+      description: Updates a member
+      parameters:
+        - in: path
+          name: memberID
+          required: true
+          schema:
+            type: string
+          description: The member ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/member"
+      responses:
+        "200":
+          description: member created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/member"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Member not found
+    put:
+      tags:
+        - Members
+      operationId: createMember
+      description: Creates a new member
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/member"
+      responses:
+        "201":
+          description: member created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/member"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+  /members:
+    get:
+      tags:
+        - Members
+      operationId: searchMembers
+      description: Search members by (Name, Team)
+      parameters:
+        - in: query
+          name: teamID
+          required: false
+          schema:
+            type: string
+          description: The team id
+        - in: query
+          name: name
+          required: false
+          schema:
+            type: string
+          description: The member's name
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/members"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Member not found
+  /events/{eventID}:
+    get:
+      description: "get"
+      tags:
+        - Events
+      parameters:
+        - in: path
+          name: eventID
+          required: true
+          schema:
+            type: string
+          description: The event ID
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/event"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Event not found
+    patch:
+      tags:
+        - Events
+      operationId: updateEvent
+      description: Updates an event
+      parameters:
+        - in: path
+          name: eventID
+          required: true
+          schema:
+            type: string
+          description: The event ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/event"
+      responses:
+        "200":
+          description: member created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/event"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Event not found
+  /events:
+    get:
+      tags:
+        - Events
+      operationId: searchEvents
+      description: Search events by (Name, Team, Start and End dates)
+      parameters:
+        - in: query
+          name: teamID
+          required: false
+          schema:
+            type: string
+          description: The team id
+        - in: query
+          name: name
+          required: false
+          schema:
+            type: string
+          description: The event name
+        - in: query
+          name: startDate
+          required: false
+          schema:
+            type: string
+          description: The event's start date
+        - in: query
+          name: endDate
+          required: false
+          schema:
+            type: string
+          description: The event's end date
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/events"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Event not found
+    post:
+      tags:
+        - Events
+      operationId: createEvent
+      description: Creates a new event
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/event"
+      responses:
+        "201":
+          description: Event created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/event"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+  /teams/{teamID}:
+    get:
+      tags:
+        - Teams
+      operationId: getTeamMembers
+      description: Get team members by team ID
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/team"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Team not found
+    post:
+      tags:
+        - Teams
+      operationId: addTeamMembers
+      description: Add member to a team
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/teamMember"
+      responses:
+        "200":
+          description: Member added
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Team not found
+  /teams/{memberID}:
+    get:
+      tags:
+        - Teams
+      operationId: getTeamsByLeaderID
+      description: Get team members by leader ID
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/teams"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Team not found
+
+components:
+  schemas:
+    member:
+      type: object
+      properties:
+        MemberID:
+          type: string
+        Name:
+          type: object
+          properties:
+            EN:
+              type: string
+            AR:
+              type: string
+        DateOfBirth:
+          type: string
+          format: date
+        TeamID:
+          type: integer
+        StageID:
+          type: integer
+        DateJoined:
+          type: string
+          format: date
+        Contact:
+          type: string
+        FatherContact:
+          type: string
+        MotherContact:
+          type: string
+        GuardianContact:
+          type: string
+        QRCodeURL:
+          type: string
+          format: uri
+        ImageURL:
+          type: string
+          format: uri
+    members:
+      type: array
+      items:
+        $ref: "#/components/schemas/member"
+    event:
+      type: object
+      properties:
+        EventType:
+          type: string
+        EventName:
+          type: object
+          properties:
+            EN:
+              type: string
+            AR:
+              type: string
+        EventLocation:
+          type: string
+        EventStartDate:
+          type: string
+          format: date
+        EventEndDate:
+          type: string
+          format: date
+        IsMultiTeam:
+          type: boolean
+        TeamID:
+          type: integer
+    events:
+      type: array
+      items:
+        $ref: "#/components/schemas/event"
+    team:
+      type: object
+      properties:
+        TeamID:
+          type: integer
+        TeamName:
+          type: object
+          properties:
+            EN:
+              type: string
+            AR:
+              type: string
+        StageName:
+          type: object
+          properties:
+            EN:
+              type: string
+            AR:
+              type: string
+        Leaders:
+          type: array
+          items:
+            properties:
+              MemberID:
+                type: string
+              Name:
+                type: object
+                properties:
+                  EN:
+                    type: string
+                  AR:
+                    type: string
+        Members:
+          type: array
+          items:
+            properties:
+              MemberID:
+                type: string
+              Name:
+                type: object
+                properties:
+                  EN:
+                    type: string
+                  AR:
+                    type: string
+    teamMember:
+      type: object
+      properties:
+        Members:
+          type: array
+          items:
+            properties:
+              MemberID:
+                type: string
+              Name:
+                type: object
+                properties:
+                  EN:
+                    type: string
+                  AR:
+                    type: string
+              IsLeader:
+                type: boolean
+    teams:
+      type: array
+      items:
+        $ref: "#/components/schemas/team"

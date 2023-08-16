@@ -78,6 +78,13 @@ paths:
         - Members
       operationId: createMember
       description: Creates a new member
+      parameters:
+        - in: path
+          name: memberID
+          required: true
+          schema:
+            type: string
+          description: The member ID
       requestBody:
         content:
           application/json:
@@ -252,6 +259,13 @@ paths:
         - Teams
       operationId: getTeamMembers
       description: Get team members by team ID
+      parameters:
+        - in: path
+          name: teamID
+          required: true
+          schema:
+            type: string
+          description: The team ID
       responses:
         "200":
           description: OK
@@ -270,6 +284,13 @@ paths:
         - Teams
       operationId: addTeamMembers
       description: Add member to a team
+      parameters:
+        - in: path
+          name: teamID
+          required: true
+          schema:
+            type: string
+          description: The team ID
       requestBody:
         content:
           application/json:
@@ -290,6 +311,13 @@ paths:
         - Teams
       operationId: getTeamsByLeaderID
       description: Get team members by leader ID
+      parameters:
+        - in: path
+          name: memberID
+          required: true
+          schema:
+            type: string
+          description: The member ID
       responses:
         "200":
           description: OK

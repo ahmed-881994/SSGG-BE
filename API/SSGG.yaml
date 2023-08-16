@@ -10,8 +10,6 @@ servers:
 tags:
   - name: Members
     description: Everything about members
-  - name: Leaders
-    description: Everything about leaders
   - name: Teams
     description: Everything about events
   - name: Events
@@ -73,7 +71,7 @@ paths:
           description: Unauthorized
         "404":
           description: Member not found
-    put:
+    post:
       tags:
         - Members
       operationId: createMember
@@ -253,7 +251,7 @@ paths:
           description: Bad request
         "401":
           description: Unauthorized
-  /teams/{teamID}:
+  /teams/{teamID}/members:
     get:
       tags:
         - Teams
@@ -305,19 +303,25 @@ paths:
           description: Unauthorized
         "404":
           description: Team not found
-  /teams/{memberID}:
+  /teams:
     get:
       tags:
         - Teams
-      operationId: getTeamsByLeaderID
-      description: Get team members by leader ID
+      operationId: searchTeams
+      description: Search teams by (LeaderID, StageID)
       parameters:
-        - in: path
-          name: memberID
-          required: true
+        - in: query
+          name: leaderID
+          required: false
           schema:
             type: string
-          description: The member ID
+          description: The leader id
+        - in: query
+          name: stageID
+          required: false
+          schema:
+            type: string
+          description: The stage id
       responses:
         "200":
           description: OK

@@ -14,7 +14,10 @@ def connect():
             password=os.environ.get("password")
             # cursorclass=pymysql.cursors.DictCursor
         )
-        return conn
+        if conn is None:
+            raise Exception
+        else:
+            return conn
     except Exception as error:
         print(error)
         return {

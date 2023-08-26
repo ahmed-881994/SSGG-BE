@@ -22,5 +22,5 @@ jobs:
       - name: package source
         run: zip -j SSGG-APP_GetMember.zip Lambda/SSGG-APP_GetMember/*
       - name: deploy source
-        run: aws lambda update-function-code --function-name=SSGG-APP_GetMember --zip-
+        run: aws lambda update-function-code --function-name=SSGG-APP_GetMember --zip-file=fileb://SSGG-APP_GetMember.zip
       

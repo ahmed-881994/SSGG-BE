@@ -110,7 +110,7 @@ paths:
           name: teamID
           required: false
           schema:
-            type: string
+            type: integer
           description: The team id
         - in: query
           name: name
@@ -141,7 +141,7 @@ paths:
           name: eventID
           required: true
           schema:
-            type: string
+            type: integer
           description: The event ID
       responses:
         "200":
@@ -166,7 +166,7 @@ paths:
           name: eventID
           required: true
           schema:
-            type: string
+            type: integer
           description: The event ID
       requestBody:
         content:
@@ -197,7 +197,7 @@ paths:
           name: teamID
           required: false
           schema:
-            type: string
+            type: integer
           description: The team id
         - in: query
           name: name
@@ -262,7 +262,7 @@ paths:
           name: teamID
           required: true
           schema:
-            type: string
+            type: integer
           description: The team ID
       responses:
         "200":
@@ -287,7 +287,7 @@ paths:
           name: teamID
           required: true
           schema:
-            type: string
+            type: integer
           description: The team ID
       requestBody:
         content:
@@ -320,7 +320,7 @@ paths:
           name: stageID
           required: false
           schema:
-            type: string
+            type: integer
           description: The stage id
       responses:
         "200":

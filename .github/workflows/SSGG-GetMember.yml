@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - Lambda/SSGG-GetMember
+      - Lambda/SSGG-GetMember/*
       - .github/workflows/SSGG-GetMember.yml
 jobs:
   checkout-package-and-deploy-source:

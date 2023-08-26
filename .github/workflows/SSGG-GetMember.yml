@@ -13,7 +13,7 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v3
       - name: Package source
-        run: zip -j SSGG-APP_GetMember.zip Lambda/SSGG-GetMember/*
+        run: zip -j SSGG-GetMember.zip Lambda/SSGG-GetMember/*
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:

@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - Lambda/SSGG-GetMember
-      - .github/workflows/SSGG-Getmamber
+      - .github/workflows/SSGG-Getmamber.yml
 jobs:
   checkout-package-and-deploy-source:
     name: Package and deploy source code

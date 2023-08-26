@@ -27,6 +27,22 @@ def connect():
 
 def lambda_handler(event, context):
     # TODO implement
-    #return connect()
+    conn= connect()
+    cur = conn.cursor(pymysql.cursors.DictCursor) 
     args=[event["pathParameters"]["memberID"]]
-    return {"statusCode": 200, "body": json.dumps(args)}
+    cur.callproc('GetMember',args)
+    records = cur.fetchone()
+    if records is not None:
+        return {
+            "isBase64Encoded": False,
+            "statusCode": 500,
+            "headers": {"Content-Type": "application/json"},
+            "body": json.dumps(records,default=str),
+        }
+    else:
+        return {
+            "isBase64Encoded": False,
+            "statusCode": 404,
+            "headers": {"Content-Type": "application/json"},
+            "body": json.dumps({"message": "Member not found"}),
+        }

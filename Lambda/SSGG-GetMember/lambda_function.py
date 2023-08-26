@@ -35,7 +35,7 @@ def lambda_handler(event, context):
     if records is not None:
         return {
             "isBase64Encoded": False,
-            "statusCode": 500,
+            "statusCode": 200,
             "headers": {"Content-Type": "application/json"},
             "body": json.dumps(records,default=str),
         }

@@ -28,4 +28,5 @@ def connect():
 def lambda_handler(event, context):
     # TODO implement
     #return connect()
-    return {"statusCode": 200, "body": json.dumps(event)}
+    args=[event["pathParameters"]["memberID"]]
+    return {"statusCode": 200, "body": json.dumps(args)}

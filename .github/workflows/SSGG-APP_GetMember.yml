@@ -1,8 +1,10 @@
-name: Deploy lambda function from source
+name: Deploy SSGG-APP_GetMember lambda function
 on:
   push:
     branches:
       - main
+    paths:
+      - Lambda/SSGG-APP_GetMember
 jobs:
   checkout-package-and-deploy-source:
     name: Package and deploy source code

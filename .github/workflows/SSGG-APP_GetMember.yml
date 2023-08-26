@@ -1,16 +1,31 @@
 name: Deploy lambda function from source
-on: [push]
+on:
+  push:
+    branches:
+      - main
 jobs:
-  deploy_source:
-    name: Deploy lambda function from source
+  checkout-source:
+    name: Checkout source code
     runs-on: ubuntu-latest
     steps:
       - name: checkout source code
         uses: actions/checkout@v3
+  configure-aws-credentials:
+    name: Configure AWS credentials
+    runs-on: ubuntu-latest
+    steps:
       - uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{secrets.AWS_REGION}}
+  package-function:
+    name: Package function
+    runs-on: ubuntu-latest
+    steps:
       - run: zip -j SSGG-APP_GetMember.zip ./Lambda/SSGG-APP_GetMember/main.py
+  deploy_source:
+    name: Deploy lambda function from zip
+    runs-on: ubuntu-latest
+    steps:
       - run: aws lambda update-function-code --function-name=SSGG-APP_GetMember --zip-

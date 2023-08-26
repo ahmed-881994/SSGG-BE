@@ -27,5 +27,5 @@ def connect():
 
 def lambda_handler(event, context):
     # TODO implement
-    return connect()
-    #return {"statusCode": 200, "body": json.dumps("Hello from Lambda 5")}
+    #return connect()
+    return {"statusCode": 200, "body": json.dumps(event)}

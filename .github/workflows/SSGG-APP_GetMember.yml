@@ -4,12 +4,14 @@ on:
     branches:
       - main
 jobs:
-  checkout-source:
-    name: Checkout source code
+  checkout-and-package-source:
+    name: Checkout and package source code
     runs-on: ubuntu-latest
     steps:
       - name: checkout source code
         uses: actions/checkout@v3
+      - name: package source
+        run: zip -j SSGG-APP_GetMember.zip Lambda/SSGG-APP_GetMember/*
   configure-aws-credentials:
     name: Configure AWS credentials
     runs-on: ubuntu-latest
@@ -19,11 +21,6 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{secrets.AWS_REGION}}
-  package-function:
-    name: Package function
-    runs-on: ubuntu-latest
-    steps:
-      - run: zip -j SSGG-APP_GetMember.zip ./Lambda/SSGG-APP_GetMember/main.py
   deploy_source:
     name: Deploy lambda function from zip
     runs-on: ubuntu-latest

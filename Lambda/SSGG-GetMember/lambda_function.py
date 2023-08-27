@@ -32,7 +32,8 @@ def lambda_handler(event, context):
     conn, response = connect()
     if response is None:
         with conn.cursor() as cursor:
-            args = [event["pathParameters"]["memberID"]]
+            params= json.loads(event["pathParameters"])
+            args = [params["memberID"]]
             cursor.callproc("GetMember", args)
             records = cursor.fetchone()
             if records is not None:

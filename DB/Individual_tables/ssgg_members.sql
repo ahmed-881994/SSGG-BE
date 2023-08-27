@@ -58,8 +58,8 @@ CREATE TABLE `members` (
   `club_id_url` varchar(255) DEFAULT NULL,
   `passport_url` varchar(255) DEFAULT NULL,
   `birth_certificate_url` varchar(255) DEFAULT NULL,
-  `photo_consent` bit(1) DEFAULT NULL,
-  `conditions_consent` bit(1) DEFAULT NULL,
+  `photo_consent` tinyint(1) DEFAULT NULL,
+  `conditions_consent` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`member_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;

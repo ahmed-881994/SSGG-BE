@@ -350,23 +350,59 @@ components:
               type: string
             AR:
               type: string
+        PlaceOfBirth:
+          type: string
         DateOfBirth:
           type: string
           format: date
-        TeamID:
+        Address:
+          type: string
+        NationalIdNo:
           type: integer
-        StageID:
+        ClubIdNo:
           type: integer
+        PassportNo:
+          type: string
         DateJoined:
           type: string
           format: date
-        Contact:
+        MobileNo:
+          type: string
+        HomeContact:
+          type: string
+        Email:
+          type: string
+          format: email
+        FacebookURL:
+          type: string
+          format: uri
+        SchoolName:
+          type: string
+        EducationType:
+          type: string
+        FatherName:
           type: string
         FatherContact:
           type: string
+        FatherJob:
+          type: string
+        MotherName:
+          type: string
         MotherContact:
           type: string
+        MotherJob:
+          type: string
+        GuardianName:
+          type: string
         GuardianContact:
+          type: string
+        GuardianRelationship:
+          type: string
+        Hobbies:
+          type: string
+        HealthIssues:
+          type: string
+        Medications:
           type: string
         QRCodeURL:
           type: string
@@ -374,6 +410,26 @@ components:
         ImageURL:
           type: string
           format: uri
+        NationalIdURL:
+          type: string
+          format: uri
+        ParentNationalIdURL:
+          type: string
+          format: uri
+        ClubIdURL:
+          type: string
+          format: uri
+        PassportURL:
+          type: string
+          format: uri
+        BirthCertificateURL:
+          type: string
+          format: uri
+        PhotoConsent:
+          type: integer
+        ConditionsConsent:
+          type: integer
+
     members:
       type: array
       items:

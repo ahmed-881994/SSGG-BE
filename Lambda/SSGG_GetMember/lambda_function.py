@@ -11,7 +11,7 @@ def connect():
         cursor = pymysql.cursors.DictCursor
         conn = pymysql.connect(
             host=os.environ.get("host"),
-            port=os.environ.get("port"),
+            port=int(os.environ.get("port")),
             database=os.environ.get("database"),
             user=os.environ.get("username"),
             password=os.environ.get("password"),

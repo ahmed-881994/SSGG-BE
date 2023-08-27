@@ -42,7 +42,7 @@ def lambda_handler(event, context):
                 data['MemberID']=records['member_id']
                 names={}
                 names['EN']=records['name_en']
-                names['EN']=records['name_ar']
+                names['AR']=records['name_ar']
                 data['Name']= names
                 data['PlaceOfBirth']=records['place_of_birth']
                 data['DateOfBirth']=records['date_of_birth']

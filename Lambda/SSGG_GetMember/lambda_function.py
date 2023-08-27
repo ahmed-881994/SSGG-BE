@@ -38,11 +38,51 @@ def lambda_handler(event, context):
             cursor.callproc("GetMember", [memberID])
             records = cursor.fetchone()
             if records is not None:
+                data={}
+                data['MemberID']=records['member_id']
+                names={}
+                names['EN']=records['name_en']
+                names['EN']=records['name_ar']
+                data['Name']= names
+                data['PlaceOfBirth']=records['place_of_birth']
+                data['DateOfBirth']=records['date_of_birth']
+                data['Address']=records['address']
+                data['NationalIdNo']=records['national_id_no']
+                data['ClubIdNo']=records['club_id_no']
+                data['PassportNo']=records['passport_no']
+                data['DateJoined']=records['date_joined']
+                data['MobileNo']=records['mobile_number']
+                data['HomeContact']=records['home_contact']
+                data['Email']=records['email']
+                data['FacebookURL']=records['facebook_url']
+                data['SchoolName']=records['school_name']
+                data['EducationType']=records['education_type']
+                data['FatherName']=records['father_name']
+                data['FatherContact']=records['father_contact']
+                data['FatherJob']=records['father_job']
+                data['MotherName']=records['mother_name']
+                data['MotherContact']=records['mother_contact']
+                data['MotherJob']=records['mother_job']
+                data['GuardianName']=records['guardian_name']
+                data['GuardianContact']=records['guardian_contact']
+                data['GuardianRelationship']=records['guardian_relationship']
+                data['Hobbies']=records['hobbies']
+                data['HealthIssues']=records['health_issues']
+                data['Medications']=records['medications']
+                data['QRCodeURL']=records['qr_code_url']
+                data['ImageURL']=records['image_url']
+                data['NationalIdURL']=records['national_id_url']
+                data['ParentNationalIdURL']=records['parent_national_id_url']
+                data['ClubIdURL']=records['club_id_url']
+                data['PassportURL']=records['passport_url']
+                data['BirthCertificateURL']=records['birth_certificate_url']
+                data['PhotoConsent']=records['photo_consent']
+                data['ConditionsConsent']=records['conditions_consent']
                 response = {
                     "isBase64Encoded": False,
                     "statusCode": 200,
                     "headers": {"Content-Type": "application/json"},
-                    "body": json.dumps(records, default=str),
+                    "body": json.dumps(data, default=str),
                 }
             else:
                 response = {

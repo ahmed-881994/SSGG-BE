@@ -1,12 +1,12 @@
-name: Deploy SSGG-GetMember lambda function
+name: Deploy SSGG_GetMember lambda function
 on:
   workflow_dispatch:
   push:
     branches:
       - main
     paths:
-      - Lambda/SSGG-GetMember/*
-      - .github/workflows/SSGG-GetMember.yml
+      - Lambda/SSGG_GetMember/*
+      - .github/workflows/SSGG_GetMember.yml
 jobs:
   checkout-package-and-deploy-source:
     name: Package and deploy source code
@@ -15,7 +15,7 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v3
       - name: Package source
-        run: zip -j SSGG-GetMember.zip Lambda/SSGG-GetMember/*
+        run: zip -j SSGG_GetMember.zip Lambda/SSGG_GetMember/*
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -23,5 +23,5 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
       - name: Deploy source
-        run: aws lambda update-function-code --function-name=SSGG-GetMember --zip-file=fileb://SSGG-GetMember.zip
+        run: aws lambda update-function-code --function-name=SSGG_GetMember --zip-file=fileb://SSGG_GetMember.zip
       

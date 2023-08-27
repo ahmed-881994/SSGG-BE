@@ -46,7 +46,7 @@ def lambda_handler(event, context):
                 data['Name']= names
                 team_name={}
                 team_name['EN']=records['team_name_en']
-                team_name['EN']=records['team_name_ar']
+                team_name['AR']=records['team_name_ar']
                 data['TeamName']= team_name
                 data['PlaceOfBirth']=records['place_of_birth']
                 data['DateOfBirth']=records['date_of_birth']

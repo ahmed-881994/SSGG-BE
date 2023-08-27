@@ -7,45 +7,46 @@ def connect():
     try:
         # connect to database
         # reading the database parameters from the config object
+        response = None
+        cursor = pymysql.cursors.DictCursor
         conn = pymysql.connect(
             host=os.environ.get("host"),
             database=os.environ.get("database"),
             user=os.environ.get("username"),
-            password=os.environ.get("password")
-            # cursorclass=pymysql.cursors.DictCursor
+            password=os.environ.get("password"),
+            cursorclass=cursor,
         )
-        if conn is None:
-            raise Exception
-        else:
-            return conn
     except Exception as error:
         print(error)
-        return {
+        conn = None
+        response = {
             "isBase64Encoded": False,
             "statusCode": 500,
             "headers": {"Content-Type": "application/json"},
             "body": json.dumps({"message": "Couldn't reach the database"}),
         }
+    return conn, response
 
 
 def lambda_handler(event, context):
-    # TODO implement
-    conn= connect()
-    cur = conn.cursor(pymysql.cursors.DictCursor) 
-    args=[event["pathParameters"]["memberID"]]
-    cur.callproc('GetMember',args)
-    records = cur.fetchone()
-    if records is not None:
-        return {
-            "isBase64Encoded": False,
-            "statusCode": 200,
-            "headers": {"Content-Type": "application/json"},
-            "body": json.dumps(records,default=str),
-        }
-    else:
-        return {
-            "isBase64Encoded": False,
-            "statusCode": 404,
-            "headers": {"Content-Type": "application/json"},
-            "body": json.dumps({"message": "Member not found"}),
-        }
+    conn, response = connect()
+    if response is None:
+        with conn.cursor() as cursor:
+            args = [event["pathParameters"]["memberID"]]
+            cursor.callproc("GetMember", args)
+            records = cursor.fetchone()
+            if records is not None:
+                response = {
+                    "isBase64Encoded": False,
+                    "statusCode": 200,
+                    "headers": {"Content-Type": "application/json"},
+                    "body": json.dumps(records, default=str),
+                }
+            else:
+                response = {
+                    "isBase64Encoded": False,
+                    "statusCode": 404,
+                    "headers": {"Content-Type": "application/json"},
+                    "body": json.dumps({"message": "Member not found"}),
+                }
+    return response

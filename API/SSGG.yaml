@@ -350,6 +350,13 @@ components:
               type: string
             AR:
               type: string
+        TeamName:
+          type: object
+          properties:
+            EN:
+              type: string
+            AR:
+              type: string
         PlaceOfBirth:
           type: string
         DateOfBirth:

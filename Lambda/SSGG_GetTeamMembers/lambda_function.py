@@ -33,6 +33,7 @@ def format_record(record):
             "EN": record['team_name_en'],
             "AR": record['team_name_ar']
         },
+        "StageID": record['stage_id'],
         "StageName": {
             "EN": record['stage_name_en'],
             "AR": record['stage_name_ar']

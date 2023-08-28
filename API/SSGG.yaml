@@ -483,6 +483,8 @@ components:
               type: string
             AR:
               type: string
+        StageID:
+          type: integer
         StageName:
           type: object
           properties:

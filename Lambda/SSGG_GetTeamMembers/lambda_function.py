@@ -28,21 +28,21 @@ def connect():
 
 def format_record(record):
     entry = {
-        "TeamID": record['team_id'],
+        "TeamID": records[0]['team_id'],
         "TeamName": {
-            "EN": record['team_name_en'],
-            "AR": record['team_name_ar']
+            "EN": records[0]['team_name_en'],
+            "AR": records[0]['team_name_ar']
         },
-        "StageID": record['stage_id'],
+        "StageID": records[0]['stage_id'],
         "StageName": {
-            "EN": record['stage_name_en'],
-            "AR": record['stage_name_ar']
+            "EN": records[0]['stage_name_en'],
+            "AR": records[0]['stage_name_ar']
         },
         "Leaders": [],
         "Members": []
     }
 
-    for record in record:
+    for record in records:
         member_entry = {
             "MemberID": record['member_id'],
             "Name": {
@@ -51,7 +51,7 @@ def format_record(record):
             }
         }
 
-        if record['is_leader']:
+        if record['is_leader']==1:
             entry['Leaders'].append(member_entry)
         else:
             entry['Members'].append(member_entry)
@@ -68,7 +68,7 @@ def lambda_handler(event, context):
             records = cursor.fetchall()
             
             if records is not None:
-                data = [format_record(record) for record in records]
+                data = [format_record(records)]
                 response = {
                     "isBase64Encoded": False,
                     "statusCode": 200,

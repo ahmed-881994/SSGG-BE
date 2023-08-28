@@ -67,7 +67,7 @@ def lambda_handler(event, context):
             cursor.callproc("GetTeamMembers", [teamID])
             records = cursor.fetchall()
             
-            if records is not None:
+            if len(records)>0:
                 data = [format_record(records)]
                 response = {
                     "isBase64Encoded": False,
@@ -80,7 +80,7 @@ def lambda_handler(event, context):
                     "isBase64Encoded": False,
                     "statusCode": 404,
                     "headers": {"Content-Type": "application/json"},
-                    "body": json.dumps({"message": "Member not found"}),
+                    "body": json.dumps({"message": "Team has no members or teamID is not correct"}),
                 }
     
     return response

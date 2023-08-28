@@ -11,7 +11,7 @@ tags:
   - name: Members
     description: Everything about members
   - name: Teams
-    description: Everything about events
+    description: Everything about teams
   - name: Events
     description: Everything about events
 paths:
@@ -519,21 +519,13 @@ components:
     teamMember:
       type: object
       properties:
-        Members:
-          type: array
-          items:
-            properties:
-              MemberID:
-                type: string
-              Name:
-                type: object
-                properties:
-                  EN:
-                    type: string
-                  AR:
-                    type: string
-              IsLeader:
-                type: boolean
+        Member:
+          type: object
+          properties:
+            MemberID:
+              type: string
+            IsLeader:
+              type: boolean
     teams:
       type: array
       items:

@@ -68,7 +68,7 @@ def lambda_handler(event, context):
             records = cursor.fetchall()
             
             if len(records)>0:
-                data = [format_record(records)]
+                data = format_record(records)
                 response = {
                     "isBase64Encoded": False,
                     "statusCode": 200,

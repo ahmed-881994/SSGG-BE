@@ -26,7 +26,7 @@ def connect():
         }
     return conn, response
 
-def format_record(record):
+def format_record(records):
     entry = {
         "TeamID": records[0]['team_id'],
         "TeamName": {

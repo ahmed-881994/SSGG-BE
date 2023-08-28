@@ -2,12 +2,9 @@ import json
 import os
 import pymysql.cursors
 
-
 def connect():
     try:
-        # connect to database
-        # reading the database parameters from the config object
-        response = None
+        # Connect to the database
         cursor = pymysql.cursors.DictCursor
         conn = pymysql.connect(
             host=os.environ.get("host"),
@@ -17,6 +14,7 @@ def connect():
             password=os.environ.get("password"),
             cursorclass=cursor,
         )
+        response = None
     except Exception as error:
         print(error)
         conn = None
@@ -28,60 +26,70 @@ def connect():
         }
     return conn, response
 
+def format_record(records):
+    data = {}
+    data['MemberID'] = records['member_id']
+    
+    field_mappings = {
+        'Name': {'EN': 'name_en', 'AR': 'name_ar'},
+        'TeamName': {'EN': 'team_name_en', 'AR': 'team_name_ar'},
+        'PlaceOfBirth': 'place_of_birth',
+        'DateOfBirth': 'date_of_birth',
+        'Address': 'address',
+        'NationalIdNo': 'national_id_no',
+        'ClubIdNo': 'club_id_no',
+        'PassportNo': 'passport_no',
+        'DateJoined': 'date_joined',
+        'MobileNo': 'mobile_number',
+        'HomeContact': 'home_contact',
+        'Email': 'email',
+        'FacebookURL': 'facebook_url',
+        'SchoolName': 'school_name',
+        'EducationType': 'education_type',
+        'FatherName': 'father_name',
+        'FatherContact': 'father_contact',
+        'FatherJob': 'father_job',
+        'MotherName': 'mother_name',
+        'MotherContact': 'mother_contact',
+        'MotherJob': 'mother_job',
+        'GuardianName': 'guardian_name',
+        'GuardianContact': 'guardian_contact',
+        'GuardianRelationship': 'guardian_relationship',
+        'Hobbies': 'hobbies',
+        'HealthIssues': 'health_issues',
+        'Medications': 'medications',
+        'QRCodeURL': 'qr_code_url',
+        'ImageURL': 'image_url',
+        'NationalIdURL': 'national_id_url',
+        'ParentNationalIdURL': 'parent_national_id_url',
+        'ClubIdURL': 'club_id_url',
+        'PassportURL': 'passport_url',
+        'BirthCertificateURL': 'birth_certificate_url',
+        'PhotoConsent': 'photo_consent',
+        'ConditionsConsent': 'conditions_consent'
+    }
+    
+    for key, value in field_mappings.items():
+        if isinstance(value, str):
+            data[key] = records[value]
+        else:
+            data[key] = {
+                lang: records[field] for lang, field in value.items()
+            }
+    
+    return data
 
 def lambda_handler(event, context):
     conn, response = connect()
+    
     if response is None:
         with conn.cursor() as cursor:
-            #params= json.loads(event["pathParameters"])
             memberID = event['pathParameters']['memberID']
             cursor.callproc("GetMember", [memberID])
             records = cursor.fetchone()
+            
             if records is not None:
-                data={}
-                data['MemberID']=records['member_id']
-                names={}
-                names['EN']=records['name_en']
-                names['AR']=records['name_ar']
-                data['Name']= names
-                team_name={}
-                team_name['EN']=records['team_name_en']
-                team_name['AR']=records['team_name_ar']
-                data['TeamName']= team_name
-                data['PlaceOfBirth']=records['place_of_birth']
-                data['DateOfBirth']=records['date_of_birth']
-                data['Address']=records['address']
-                data['NationalIdNo']=records['national_id_no']
-                data['ClubIdNo']=records['club_id_no']
-                data['PassportNo']=records['passport_no']
-                data['DateJoined']=records['date_joined']
-                data['MobileNo']=records['mobile_number']
-                data['HomeContact']=records['home_contact']
-                data['Email']=records['email']
-                data['FacebookURL']=records['facebook_url']
-                data['SchoolName']=records['school_name']
-                data['EducationType']=records['education_type']
-                data['FatherName']=records['father_name']
-                data['FatherContact']=records['father_contact']
-                data['FatherJob']=records['father_job']
-                data['MotherName']=records['mother_name']
-                data['MotherContact']=records['mother_contact']
-                data['MotherJob']=records['mother_job']
-                data['GuardianName']=records['guardian_name']
-                data['GuardianContact']=records['guardian_contact']
-                data['GuardianRelationship']=records['guardian_relationship']
-                data['Hobbies']=records['hobbies']
-                data['HealthIssues']=records['health_issues']
-                data['Medications']=records['medications']
-                data['QRCodeURL']=records['qr_code_url']
-                data['ImageURL']=records['image_url']
-                data['NationalIdURL']=records['national_id_url']
-                data['ParentNationalIdURL']=records['parent_national_id_url']
-                data['ClubIdURL']=records['club_id_url']
-                data['PassportURL']=records['passport_url']
-                data['BirthCertificateURL']=records['birth_certificate_url']
-                data['PhotoConsent']=records['photo_consent']
-                data['ConditionsConsent']=records['conditions_consent']
+                data = format_record(records)
                 response = {
                     "isBase64Encoded": False,
                     "statusCode": 200,
@@ -95,4 +103,5 @@ def lambda_handler(event, context):
                     "headers": {"Content-Type": "application/json"},
                     "body": json.dumps({"message": "Member not found"}),
                 }
+    
     return response

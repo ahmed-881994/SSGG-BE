@@ -350,6 +350,8 @@ components:
               type: string
             AR:
               type: string
+        TeamID:
+          type: integer
         TeamName:
           type: object
           properties:

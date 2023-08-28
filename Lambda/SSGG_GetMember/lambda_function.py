@@ -32,6 +32,7 @@ def format_record(records):
     
     field_mappings = {
         'Name': {'EN': 'name_en', 'AR': 'name_ar'},
+        'TeamID': 'team_id',
         'TeamName': {'EN': 'team_name_en', 'AR': 'team_name_ar'},
         'PlaceOfBirth': 'place_of_birth',
         'DateOfBirth': 'date_of_birth',

@@ -71,34 +71,6 @@ paths:
           description: Unauthorized
         "404":
           description: Member not found
-    post:
-      tags:
-        - Members
-      operationId: createMember
-      description: Creates a new member
-      parameters:
-        - in: path
-          name: memberID
-          required: true
-          schema:
-            type: string
-          description: The member ID
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/member"
-      responses:
-        "201":
-          description: member created
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/member"
-        "400":
-          description: Bad request
-        "401":
-          description: Unauthorized
   /members:
     get:
       tags:
@@ -131,6 +103,34 @@ paths:
           description: Unauthorized
         "404":
           description: Member not found
+    post:
+      tags:
+        - Members
+      operationId: addMember
+      description: Adds a new member
+      parameters:
+        - in: path
+          name: memberID
+          required: true
+          schema:
+            type: string
+          description: The member ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/member"
+      responses:
+        "201":
+          description: member added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/member"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
   /events/{eventID}:
     get:
       description: "get"

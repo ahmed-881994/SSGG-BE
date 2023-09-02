@@ -38,7 +38,7 @@ jobs:
           aws lambda create-function \
             --function-name $lambda_name \
             --runtime python3.10 \
-            --role arn:arn:aws:iam::998833888842:role/Default_Lambda_Basic_Execution_Role \
+            --role arn:aws:iam::998833888842:role/Default_Lambda_Basic_Execution_Role \
             --handler lambda_handler \
             --zip-file fileb://SSGG_GetMember.zip \
             --environment "Variables={database=DATABASE,host=HOST,password=PASSWORD,port=PORT,username=USERNAME}"

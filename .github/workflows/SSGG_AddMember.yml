@@ -41,13 +41,7 @@ jobs:
             --role arn:aws:iam::998833888842:role/Default_Lambda_Basic_Execution_Role \
             --handler lambda_handler \
             --zip-file fileb://SSGG_AddMember.zip \
-            --environment "Variables={database=DATABASE,host=HOST,password=PASSWORD,port=PORT,username=USERNAME}"
-        env:
-          DATABASE: ${{ secrets.DATABASE }}
-          HOST: ${{ secrets.HOST }}
-          PASSWORD: ${{ secrets.PASSWORD }}
-          PORT: ${{ secrets.PORT }}
-          USERNAME: ${{ secrets.USERNAME }}
+            --environment "Variables={database=${{ secrets.DATABASE }},host=${{ secrets.HOST }},password=${{ secrets.PASSWORD }},port=${{ secrets.PORT }},username=${{ secrets.USERNAME }}}"
       - name: Update Lambda Function
         if: steps.lambda-exists.outputs.exists == 'true'
         run: |
@@ -57,12 +51,5 @@ jobs:
             --zip-file fileb://SSGG_AddMember.zip
           aws lambda update-function-configuration \
             --function-name $lambda_name \
-            --environment "Variables={database=DATABASE,host=HOST,password=PASSWORD,port=PORT,username=USERNAME}"
-        env:
-          DATABASE: ${{ secrets.DATABASE }}
-          HOST: ${{ secrets.HOST }}
-          PASSWORD: ${{ secrets.PASSWORD }}
-          PORT: ${{ secrets.PORT }}
-          USERNAME: ${{ secrets.USERNAME }}
-
+            --environment "Variables={database=${{ secrets.DATABASE }},host=${{ secrets.HOST }},password=${{ secrets.PASSWORD }},port=${{ secrets.PORT }},username=${{ secrets.USERNAME }}}"
       

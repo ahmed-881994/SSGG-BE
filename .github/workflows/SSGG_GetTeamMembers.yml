@@ -39,7 +39,7 @@ jobs:
             --function-name $lambda_name \
             --runtime python3.10 \
             --role arn:aws:iam::998833888842:role/Default_Lambda_Basic_Execution_Role \
-            --handler lambda_handler \
+            --handler lambda_function.py \
             --zip-file fileb://SSGG_GetTeamMembers.zip \
             --environment "Variables={database=${{ secrets.DATABASE }},host=${{ secrets.HOST }},password=${{ secrets.PASSWORD }},port=${{ secrets.PORT }},username=${{ secrets.USERNAME }}}" \
             --layers arn:aws:lambda:eu-north-1:998833888842:layer:pymysql:3
@@ -49,6 +49,7 @@ jobs:
           lambda_name="SSGG_GetTeamMembers"
           aws lambda update-function-code \
             --function-name $lambda_name \
+            --handler lambda_function.py \
             --zip-file fileb://SSGG_GetTeamMembers.zip
           aws lambda update-function-configuration \
             --function-name $lambda_name \

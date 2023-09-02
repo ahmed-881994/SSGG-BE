@@ -31,7 +31,7 @@ def lambda_handler(event, context):
 
     if response is None:
         with conn.cursor() as cursor:
-            data = event["body"]
+            data = json.loads(event["body"])
             args = [
                 data["MemberID"],
                 data["Name"]["EN"],

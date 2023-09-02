@@ -108,13 +108,6 @@ paths:
         - Members
       operationId: addMember
       description: Adds a new member
-      parameters:
-        - in: path
-          name: memberID
-          required: true
-          schema:
-            type: string
-          description: The member ID
       requestBody:
         content:
           application/json:

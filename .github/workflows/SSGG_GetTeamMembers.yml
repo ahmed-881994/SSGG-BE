@@ -49,7 +49,6 @@ jobs:
           lambda_name="SSGG_GetTeamMembers"
           aws lambda update-function-code \
             --function-name $lambda_name \
-            --handler lambda_function.py \
             --zip-file fileb://SSGG_GetTeamMembers.zip
           aws lambda update-function-configuration \
             --function-name $lambda_name \

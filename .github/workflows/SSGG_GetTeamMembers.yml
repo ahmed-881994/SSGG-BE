@@ -22,6 +22,47 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
-      - name: Deploy source
-        run: aws lambda update-function-code --function-name=SSGG_GetTeamMembers --zip-file=fileb://SSGG_GetTeamMembers.zip
+      - name: Check if Lambda Function Exists
+        id: lambda-exists
+        run: |
+          lambda_name="SSGG_GetTeamMembers"
+          if aws lambda get-function --function-name $lambda_name 2>/dev/null; then
+            echo "::set-output name=exists::true"
+          else
+            echo "::set-output name=exists::false"
+          fi
+      - name: Create Lambda Function if does not exist
+        if: steps.lambda-exists.outputs.exists == 'false'
+        run: |
+          lambda_name="SSGG_GetTeamMembers"
+          aws lambda create-function \
+            --function-name $lambda_name \
+            --runtime python3.10 \
+            --role arn:arn:aws:iam::998833888842:role/Default_Lambda_Basic_Execution_Role \
+            --handler lambda_handler \
+            --zip-file fileb://SSGG_GetTeamMembers.zip \
+            --environment "Variables={database=DATABASE,host=HOST,password=PASSWORD,port=PORT,username=USERNAME}"
+        env:
+          DATABASE: ${{ secrets.DATABASE }}
+          HOST: ${{ secrets.HOST }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          PORT: ${{ secrets.PORT }}
+          USERNAME: ${{ secrets.USERNAME }}
+      - name: Update Lambda Function
+        if: steps.lambda-exists.outputs.exists == 'true'
+        run: |
+          lambda_name="SSGG_GetTeamMembers"
+          aws lambda update-function-code \
+            --function-name $lambda_name \
+            --zip-file fileb://SSGG_GetTeamMembers.zip
+          aws lambda update-function-configuration \
+            --function-name $lambda_name \
+            --environment "Variables={database=DATABASE,host=HOST,password=PASSWORD,port=PORT,username=USERNAME}"
+        env:
+          DATABASE: ${{ secrets.DATABASE }}
+          HOST: ${{ secrets.HOST }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          PORT: ${{ secrets.PORT }}
+          USERNAME: ${{ secrets.USERNAME }}
+
       

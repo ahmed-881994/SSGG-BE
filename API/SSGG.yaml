@@ -720,13 +720,13 @@ components:
     teamMemberAdd:
       type: object
       properties:
-        Member:
-          type: object
-          properties:
-            MemberID:
-              type: string
-            IsLeader:
-              type: boolean
+        MemberID:
+          type: string
+        IsLeader:
+          type: boolean
+        FromDate:
+          type: string
+          format: date
     teams:
       type: array
       items:

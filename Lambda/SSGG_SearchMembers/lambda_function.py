@@ -16,13 +16,12 @@ def connect():
         )
         response = None
     except Exception as error:
-        print(error)
         conn = None
         response = {
             "isBase64Encoded": False,
             "statusCode": 500,
             "headers": {"Content-Type": "application/json"},
-            "body": json.dumps({"message": "Couldn't reach the database"}),
+            "body": json.dumps({"message": error.args[1]}),
         }
     return conn, response
 

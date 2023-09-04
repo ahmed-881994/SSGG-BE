@@ -43,6 +43,8 @@ def format_record(records):
     }
 
     for record in records:
+        if record['member_id'] is None:
+            continue
         member_entry = {
             "MemberID": record['member_id'],
             "Name": {

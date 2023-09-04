@@ -46,7 +46,7 @@ def lambda_handler(event, context):
                             "body": json.dumps({"message": "Member already belongs to team"}),
                         }
                     else:
-                        is_leader = 1 if body.get("IsLeader") else 0
+                        is_leader = 1 if body.get("IsLeader")==True else 0
                         from_date= body.get("FromDate")
                         args = [
                             memberID,

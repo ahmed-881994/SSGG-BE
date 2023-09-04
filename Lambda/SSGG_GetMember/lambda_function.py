@@ -85,7 +85,7 @@ def lambda_handler(event, context):
     
     if response is None:
         with conn.cursor() as cursor:
-            memberID = event['pathParameters']['memberID']
+            memberID = event['pathParameters'].get('memberID')
             cursor.callproc("GetMember", [memberID])
             records = cursor.fetchone()
             

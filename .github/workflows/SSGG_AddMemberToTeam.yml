@@ -1,0 +1,73 @@
+name: Deploy SSGG_AddMemberToTeam lambda function
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - '*'
+    paths:
+      - Lambda/SSGG_AddMemberToTeam/*
+      - .github/workflows/SSGG_AddMemberToTeam.yml
+jobs:
+  checkout-package-and-deploy-source:
+    name: Package and deploy source code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+      - name: Set Service Name
+        id: set-service-name
+        run: |
+          branch_name="${GITHUB_REF##*/}"
+          if [ "$branch_name" == "main" ]; then
+            service_name="SSGG_AddMemberToTeam"
+            port=${{ secrets.PORT }}
+          elif [ "$branch_name" == "dev" ]; then
+            service_name="SSGG_AddMemberToTeam_DEV"
+            port=${{ secrets.PORT_DEV }}
+          else
+            service_name="SSGG_AddMemberToTeam_$branch_name"
+          fi
+          echo "::set-output name=service_name::$service_name"
+          echo "::set-output name=port::$port"
+
+      - name: Package source
+        run: zip -j ${{ steps.set-service-name.outputs.service_name }}.zip Lambda/SSGG_AddMemberToTeam/*
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Check if Lambda Function Exists
+        id: lambda-exists
+        run: |
+          lambda_name="${{ steps.set-service-name.outputs.service_name }}"
+          if aws lambda get-function --function-name $lambda_name 2>/dev/null; then
+            echo "::set-output name=exists::true"
+          else
+            echo "::set-output name=exists::false"
+          fi
+      - name: Create Lambda Function if does not exist
+        if: steps.lambda-exists.outputs.exists == 'false'
+        run: |
+          lambda_name="${{ steps.set-service-name.outputs.service_name }}"
+          aws lambda create-function \
+            --function-name $lambda_name \
+            --runtime python3.10 \
+            --role arn:aws:iam::998833888842:role/Default_Lambda_Basic_Execution_Role \
+            --handler lambda_function.lambda_handler \
+            --zip-file fileb://${{ steps.set-service-name.outputs.service_name }}.zip \
+            --environment "Variables={database=${{ secrets.DATABASE }},host=${{ secrets.HOST }},password=${{ secrets.PASSWORD }},port=${{ steps.set-service-name.outputs.port }},username=${{ secrets.USERNAME }}}" \
+            --layers arn:aws:lambda:eu-north-1:998833888842:layer:pymysql:3
+      - name: Update Lambda Function
+        if: steps.lambda-exists.outputs.exists == 'true'
+        run: |
+          lambda_name="${{ steps.set-service-name.outputs.service_name }}"
+          aws lambda update-function-code \
+            --function-name $lambda_name \
+            --zip-file fileb://${{ steps.set-service-name.outputs.service_name }}.zip
+          aws lambda update-function-configuration \
+            --function-name $lambda_name \
+            --environment "Variables={database=${{ secrets.DATABASE }},host=${{ secrets.HOST }},password=${{ secrets.PASSWORD }},port=${{ steps.set-service-name.outputs.port }},username=${{ secrets.USERNAME }}}"
+
+      

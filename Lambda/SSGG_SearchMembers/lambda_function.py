@@ -84,26 +84,34 @@ def lambda_handler(event, context):
     
     if response is None:
         with conn.cursor() as cursor:
-            queryParams = event["queryStringParameters"]
-            teamID = queryParams.get('teamID') if queryParams.get('teamID') is not None else None
-            name = queryParams.get('name') if queryParams.get('name') is not None else None
-            cursor.callproc("SearchMembers", [teamID, name])
-            records = cursor.fetchall()
-            
-            if records:
-                data = [format_record(record) for record in records]
+            try:
+                queryParams = event["queryStringParameters"]
+                teamID = queryParams.get('teamID') if queryParams.get('teamID') is not None else None
+                name = queryParams.get('name') if queryParams.get('name') is not None else None
+                cursor.callproc("SearchMembers", [teamID, name])
+                records = cursor.fetchall()
+                
+                if records:
+                    data = [format_record(record) for record in records]
+                    response = {
+                        "isBase64Encoded": False,
+                        "statusCode": 200,
+                        "headers": {"Content-Type": "application/json"},
+                        "body": json.dumps(data, default=str),
+                    }
+                else:
+                    response = {
+                        "isBase64Encoded": False,
+                        "statusCode": 404,
+                        "headers": {"Content-Type": "application/json"},
+                        "body": json.dumps({"message": "Member not found"}),
+                    }
+            except Exception as error:
                 response = {
                     "isBase64Encoded": False,
-                    "statusCode": 200,
+                    "statusCode": 500,
                     "headers": {"Content-Type": "application/json"},
-                    "body": json.dumps(data, default=str),
-                }
-            else:
-                response = {
-                    "isBase64Encoded": False,
-                    "statusCode": 404,
-                    "headers": {"Content-Type": "application/json"},
-                    "body": json.dumps({"message": "Member not found"}),
+                    "body": json.dumps({"message": error.args[1]}),
                 }
     
     return response

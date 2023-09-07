@@ -85,8 +85,8 @@ def lambda_handler(event, context):
     if response is None:
         with conn.cursor() as cursor:
             queryParams = event["queryStringParameters"]
-            teamID = queryParams.get('teamID')
-            name = queryParams.get('name')
+            teamID = queryParams.get('teamID') if queryParams.get('teamID') is not None else None
+            name = queryParams.get('name') if queryParams.get('name') is not None else None
             cursor.callproc("SearchMembers", [teamID, name])
             records = cursor.fetchall()
             

@@ -90,7 +90,7 @@ def lambda_handler(event, context):
             cursor.callproc("SearchMembers", [teamID, name])
             records = cursor.fetchall()
             
-            if records is not None:
+            if records:
                 data = [format_record(record) for record in records]
                 response = {
                     "isBase64Encoded": False,

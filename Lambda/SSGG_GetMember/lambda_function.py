@@ -84,24 +84,32 @@ def lambda_handler(event, context):
     
     if response is None:
         with conn.cursor() as cursor:
-            memberID = event['pathParameters'].get('memberID')
-            cursor.callproc("GetMember", [memberID])
-            records = cursor.fetchone()
-            
-            if records is not None:
-                data = format_record(records)
+            try:
+                memberID = event['pathParameters'].get('memberID')
+                cursor.callproc("GetMember", [memberID])
+                records = cursor.fetchone()
+                
+                if records is not None:
+                    data = format_record(records)
+                    response = {
+                        "isBase64Encoded": False,
+                        "statusCode": 200,
+                        "headers": {"Content-Type": "application/json"},
+                        "body": json.dumps(data, default=str),
+                    }
+                else:
+                    response = {
+                        "isBase64Encoded": False,
+                        "statusCode": 404,
+                        "headers": {"Content-Type": "application/json"},
+                        "body": json.dumps({"message": "Member not found"}),
+                    }
+            except Exception as error:
                 response = {
                     "isBase64Encoded": False,
-                    "statusCode": 200,
+                    "statusCode": 500,
                     "headers": {"Content-Type": "application/json"},
-                    "body": json.dumps(data, default=str),
-                }
-            else:
-                response = {
-                    "isBase64Encoded": False,
-                    "statusCode": 404,
-                    "headers": {"Content-Type": "application/json"},
-                    "body": json.dumps({"message": "Member not found"}),
+                    "body": json.dumps({"message": error.args[1]}),
                 }
     
     return response

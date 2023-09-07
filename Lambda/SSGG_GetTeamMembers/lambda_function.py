@@ -64,24 +64,32 @@ def lambda_handler(event, context):
     
     if response is None:
         with conn.cursor() as cursor:
-            teamID = event['pathParameters']['teamID']
-            cursor.callproc("GetTeamMembers", [teamID])
-            records = cursor.fetchall()
-            
-            if len(records)>0:
-                data = format_record(records)
+            try:
+                teamID = event['pathParameters']['teamID']
+                cursor.callproc("GetTeamMembers", [teamID])
+                records = cursor.fetchall()
+                
+                if len(records)>0:
+                    data = format_record(records)
+                    response = {
+                        "isBase64Encoded": False,
+                        "statusCode": 200,
+                        "headers": {"Content-Type": "application/json"},
+                        "body": json.dumps(data, default=str),
+                    }
+                else:
+                    response = {
+                        "isBase64Encoded": False,
+                        "statusCode": 404,
+                        "headers": {"Content-Type": "application/json"},
+                        "body": json.dumps({"message": "Team has no members or teamID is not correct"}),
+                    }
+            except Exception as error:
                 response = {
                     "isBase64Encoded": False,
-                    "statusCode": 200,
+                    "statusCode": 500,
                     "headers": {"Content-Type": "application/json"},
-                    "body": json.dumps(data, default=str),
-                }
-            else:
-                response = {
-                    "isBase64Encoded": False,
-                    "statusCode": 404,
-                    "headers": {"Content-Type": "application/json"},
-                    "body": json.dumps({"message": "Team has no members or teamID is not correct"}),
+                    "body": json.dumps({"message": error.args[1]}),
                 }
     
     return response

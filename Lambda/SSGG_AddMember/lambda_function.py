@@ -7,7 +7,7 @@ def connect():
         # Connect to the database
         cursor = pymysql.cursors.DictCursor
         conn = pymysql.connect(
-            host=os.environ.get("host"),
+            host=os.getenv("host"),
             port=int(os.environ.get("port")),
             database=os.environ.get("database"),
             user=os.environ.get("username"),

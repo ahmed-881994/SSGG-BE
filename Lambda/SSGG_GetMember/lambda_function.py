@@ -93,7 +93,7 @@ def lambda_handler(event, context):
             try:
                 memberID = event["pathParameters"].get("memberID")
                 cursor.callproc("GetMember", [memberID])
-                records = cursor.fetchone()
+                records = cursor.fetchall()
 
                 if records is not None:
                     data = format_records(records)

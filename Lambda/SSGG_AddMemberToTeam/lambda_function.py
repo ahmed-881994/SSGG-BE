@@ -32,7 +32,7 @@ def lambda_handler(event, context):
         with conn.cursor() as cursor:
             try:
                 body = json.loads(event["body"])
-                memberID=body.get("MemberID")
+                memberID=body.get("Member").get("MemberID")
                 teamID = event['pathParameters']['teamID']
                 cursor.callproc("GetMember", [memberID])
                 records = cursor.fetchone()

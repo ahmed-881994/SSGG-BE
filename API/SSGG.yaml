@@ -62,7 +62,7 @@ paths:
               $ref: "#/components/schemas/memberUpdate"
       responses:
         "200":
-          description: member created
+          description: member updated
           content:
             application/json:
               schema:
@@ -129,7 +129,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/member"
+              $ref: "#/components/schemas/memberAdd"
       responses:
         "201":
           description: member added
@@ -431,20 +431,115 @@ components:
               type: string
             AR:
               type: string
-        TeamID:
+        Teams:
+          type: array
+          items:
+            properties:
+              TeamID:
+                type: integer
+                enum:
+                  - 1
+                  - 2
+                  - 3
+                  - 4
+                  - 5
+                  - 6
+                  - 7
+                  - 8
+                  - 9
+                  - 10
+              TeamName:
+                type: object
+                properties:
+                  EN:
+                    type: string
+                  AR:
+                    type: string
+        PlaceOfBirth:
+          type: string
+        DateOfBirth:
+          type: string
+          format: date
+        Address:
+          type: string
+        NationalIdNo:
           type: integer
-          enum:
-            - 1
-            - 2
-            - 3
-            - 4
-            - 5
-            - 6
-            - 7
-            - 8
-            - 9
-            - 10
-        TeamName:
+        ClubIdNo:
+          type: integer
+        PassportNo:
+          type: string
+        DateJoined:
+          type: string
+          format: date
+        MobileNo:
+          type: string
+        HomeContact:
+          type: string
+        Email:
+          type: string
+          format: email
+        FacebookURL:
+          type: string
+          format: uri
+        SchoolName:
+          type: string
+        EducationType:
+          type: string
+        FatherName:
+          type: string
+        FatherContact:
+          type: string
+        FatherJob:
+          type: string
+        MotherName:
+          type: string
+        MotherContact:
+          type: string
+        MotherJob:
+          type: string
+        GuardianName:
+          type: string
+        GuardianContact:
+          type: string
+        GuardianRelationship:
+          type: string
+        Hobbies:
+          type: string
+        HealthIssues:
+          type: string
+        Medications:
+          type: string
+        QRCodeURL:
+          type: string
+          format: uri
+        ImageURL:
+          type: string
+          format: uri
+        NationalIdURL:
+          type: string
+          format: uri
+        ParentNationalIdURL:
+          type: string
+          format: uri
+        ClubIdURL:
+          type: string
+          format: uri
+        PassportURL:
+          type: string
+          format: uri
+        BirthCertificateURL:
+          type: string
+          format: uri
+        PhotoConsent:
+          type: integer
+        ConditionsConsent:
+          type: integer
+    memberAdd:
+      type: object
+      properties:
+        MemberID:
+          type: string
+        Name:
           type: object
           properties:
             EN:
@@ -534,26 +629,6 @@ components:
       type: object
       properties:
         Name:
-          type: object
-          properties:
-            EN:
-              type: string
-            AR:
-              type: string
-        TeamID:
-          type: integer
-          enum:
-            - 1
-            - 2
-            - 3
-            - 4
-            - 5
-            - 6
-            - 7
-            - 8
-            - 9
-            - 10
-        TeamName:
           type: object
           properties:
             EN:

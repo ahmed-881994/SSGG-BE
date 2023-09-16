@@ -50,7 +50,7 @@ def lambda_handler(event, context):
     if response is None:
         with conn.cursor() as cursor:
             try:
-                data = event.get("body")
+                data = json.loads(event.get("body"))
                 args = [
                     data.get("EventTypeID"),
                     data.get("EventName").get("EN"),

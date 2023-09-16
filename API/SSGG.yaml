@@ -751,8 +751,8 @@ components:
     event:
       type: object
       properties:
-        EventType:
-          type: string
+        EventTypeID:
+          type: integer
         EventName:
           type: object
           properties:

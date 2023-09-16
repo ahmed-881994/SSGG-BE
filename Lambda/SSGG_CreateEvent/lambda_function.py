@@ -90,21 +90,3 @@ def lambda_handler(event, context):
                 }
 
     return response
-
-
-print(
-    lambda_handler(
-        {
-            "body": {
-                "EventTypeID": 1,
-                "EventName": {"EN": "string", "AR": "string"},
-                "EventLocation": "string",
-                "EventStartDate": "2023-09-16",
-                "EventEndDate": "2023-09-16",
-                "IsMultiTeam": True,
-                "TeamID": 1,
-            }
-        },
-        None,
-    )
-)

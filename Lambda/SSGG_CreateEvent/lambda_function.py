@@ -62,6 +62,7 @@ def lambda_handler(event, context):
                     data.get("TeamID"),
                 ]
                 cursor.callproc("CreateEvent", args)
+                conn.commit()
                 records = cursor.fetchone()
                 if records:
                     args = [records.get("event_id")]

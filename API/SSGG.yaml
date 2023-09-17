@@ -225,7 +225,8 @@ paths:
           description: Internal Server Error
   /events/{eventID}:
     get:
-      description: "get"
+      operationId: getEvent
+      description: "Gets event by ID"
       tags:
         - Events
       parameters:

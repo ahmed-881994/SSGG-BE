@@ -312,6 +312,29 @@ paths:
           description: Internal Server Error
         "404":
           description: Event not found
+    get:
+      tags:
+        - Events
+      operationId: takeEventAttendance
+      description: Gets the attendance list of an event
+      parameters:
+        - in: path
+          name: eventID
+          required: true
+          schema:
+            type: integer
+          description: The event ID
+      responses:
+        "200":
+          description: Success
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Event not found
   /teams:
     get:
       tags:
@@ -909,3 +932,7 @@ components:
             - 3
             - 4
             - 5
+    attendanceList:
+      type: array
+      items:
+        $ref: "#/components/schemas/attendance"

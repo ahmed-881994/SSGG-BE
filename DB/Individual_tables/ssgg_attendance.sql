@@ -1,6 +1,6 @@
--- MySQL dump 10.13  Distrib 8.0.34, for macos13 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.34, for macos13 (arm64)
 --
--- Host: 0.0.0.0    Database: ssgg
+-- Host: 41.196.44.21    Database: ssgg
 -- ------------------------------------------------------
 -- Server version	8.0.34
 
@@ -28,23 +28,14 @@ CREATE TABLE `attendance` (
   `event_id` int NOT NULL,
   `attendance_state_id` int DEFAULT NULL,
   PRIMARY KEY (`attendance_id`),
-  KEY `attendance_event_idx` (`event_id`),
   KEY `attendance_attendance_state_idx` (`attendance_state_id`),
   KEY `attendance_member_idx` (`member_id`),
+  KEY `attendance_event_idx` (`event_id`),
   CONSTRAINT `attendance_attendance_state` FOREIGN KEY (`attendance_state_id`) REFERENCES `attendance_states` (`attendance_state_id`),
   CONSTRAINT `attendance_event` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`),
   CONSTRAINT `attendance_member` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `attendance`
---
-
-LOCK TABLES `attendance` WRITE;
-/*!40000 ALTER TABLE `attendance` DISABLE KEYS */;
-/*!40000 ALTER TABLE `attendance` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -55,4 +46,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-26 12:25:02
+-- Dump completed on 2023-09-20 13:47:58

@@ -1,6 +1,6 @@
--- MySQL dump 10.13  Distrib 8.0.34, for macos13 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.34, for macos13 (arm64)
 --
--- Host: 0.0.0.0    Database: ssgg
+-- Host: 41.196.44.21    Database: ssgg
 -- ------------------------------------------------------
 -- Server version	8.0.34
 
@@ -35,16 +35,6 @@ CREATE TABLE `stages` (
   CONSTRAINT `stage_gender_group` FOREIGN KEY (`gender_group_id`) REFERENCES `gender_groups` (`gender_group_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `stages`
---
-
-LOCK TABLES `stages` WRITE;
-/*!40000 ALTER TABLE `stages` DISABLE KEYS */;
-INSERT INTO `stages` VALUES (1,'Smurfs','السنافر',NULL,NULL),(2,'Cubs','الاشبال',NULL,NULL),(3,'Scouts','الكشافة',NULL,NULL),(4,'Advanced Scouts','المتقدم',NULL,NULL),(5,'Rovers','الجوالة',NULL,NULL),(6,'Pres Janet','البراعم',NULL,NULL),(7,'Janet','الزهرات',NULL,NULL),(8,'Guides','المرشدات',NULL,NULL),(9,'Guideannes','المتقدمات',NULL,NULL),(10,'Routier','الجوالات',NULL,NULL);
-/*!40000 ALTER TABLE `stages` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -55,4 +45,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-26 12:25:05
+-- Dump completed on 2023-09-20 13:48:04

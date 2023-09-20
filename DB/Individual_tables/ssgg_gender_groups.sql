@@ -1,6 +1,6 @@
--- MySQL dump 10.13  Distrib 8.0.34, for macos13 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.34, for macos13 (arm64)
 --
--- Host: 0.0.0.0    Database: ssgg
+-- Host: 41.196.44.21    Database: ssgg
 -- ------------------------------------------------------
 -- Server version	8.0.34
 
@@ -29,15 +29,6 @@ CREATE TABLE `gender_groups` (
   PRIMARY KEY (`gender_group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `gender_groups`
---
-
-LOCK TABLES `gender_groups` WRITE;
-/*!40000 ALTER TABLE `gender_groups` DISABLE KEYS */;
-/*!40000 ALTER TABLE `gender_groups` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -48,4 +39,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-26 12:25:03
+-- Dump completed on 2023-09-20 13:47:56

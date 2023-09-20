@@ -1,6 +1,6 @@
--- MySQL dump 10.13  Distrib 8.0.34, for macos13 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.34, for macos13 (arm64)
 --
--- Host: 0.0.0.0    Database: ssgg
+-- Host: 41.196.44.21    Database: ssgg
 -- ------------------------------------------------------
 -- Server version	8.0.34
 
@@ -27,17 +27,8 @@ CREATE TABLE `event_types` (
   `event_type_name_en` varchar(45) DEFAULT NULL,
   `event_type_name_ar` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`event_type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `event_types`
---
-
-LOCK TABLES `event_types` WRITE;
-/*!40000 ALTER TABLE `event_types` DISABLE KEYS */;
-/*!40000 ALTER TABLE `event_types` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -48,4 +39,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-26 12:25:06
+-- Dump completed on 2023-09-20 13:48:01

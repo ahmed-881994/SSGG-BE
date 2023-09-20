@@ -33,8 +33,9 @@ def lambda_handler(event, context):
         with conn.cursor() as cursor:
             try:
                 eventID = event.get('pathParameters').get('eventID')
-                memberID = event.get('body').get('MemberID')
-                attendanceState= event.get('body').get('AttendanceState')
+                body = json.loads(event["body"])
+                memberID = body.get('MemberID')
+                attendanceState= body.get('AttendanceState')
                 cursor.callproc("GetMember", [memberID])
                 member = cursor.fetchone()
                 if member is not None:

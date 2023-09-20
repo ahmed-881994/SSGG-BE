@@ -300,7 +300,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/attendance"
+              $ref: "#/components/schemas/memberAttendance"
       responses:
         "200":
           description: attendance taken
@@ -315,7 +315,7 @@ paths:
     get:
       tags:
         - Events
-      operationId: takeEventAttendance
+      operationId: getEventAttendance
       description: Gets the attendance list of an event
       parameters:
         - in: path
@@ -327,6 +327,10 @@ paths:
       responses:
         "200":
           description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/eventAttendance"
         "400":
           description: Bad request
         "401":
@@ -919,12 +923,12 @@ components:
               type: string
             IsLeader:
               type: boolean
-    attendance:
+    memberAttendance:
       type: object
       properties:
         MemberID:
           type: string
-        AttendanceState:
+        AttendanceStateID:
           type: integer
           enum:
             - 1
@@ -932,7 +936,12 @@ components:
             - 3
             - 4
             - 5
-    attendanceList:
-      type: array
-      items:
-        $ref: "#/components/schemas/attendance"
+    eventAttendance:
+      type: object
+      properties:
+        EventID:
+          type: integer
+        Attendance:
+          type: array
+          items:
+            $ref: "#/components/schemas/memberAttendance"

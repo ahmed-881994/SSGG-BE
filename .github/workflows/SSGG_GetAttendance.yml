@@ -21,7 +21,7 @@ jobs:
           if [ "$branch_name" == "main" ]; then
             service_name="SSGG_GetAttendance"
             port=${{ secrets.PORT }}
-          elif [ "$branch_name" == "dev" ]; then
+          elif [ "$branch_name" == "staging" ]; then
             service_name="SSGG_GetAttendance_STG"
             port=${{ secrets.PORT_STG }}
           else

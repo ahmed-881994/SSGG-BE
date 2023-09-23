@@ -209,14 +209,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/event"
+              $ref: "#/components/schemas/updateEvent"
       responses:
         "201":
           description: Event created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/event"
+                $ref: "#/components/schemas/getEvent"
         "400":
           description: Bad request
         "401":
@@ -242,7 +242,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/event"
+                $ref: "#/components/schemas/getEvent"
         "400":
           description: Bad request
         "401":
@@ -267,14 +267,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/event"
+              $ref: "#/components/schemas/updateEvent"
       responses:
         "200":
           description: event updated
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/event"
         "400":
           description: Bad request
         "401":
@@ -776,9 +772,46 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/member"
-    event:
+    updateEvent:
       type: object
       properties:
+        EventTypeID:
+          type: integer
+        EventName:
+          type: object
+          properties:
+            EN:
+              type: string
+            AR:
+              type: string
+        EventLocation:
+          type: string
+        EventStartDate:
+          type: string
+          format: date
+        EventEndDate:
+          type: string
+          format: date
+        IsMultiTeam:
+          type: boolean
+        TeamID:
+          type: integer
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+            - 8
+            - 9
+            - 10
+    getEvent:
+      type: object
+      properties:
+        EventID:
+          type: integer
         EventTypeID:
           type: integer
         EventName:
@@ -814,7 +847,7 @@ components:
     events:
       type: array
       items:
-        $ref: "#/components/schemas/event"
+        $ref: "#/components/schemas/getEvent"
     team:
       type: object
       properties:

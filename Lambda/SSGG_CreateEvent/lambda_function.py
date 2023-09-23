@@ -50,17 +50,17 @@ def lambda_handler(event, context):
     if response is None:
         with conn.cursor() as cursor:
             try:
-                data = json.loads(event.get("body"))
-                args = [
-                    data.get("EventTypeID"),
-                    data.get("EventName").get("EN"),
-                    data.get("EventName").get("AR"),
-                    data.get("EventLocation"),
-                    data.get("EventStartDate"),
-                    data.get("EventEndDate"),
-                    1 if data.get("IsMultiTeam") == True else 0,
-                    data.get("TeamID"),
-                ]
+                body = json.loads(event.get("body"))
+                args = []
+                args.append(body.get("EventTypeID"))
+                args.append(body.get("EventName").get("EN"))
+                args.append(body.get("EventName").get("AR"))
+                args.append(body.get("EventLocation"))
+                args.append(body.get("EventStartDate"))
+                args.append(body.get("EventEndDate"))
+                args.append(1 if body.get("IsMultiTeam") == True else 0)
+                args.append(body.get("TeamID"))
+                
                 cursor.callproc("CreateEvent", args)
                 conn.commit()
                 records = cursor.fetchone()

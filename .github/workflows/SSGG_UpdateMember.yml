@@ -5,8 +5,8 @@ on:
     branches:
       - '*'
     paths:
-      - Lambda/<Service_Name>/*
-      - .github/workflows/<Service_Name>.yml
+      - Lambda/SSGG_UpdateMember/*
+      - .github/workflows/SSGG_UpdateMember.yml
 jobs:
   checkout-package-and-deploy-source:
     name: Package and deploy source code
@@ -19,18 +19,18 @@ jobs:
         run: |
           branch_name="${GITHUB_REF##*/}"
           if [ "$branch_name" == "main" ]; then
-            service_name="<Service_Name>"
+            service_name="SSGG_UpdateMember"
             port=${{ secrets.PORT }}
           elif [ "$branch_name" == "staging" ]; then
-            service_name="<Service_Name>_STG"
+            service_name="SSGG_UpdateMember_STG"
             port=${{ secrets.PORT_STG }}
           else
-            service_name="<Service_Name>_$branch_name"
+            service_name="SSGG_UpdateMember_$branch_name"
           fi
           echo "::set-output name=service_name::$service_name"
           echo "::set-output name=port::$port"
       - name: Package source
-        run: zip -j ${{ steps.set-service-name.outputs.service_name }}.zip Lambda/<Service_Name>/*
+        run: zip -j ${{ steps.set-service-name.outputs.service_name }}.zip Lambda/SSGG_UpdateMember/*
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:

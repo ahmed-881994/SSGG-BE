@@ -516,9 +516,9 @@ components:
         Address:
           type: string
         NationalIdNo:
-          type: integer
+          type: string
         ClubIdNo:
-          type: integer
+          type: string
         PassportNo:
           type: string
         DateJoined:
@@ -607,9 +607,9 @@ components:
         Address:
           type: string
         NationalIdNo:
-          type: integer
+          type: string
         ClubIdNo:
-          type: integer
+          type: string
         PassportNo:
           type: string
         DateJoined:
@@ -696,9 +696,9 @@ components:
         Address:
           type: string
         NationalIdNo:
-          type: integer
+          type: string
         ClubIdNo:
-          type: integer
+          type: string
         PassportNo:
           type: string
         DateJoined:

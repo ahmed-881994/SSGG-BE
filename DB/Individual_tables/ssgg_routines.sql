@@ -1,6 +1,8 @@
+CREATE DATABASE  IF NOT EXISTS `ssgg` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `ssgg`;
 -- MySQL dump 10.13  Distrib 8.0.34, for macos13 (arm64)
 --
--- Host: 41.196.44.21    Database: ssgg
+-- Host: 127.0.0.1    Database: ssgg
 -- ------------------------------------------------------
 -- Server version	8.0.34
 
@@ -416,6 +418,151 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `UpdateEvent` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`%` PROCEDURE `UpdateEvent`(IN P_event_id INT, IN P_event_type_id INT, IN P_event_name_en VARCHAR(255), IN P_event_name_ar VARCHAR(255), IN P_event_location VARCHAR(255), IN P_event_start_date DATE, IN P_event_end_date DATE, IN P_is_multi_team TINYINT(1), IN P_team_id INT)
+BEGIN
+    UPDATE `ssgg`.`events`
+	SET
+	`event_type_id` = COALESCE(P_event_type_id, event_type_id),
+	`event_name_en` = COALESCE(P_event_name_en, event_name_en),
+	`event_name_ar` = COALESCE(P_event_name_ar, event_name_ar),
+	`event_location` = COALESCE(P_event_location, event_location),
+	`event_start_date` = COALESCE(P_event_start_date, event_start_date),
+	`event_end_date` = COALESCE(P_event_end_date, event_end_date),
+	`is_multi_team` = COALESCE(P_is_multi_team, is_multi_team),
+	`team_id` = COALESCE(P_team_id, team_id)
+	WHERE `event_id` = P_event_id;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `UpdateMember` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`%` PROCEDURE `UpdateMember`(
+	IN P_member_id VARCHAR(255),
+    IN P_name_en VARCHAR(255),
+    IN P_name_ar VARCHAR(255),
+    IN P_place_of_birth VARCHAR(255),
+    IN P_date_of_birth DATE,
+    IN P_address VARCHAR(255),
+    IN P_national_id_no VARCHAR(14),
+    IN P_club_id_no VARCHAR(12),
+    IN P_passport_no VARCHAR(255),
+    IN P_date_joined DATE,
+    IN P_mobile_number VARCHAR(11),
+    IN P_home_contact VARCHAR(11),
+    IN P_email VARCHAR(50),
+    IN P_facebook_url VARCHAR(255),
+    IN P_school_name VARCHAR(255),
+    IN P_education_type VARCHAR(50),
+    IN P_father_name VARCHAR(255),
+    IN P_father_contact VARCHAR(255),
+    IN P_father_job VARCHAR(255),
+    IN P_mother_name VARCHAR(255),
+    IN P_mother_contact VARCHAR(255),
+    IN P_mother_job VARCHAR(255),
+    IN P_guardian_name VARCHAR(255),
+    IN P_guardian_contact VARCHAR(255),
+    IN P_guardian_relationship VARCHAR(255),
+    IN P_hobbies VARCHAR(255),
+    IN P_health_issues VARCHAR(255),
+    IN P_medications VARCHAR(255),
+    IN P_qr_code_url VARCHAR(255),
+    IN P_image_url VARCHAR(255),
+    IN P_national_id_url VARCHAR(255),
+    IN P_parent_national_id_url VARCHAR(255),
+    IN P_club_id_url VARCHAR(255),
+    IN P_passport_url VARCHAR(255),
+    IN P_birth_certificate_url VARCHAR(255),
+    IN P_photo_consent TINYINT(1),
+    IN P_conditions_consent TINYINT(1)
+)
+BEGIN
+    UPDATE ssgg.members
+    SET
+        name_en = COALESCE(P_name_en, name_en),
+        name_ar = COALESCE(P_name_ar, name_ar),
+        place_of_birth = COALESCE(P_place_of_birth, place_of_birth),
+        date_of_birth = COALESCE(P_date_of_birth, date_of_birth),
+        address = COALESCE(P_address, address),
+        national_id_no = COALESCE(P_national_id_no, national_id_no),
+        club_id_no = COALESCE(P_club_id_no, club_id_no),
+        passport_no = COALESCE(P_passport_no, passport_no),
+        date_joined = COALESCE(P_date_joined, date_joined),
+        mobile_number = COALESCE(P_mobile_number, mobile_number),
+        home_contact = COALESCE(P_home_contact, home_contact),
+        email = COALESCE(P_email, email),
+        facebook_url = COALESCE(P_facebook_url, facebook_url),
+        school_name = COALESCE(P_school_name, school_name),
+        education_type = COALESCE(P_education_type, education_type),
+        father_name = COALESCE(P_father_name, father_name),
+        father_contact = COALESCE(P_father_contact, father_contact),
+        father_job = COALESCE(P_father_job, father_job),
+        mother_name = COALESCE(P_mother_name, mother_name),
+        mother_contact = COALESCE(P_mother_contact, mother_contact),
+        mother_job = COALESCE(P_mother_job, mother_job),
+        guardian_name = COALESCE(P_guardian_name, guardian_name),
+        guardian_contact = COALESCE(P_guardian_contact, guardian_contact),
+        guardian_relationship = COALESCE(P_guardian_relationship, guardian_relationship),
+        hobbies = COALESCE(P_hobbies, hobbies),
+        health_issues = COALESCE(P_health_issues, health_issues),
+        medications = COALESCE(P_medications, medications),
+        qr_code_url = COALESCE(P_qr_code_url, qr_code_url),
+        image_url = COALESCE(P_image_url, image_url),
+        national_id_url = COALESCE(P_national_id_url, national_id_url),
+        parent_national_id_url = COALESCE(P_parent_national_id_url, parent_national_id_url),
+        club_id_url = COALESCE(P_club_id_url, club_id_url),
+        passport_url = COALESCE(P_passport_url, passport_url),
+        birth_certificate_url = COALESCE(P_birth_certificate_url, birth_certificate_url),
+        photo_consent = COALESCE(P_photo_consent, photo_consent),
+        conditions_consent = COALESCE(P_conditions_consent, conditions_consent)
+    WHERE member_id = P_member_id;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `updateTest` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`%` PROCEDURE `updateTest`(IN param INT)
+BEGIN
+	UPDATE ssgg.members
+    SET national_id_no = coalesce(param, national_id_no)
+    WHERE member_id= 's124';
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -426,4 +573,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-20 13:48:08
+-- Dump completed on 2023-09-25 14:10:57

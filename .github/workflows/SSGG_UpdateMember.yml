@@ -64,13 +64,13 @@ jobs:
         if: steps.lambda-exists.outputs.exists == 'true'
         run: |
           lambda_name="${{ steps.set-service-name.outputs.service_name }}"
-          aws lambda update-function-code \
-            --function-name $lambda_name \
-            --zip-file fileb://${{ steps.set-service-name.outputs.service_name }}.zip
           aws lambda update-function-configuration \
             --function-name $lambda_name \
             --timeout 60 \
             --architectures arm64 \
             --environment "Variables={database=${{ secrets.DATABASE }},host=${{ secrets.HOST }},password=${{ secrets.PASSWORD }},port=${{ steps.set-service-name.outputs.port }},username=${{ secrets.USERNAME }}}" \
             --runtime python3.11
+            aws lambda update-function-code \
+            --function-name $lambda_name \
+            --zip-file fileb://${{ steps.set-service-name.outputs.service_name }}.zip
       

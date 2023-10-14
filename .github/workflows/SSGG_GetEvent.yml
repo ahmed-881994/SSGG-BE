@@ -71,7 +71,6 @@ jobs:
           aws lambda update-function-configuration \
             --function-name $lambda_name \
             --timeout 60 \
-            --architectures arm64 \
             --environment "Variables={database=${{ secrets.DATABASE }},host=${{ secrets.HOST }},password=${{ secrets.PASSWORD }},port=${{ steps.set-service-name.outputs.port }},username=${{ secrets.USERNAME }}}" \
             --runtime python3.11
 

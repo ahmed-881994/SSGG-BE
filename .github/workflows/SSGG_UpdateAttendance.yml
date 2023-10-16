@@ -40,7 +40,7 @@ jobs:
       - name: Check if Lambda Function Exists
         id: lambda-exists
         run: |
-          lambda_name="${{ steps.set-service-name.outputs.service_name }}"
+          lambda_name="${{steps.set-service-name.outputs.service_name}}"
           if aws lambda get-function --function-name $lambda_name 2>/dev/null; then
             echo "exists=true" >> $GITHUB_OUTPUT
           else

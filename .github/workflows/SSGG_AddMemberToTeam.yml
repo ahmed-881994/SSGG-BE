@@ -27,9 +27,8 @@ jobs:
           else
             service_name="SSGG_AddMemberToTeam_$branch_name"
           fi
-          echo "::set-output name=service_name::$service_name"
-          echo "::set-output name=port::$port"
-
+          echo "service_name=$service_name" >> $GITHUB_OUTPUT
+          echo "name=$port" >> $GITHUB_OUTPUT
       - name: Package source
         run: zip -j ${{ steps.set-service-name.outputs.service_name }}.zip Lambda/SSGG_AddMemberToTeam/*
       - name: Configure AWS credentials

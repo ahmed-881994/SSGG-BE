@@ -28,7 +28,7 @@ jobs:
             service_name="SSGG_UpdateMember_$branch_name"
           fi
           echo "service_name=$service_name" >> $GITHUB_OUTPUT
-          echo "port=$port" >> $GITHUB_OUTPUT
+          echo "port=1234" >> $GITHUB_OUTPUT
       - name: Package source
         run: zip -j ${{ steps.set-service-name.outputs.service_name }}.zip Lambda/SSGG_UpdateMember/*
       - name: Configure AWS credentials

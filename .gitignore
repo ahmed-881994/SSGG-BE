@@ -2,6 +2,7 @@
 templates/
 .vscode/
 local/
+events/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

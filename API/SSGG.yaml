@@ -284,7 +284,7 @@ paths:
       tags:
         - Events
       operationId: takeAttendance
-      description: Records the a member's attendance in an event
+      description: Records members attendance in an event
       parameters:
         - in: path
           name: eventID
@@ -300,6 +300,34 @@ paths:
       responses:
         "200":
           description: attendance taken
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Event not found
+    patch:
+      tags:
+        - Events
+      operationId: updateAttendance
+      description: Updates members attendance in an event
+      parameters:
+        - in: path
+          name: eventID
+          required: true
+          schema:
+            type: integer
+          description: The event ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/takeEventAttendance"
+      responses:
+        "200":
+          description: attendance updated
         "400":
           description: Bad request
         "401":

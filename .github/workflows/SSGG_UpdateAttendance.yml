@@ -30,7 +30,7 @@ jobs:
           echo "service_name= $service_name" >> $GITHUB_OUTPUT
           echo "dbport= $port" >> $GITHUB_OUTPUT
       - name: Package source
-        run: zip -j ${{ steps.set-service-name.outputs.service_name }}.zip Lambda/SSGG_UpdateAttendance/*
+        run: zip -j ${{steps.set-service-name.outputs.service_name}}.zip Lambda/SSGG_UpdateAttendance/*
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -49,20 +49,20 @@ jobs:
       - name: Create Lambda Function if does not exist
         if: steps.lambda-exists.outputs.exists == 'false'
         run: |
-          lambda_name="${{ steps.set-service-name.outputs.service_name }}"
+          lambda_name="${{steps.set-service-name.outputs.service_name}}"
           aws lambda create-function \
             --function-name $lambda_name \
             --runtime python3.11 \
             --role arn:aws:iam::998833888842:role/Default_Lambda_Basic_Execution_Role \
             --handler lambda_function.lambda_handler \
             --timeout 60 \
-            --zip-file fileb://${{ steps.set-service-name.outputs.service_name }}.zip \
+            --zip-file fileb://${{steps.set-service-name.outputs.service_name}}.zip \
             --environment "Variables={database=${{ secrets.DATABASE }},host=${{ secrets.HOST }},password=${{ secrets.PASSWORD }},port=${{ steps.set-service-name.outputs.dbport }},username=${{ secrets.USERNAME }}}" \
             --layers arn:aws:lambda:eu-north-1:998833888842:layer:pymysql:3
       - name: Update Lambda Function
         if: steps.lambda-exists.outputs.exists == 'true'
         run: |
-          lambda_name="${{ steps.set-service-name.outputs.service_name }}"
+          lambda_name="${{steps.set-service-name.outputs.service_name}}"
           aws lambda update-function-code \
             --function-name $lambda_name \
             --zip-file fileb://${{steps.set-service-name.outputs.service_name}}.zip

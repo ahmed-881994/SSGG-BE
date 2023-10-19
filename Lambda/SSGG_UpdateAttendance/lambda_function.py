@@ -9,11 +9,11 @@ def connect():
         response = None
         cursor = pymysql.cursors.DictCursor
         conn = pymysql.connect(
-            host="localhost",
-            port=3306,
-            database="ssgg",
-            user="a.safwat",
-            password="P@ssw0rd",
+            host=os.environ.get("host"),
+            port=int(os.environ.get("port")),
+            database=os.environ.get("database"),
+            user=os.environ.get("username"),
+            password=os.environ.get("password"),
             cursorclass=cursor,
         )
     except Exception as error:

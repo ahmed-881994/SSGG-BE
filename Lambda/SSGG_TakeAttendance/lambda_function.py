@@ -57,7 +57,7 @@ def lambda_handler(event, context):
                                 "isBase64Encoded": False,
                                 "statusCode": 404,
                                 "headers": {"Content-Type": "application/json"},
-                                "body": json.dumps({"message": "Member not found"}),
+                                "body": json.dumps({"message": "Member "+ memberID +" not found"}),
                             }
                             break
                     if success_flag:

@@ -89,6 +89,3 @@ def lambda_handler(event, context):
                 }
 
     return response
-
-
-pprint(lambda_handler({"queryStringParameters": {"teamID": "1"}}, None))

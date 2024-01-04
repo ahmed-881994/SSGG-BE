@@ -1,7 +1,6 @@
 import json
 import os
 import pymysql.cursors
-from pprintpp import pprint
 
 
 def connect():

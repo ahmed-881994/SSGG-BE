@@ -34,24 +34,26 @@ def lambda_handler(event, context):
     if response is None:
         with conn.cursor() as cursor:
             try:
-                body = json.loads(event.get("body"))
+                body = event.get("body")
                 memberID = body.get("Member").get("MemberID")
                 isLeader = body.get("Member").get("IsLeader")
                 fromTeamID = body.get("FromTeamID")
                 toTeamID = body.get("ToTeamID")
                 transferDate = body.get("TransferDate")
                 cursor.callproc("GetMember", [memberID])
-                records = cursor.fetchone()
+                records = cursor.fetchall()
                 if records is not None:
-                    if records.get("team_id") == toTeamID:
-                        response = {
-                            "isBase64Encoded": False,
-                            "statusCode": 400,
-                            "headers": {"Content-Type": "application/json"},
-                            "body": json.dumps(
-                                {"message": "Member already belongs to team"}
-                            ),
-                        }
+                    for record in records:
+                        if record.get("team_id") == toTeamID:
+                            response = {
+                                "isBase64Encoded": False,
+                                "statusCode": 400,
+                                "headers": {"Content-Type": "application/json"},
+                                "body": json.dumps(
+                                    {"message": "Member already belongs to team"}
+                                ),
+                            }
+                            break
                     else:
                         cursor.callproc(
                             "TransferTeamMember",

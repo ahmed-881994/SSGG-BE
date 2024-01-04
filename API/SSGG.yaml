@@ -180,12 +180,14 @@ paths:
           required: false
           schema:
             type: string
+            format: date
           description: The event's start date
         - in: query
           name: endDate
           required: false
           schema:
             type: string
+            format: date
           description: The event's end date
       responses:
         '200':
@@ -977,6 +979,9 @@ components:
             - 8
             - 9
             - 10
+        TransferDate:
+          type: string
+          format: date
         Member:
           type: object
           properties:

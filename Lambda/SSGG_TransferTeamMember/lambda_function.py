@@ -34,7 +34,7 @@ def lambda_handler(event, context):
     if response is None:
         with conn.cursor() as cursor:
             try:
-                body = event.get("body")
+                body = json.loads(event.get("body"))
                 memberID = body.get("Member").get("MemberID")
                 isLeader = body.get("Member").get("IsLeader")
                 fromTeamID = body.get("FromTeamID")

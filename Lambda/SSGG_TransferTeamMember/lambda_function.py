@@ -42,7 +42,6 @@ def lambda_handler(event, context):
                 transferDate = body.get("TransferDate")
                 cursor.callproc("GetMember", [memberID])
                 records = cursor.fetchone()
-                pprint(records)
                 if records is not None:
                     if records.get("team_id") == toTeamID:
                         response = {

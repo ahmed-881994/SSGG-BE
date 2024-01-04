@@ -1,8 +1,10 @@
-openapi: "3.0.2"
+openapi: 3.0.2
 info:
   title: SSGG
-  version: "1.0"
-  description: This is the documentation for the backend APIs for the Sporting Scouts and Girl Guides members management app
+  version: '1.0'
+  description: >-
+    This is the documentation for the backend APIs for the Sporting Scouts and
+    Girl Guides members management app
   contact:
     email: ssgdtc@gmail.com
 servers:
@@ -46,20 +48,20 @@ paths:
             type: string
           description: The member's name
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/members"
-        "400":
+                $ref: '#/components/schemas/members'
+        '400':
           description: Bad request
-        "401":
+        '401':
           description: Unauthorized
-        "500":
-          description: Internal Server Error
-        "404":
+        '404':
           description: Member not found
+        '500':
+          description: Internal Server Error
     post:
       tags:
         - Members
@@ -69,19 +71,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/memberAdd"
+              $ref: '#/components/schemas/memberAdd'
       responses:
-        "201":
+        '201':
           description: member added
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/member"
-        "400":
+                $ref: '#/components/schemas/member'
+        '400':
           description: Bad request
-        "401":
+        '401':
           description: Unauthorized
-        "500":
+        '500':
           description: Internal Server Error
   /members/{memberID}:
     get:
@@ -97,20 +99,20 @@ paths:
             type: string
           description: The member ID
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/member"
-        "400":
+                $ref: '#/components/schemas/member'
+        '400':
           description: Bad request
-        "401":
+        '401':
           description: Unauthorized
-        "500":
-          description: Internal Server Error
-        "404":
+        '404':
           description: Member not found
+        '500':
+          description: Internal Server Error
     patch:
       tags:
         - Members
@@ -127,22 +129,22 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/memberUpdate"
+              $ref: '#/components/schemas/memberUpdate'
       responses:
-        "200":
+        '200':
           description: member updated
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/member"
-        "400":
+                $ref: '#/components/schemas/member'
+        '400':
           description: Bad request
-        "401":
+        '401':
           description: Unauthorized
-        "500":
-          description: Internal Server Error
-        "404":
+        '404':
           description: Member not found
+        '500':
+          description: Internal Server Error
   /events:
     get:
       tags:
@@ -186,20 +188,20 @@ paths:
             type: string
           description: The event's end date
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/events"
-        "400":
+                $ref: '#/components/schemas/events'
+        '400':
           description: Bad request
-        "401":
+        '401':
           description: Unauthorized
-        "500":
-          description: Internal Server Error
-        "404":
+        '404':
           description: Event not found
+        '500':
+          description: Internal Server Error
     post:
       tags:
         - Events
@@ -209,24 +211,24 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/updateEvent"
+              $ref: '#/components/schemas/updateEvent'
       responses:
-        "201":
+        '201':
           description: Event created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/getEvent"
-        "400":
+                $ref: '#/components/schemas/getEvent'
+        '400':
           description: Bad request
-        "401":
+        '401':
           description: Unauthorized
-        "500":
+        '500':
           description: Internal Server Error
   /events/{eventID}:
     get:
       operationId: getEvent
-      description: "Gets event by ID"
+      description: Gets event by ID
       tags:
         - Events
       parameters:
@@ -237,20 +239,20 @@ paths:
             type: integer
           description: The event ID
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/getEvent"
-        "400":
+                $ref: '#/components/schemas/getEvent'
+        '400':
           description: Bad request
-        "401":
+        '401':
           description: Unauthorized
-        "500":
-          description: Internal Server Error
-        "404":
+        '404':
           description: Event not found
+        '500':
+          description: Internal Server Error
     patch:
       tags:
         - Events
@@ -267,18 +269,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/updateEvent"
+              $ref: '#/components/schemas/updateEvent'
       responses:
-        "200":
+        '200':
           description: event updated
-        "400":
+        '400':
           description: Bad request
-        "401":
+        '401':
           description: Unauthorized
-        "500":
-          description: Internal Server Error
-        "404":
+        '404':
           description: Event not found
+        '500':
+          description: Internal Server Error
   /events/{eventID}/attendance:
     post:
       tags:
@@ -296,18 +298,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/takeEventAttendance"
+              $ref: '#/components/schemas/takeEventAttendance'
       responses:
-        "200":
+        '200':
           description: attendance taken
-        "400":
+        '400':
           description: Bad request
-        "401":
+        '401':
           description: Unauthorized
-        "500":
-          description: Internal Server Error
-        "404":
+        '404':
           description: Event not found
+        '500':
+          description: Internal Server Error
     patch:
       tags:
         - Events
@@ -324,18 +326,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/takeEventAttendance"
+              $ref: '#/components/schemas/takeEventAttendance'
       responses:
-        "200":
+        '200':
           description: attendance updated
-        "400":
+        '400':
           description: Bad request
-        "401":
+        '401':
           description: Unauthorized
-        "500":
-          description: Internal Server Error
-        "404":
+        '404':
           description: Event not found
+        '500':
+          description: Internal Server Error
     get:
       tags:
         - Events
@@ -349,20 +351,20 @@ paths:
             type: integer
           description: The event ID
       responses:
-        "200":
+        '200':
           description: Success
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/getEventAttendance"
-        "400":
+                $ref: '#/components/schemas/getEventAttendance'
+        '400':
           description: Bad request
-        "401":
+        '401':
           description: Unauthorized
-        "500":
-          description: Internal Server Error
-        "404":
+        '404':
           description: Event or Member not found
+        '500':
+          description: Internal Server Error
   /teams:
     get:
       tags:
@@ -383,20 +385,20 @@ paths:
             type: integer
           description: The stage id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/teams"
-        "400":
+                $ref: '#/components/schemas/teams'
+        '400':
           description: Bad request
-        "401":
+        '401':
           description: Unauthorized
-        "500":
-          description: Internal Server Error
-        "404":
+        '404':
           description: Team not found
+        '500':
+          description: Internal Server Error
   /teams/{teamID}/members:
     get:
       tags:
@@ -422,20 +424,20 @@ paths:
               - 10
           description: The team ID
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/team"
-        "400":
+                $ref: '#/components/schemas/team'
+        '400':
           description: Bad request
-        "401":
+        '401':
           description: Unauthorized
-        "500":
-          description: Internal Server Error
-        "404":
+        '404':
           description: Team not found
+        '500':
+          description: Internal Server Error
     post:
       tags:
         - Teams
@@ -463,18 +465,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/teamMemberAdd"
+              $ref: '#/components/schemas/teamMemberAdd'
       responses:
-        "200":
+        '200':
           description: Member added
-        "400":
+        '400':
           description: Bad request
-        "401":
+        '401':
           description: Unauthorized
-        "500":
-          description: Internal Server Error
-        "404":
+        '404':
           description: Team not found
+        '500':
+          description: Internal Server Error
   /teams/transfer:
     post:
       tags:
@@ -485,19 +487,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/teamMemberTransfer"
+              $ref: '#/components/schemas/teamMemberTransfer'
       responses:
-        "200":
+        '200':
           description: OK
-        "400":
+        '400':
           description: Bad request
-        "401":
+        '401':
           description: Unauthorized
-        "500":
-          description: Internal Server Error
-        "404":
+        '404':
           description: Team not found
-
+        '500':
+          description: Internal Server Error
 components:
   schemas:
     member:
@@ -795,11 +796,10 @@ components:
           type: integer
         ConditionsConsent:
           type: integer
-
     members:
       type: array
       items:
-        $ref: "#/components/schemas/member"
+        $ref: '#/components/schemas/member'
     updateEvent:
       type: object
       properties:
@@ -842,19 +842,19 @@ components:
           type: integer
         EventTypeID:
           type: integer
-        EventName:
+        Name:
           type: object
           properties:
             EN:
               type: string
             AR:
               type: string
-        EventLocation:
+        Location:
           type: string
-        EventStartDate:
+        StartDate:
           type: string
           format: date
-        EventEndDate:
+        EndDate:
           type: string
           format: date
         IsMultiTeam:
@@ -875,7 +875,7 @@ components:
     events:
       type: array
       items:
-        $ref: "#/components/schemas/getEvent"
+        $ref: '#/components/schemas/getEvent'
     team:
       type: object
       properties:
@@ -947,7 +947,7 @@ components:
     teams:
       type: array
       items:
-        $ref: "#/components/schemas/team"
+        $ref: '#/components/schemas/team'
     teamMemberTransfer:
       type: object
       properties:
@@ -990,7 +990,7 @@ components:
         Attendance:
           type: array
           items:
-            properties: 
+            properties:
               MemberID:
                 type: string
               AttendanceStateID:
@@ -1009,7 +1009,7 @@ components:
         Attendance:
           type: array
           items:
-            properties: 
+            properties:
               MemberID:
                 type: string
               AttendanceStateID:

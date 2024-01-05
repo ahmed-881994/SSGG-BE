@@ -23,7 +23,7 @@ def connect():
             "isBase64Encoded": False,
             "statusCode": 500,
             "headers": {"Content-Type": "application/json"},
-            "body": json.dumps({"message": str(error)}),
+            "body": json.dumps({"message": error.args[1]}),
         }
     return conn, response
 
@@ -74,7 +74,7 @@ def lambda_handler(event, context):
                     "isBase64Encoded": False,
                     "statusCode": 500,
                     "headers": {"Content-Type": "application/json"},
-                    "body": json.dumps({"message": str(error)}),
+                    "body": json.dumps({"message": error.args[1]}),
                 }
 
     return response

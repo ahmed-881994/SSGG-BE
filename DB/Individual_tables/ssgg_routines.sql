@@ -1,6 +1,6 @@
 CREATE DATABASE  IF NOT EXISTS `ssgg` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `ssgg`;
--- MySQL dump 10.13  Distrib 8.0.34, for macos13 (arm64)
+-- MySQL dump 10.13  Distrib 8.0.40, for macos14 (arm64)
 --
 -- Host: 127.0.0.1    Database: ssgg
 -- ------------------------------------------------------
@@ -343,7 +343,48 @@ BEGIN
 	INNER JOIN
 		stages ON stages.stage_id = team.stage_id
 	WHERE
-		team.team_id = P_team_id;
+		team.team_id = P_team_id
+        AND team_members.date_to IS NULL;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `SearchEvents` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`%` PROCEDURE `SearchEvents`(IN P_team_id INT, IN P_event_name VARCHAR(255), IN P_event_start_date DATE, IN P_event_end_date DATE)
+BEGIN
+	DECLARE mainQuery VARCHAR(1000);
+	SET @mainQuery = 'SELECT * FROM events WHERE 1';
+
+	IF P_team_id IS NOT NULL THEN
+		SET @mainQuery = CONCAT(@mainQuery, ' AND team_id = ', P_team_id);
+	END IF;
+
+	IF P_event_name IS NOT NULL THEN
+		SET @mainQuery = CONCAT(@mainQuery, ' AND (event_name_en LIKE "%', P_event_name, '%" OR event_name_ar LIKE "%', P_event_name, '%")');
+	END IF;
+
+	IF P_event_start_date IS NOT NULL THEN
+		SET @mainQuery = CONCAT(@mainQuery, ' AND event_start_date >= \'', P_event_start_date,'\'');
+	END IF;
+
+	IF P_event_end_date IS NOT NULL THEN
+		SET @mainQuery = CONCAT(@mainQuery, ' AND event_end_date <= \'', P_event_end_date,'\'');
+	END IF;
+    
+	PREPARE stmt FROM @mainQuery;
+	EXECUTE stmt;
+	DEALLOCATE PREPARE stmt;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -412,6 +453,54 @@ BEGIN
 	P_event_id,
 	P_attendance_state_id);
 
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `TransferTeamMember` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`%` PROCEDURE `TransferTeamMember`(IN P_member_id VARCHAR(255), IN P_from_team_id INT, IN P_to_team_id INT, IN P_transfer_date DATE, IN P_is_leader TINYINT(1))
+BEGIN
+	UPDATE team_members SET date_to = COALESCE(P_transfer_date, current_date())
+    WHERE member_id = P_member_id AND team_id=P_from_team_id;
+    
+    INSERT INTO team_members
+    (member_id, team_id, date_from, date_to, is_leader)
+    VALUES
+    (P_member_id, P_to_team_id, COALESCE(P_transfer_date, current_date()), NULL, P_is_leader);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `UpdateAttendance` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`%` PROCEDURE `UpdateAttendance`(IN P_member_id VARCHAR(45), IN P_event_id INT, IN P_attendance_state_id INT)
+BEGIN
+	UPDATE `ssgg`.`attendance`
+	SET
+	`attendance_state_id` = P_attendance_state_id
+	WHERE `member_id` = P_member_id
+	  AND `event_id` = P_event_id;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -573,4 +662,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-25 14:10:57
+-- Dump completed on 2024-10-18 16:35:54

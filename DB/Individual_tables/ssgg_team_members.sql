@@ -1,6 +1,6 @@
 CREATE DATABASE  IF NOT EXISTS `ssgg` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `ssgg`;
--- MySQL dump 10.13  Distrib 8.0.34, for macos13 (arm64)
+-- MySQL dump 10.13  Distrib 8.0.40, for macos14 (arm64)
 --
 -- Host: 127.0.0.1    Database: ssgg
 -- ------------------------------------------------------
@@ -30,10 +30,7 @@ CREATE TABLE `team_members` (
   `date_from` date DEFAULT NULL,
   `date_to` date DEFAULT NULL,
   `is_leader` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`member_id`,`team_id`),
-  KEY `team_member_idx` (`team_id`),
-  CONSTRAINT `member_team` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`),
-  CONSTRAINT `team_member` FOREIGN KEY (`team_id`) REFERENCES `teams` (`team_id`)
+  PRIMARY KEY (`member_id`,`team_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -46,4 +43,4 @@ CREATE TABLE `team_members` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-25 14:10:56
+-- Dump completed on 2024-10-18 16:35:54

@@ -1,4 +1,4 @@
-name: Deploy <Service_Name> lambda function
+name: Update SwaggerUI
 on:
   workflow_dispatch:
   push:

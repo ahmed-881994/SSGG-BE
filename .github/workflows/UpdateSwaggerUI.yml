@@ -8,8 +8,8 @@ on:
       - SwaggerUI
       - .github/workflows/UpdateSwaggerUI.yml
 jobs:
-  checkout-package-and-deploy-source:
-    name: Package and deploy source code
+  checkout-and-upload-swagger:
+    name: Checkout and upload swagger
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
@@ -22,4 +22,4 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
       - name: Update Swagger bucket
         run: |
-          aws s3 sync dist s3://ssgg-swagger/
+          aws s3 sync SwaggerUI s3://ssgg-swagger/

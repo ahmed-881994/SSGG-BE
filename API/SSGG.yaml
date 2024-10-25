@@ -8,7 +8,7 @@ info:
   contact:
     email: ssgdtc@gmail.com
 servers:
-  - url: https://api.server.test/v1
+  - url: https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/stg
 tags:
   - name: Members
     description: Everything about members

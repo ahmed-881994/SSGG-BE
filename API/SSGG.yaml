@@ -9,6 +9,8 @@ info:
     email: ssgdtc@gmail.com
 servers:
   - url: https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/stg
+security:
+  - cognito: []
 tags:
   - name: Members
     description: Everything about members
@@ -502,6 +504,15 @@ paths:
         '500':
           description: Internal Server Error
 components:
+  securitySchemes:
+    cognito:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://ssgg-dev.auth.eu-north-1.amazoncognito.com/oauth2/authorize
+          tokenUrl: https://ssgg-dev.auth.eu-north-1.amazoncognito.com/oauth2/token
+          refreshUrl: https://ssgg-dev.auth.eu-north-1.amazoncognito.com/oauth2/token
+          scopes: {}
   schemas:
     member:
       type: object

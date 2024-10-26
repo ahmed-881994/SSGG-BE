@@ -6,6 +6,7 @@ on:
       - '*'
     paths:
       - SwaggerUI
+      - API
       - .github/workflows/UpdateSwaggerUI.yml
 jobs:
   checkout-and-upload-swagger:
@@ -23,3 +24,4 @@ jobs:
       - name: Update Swagger bucket
         run: |
           aws s3 sync SwaggerUI s3://ssgg-swagger/
+          aws s3 sync API s3://ssgg-swagger/

@@ -56,6 +56,7 @@ jobs:
             --role arn:aws:iam::998833888842:role/Default_Lambda_Basic_Execution_Role \
             --handler lambda_function.lambda_handler \
             --timeout 60 \
+            --architectures arm64 \
             --zip-file fileb://${{steps.set-service-name.outputs.service_name}}.zip \
             --environment "Variables={database=${{ secrets.DATABASE }},host=${{ secrets.HOST }},password=${{ secrets.PASSWORD }},port=${{ steps.set-service-name.outputs.dbport }},username=${{ secrets.USERNAME }}}" \
             --layers arn:aws:lambda:eu-north-1:998833888842:layer:pymysql:3

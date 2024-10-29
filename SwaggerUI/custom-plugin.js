@@ -4,7 +4,7 @@ const customPlugin = {
         wrapSelectors: {
           authorized: (originalSelector, system) => () => {
             const securityDefinitions = system.specSelectors.securityDefinitions() || {};
-            const oauthConfig = securityDefinitions.get('OAuth2Auth'); // replace with your actual scheme name if different
+            const oauthConfig = securityDefinitions.get('cognito'); // replace with your actual scheme name if different
   
             // Retrieve x-tokenName from the OAuth2 scheme if specified
             const tokenName = oauthConfig ? oauthConfig.get('x-tokenName') : 'Authorization';

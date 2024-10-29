@@ -22,7 +22,10 @@ def connect():
         response = {
             "isBase64Encoded": False,
             "statusCode": 500,
-            "headers": {"Content-Type": "application/json"},
+            "headers": {"Content-Type": "application/json",
+                        'Access-Control-Allow-Headers': '*',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': '*'},
             "body": json.dumps({"message": error.args[1]}),
         }
     return conn, response
@@ -50,16 +53,20 @@ def lambda_handler(event, context):
                         member = cursor.fetchone()
                         if member is not None:
                             cursor.callproc(
-                                "UpdateAttendance", [memberID, eventID, attendanceState]
+                                "UpdateAttendance", [
+                                    memberID, eventID, attendanceState]
                             )
                         else:
-                            success_flag=False
+                            success_flag = False
                             conn.rollback()
                             response = {
                                 "isBase64Encoded": False,
                                 "statusCode": 404,
-                                "headers": {"Content-Type": "application/json"},
-                                "body": json.dumps({"message": "Member "+ memberID +" not found"}),
+                                "headers": {"Content-Type": "application/json",
+                                            'Access-Control-Allow-Headers': '*',
+                                            'Access-Control-Allow-Origin': '*',
+                                            'Access-Control-Allow-Methods': '*'},
+                                "body": json.dumps({"message": "Member " + memberID + " not found"}),
                             }
                             break
                     if success_flag:
@@ -67,7 +74,10 @@ def lambda_handler(event, context):
                         response = {
                             "isBase64Encoded": False,
                             "statusCode": 200,
-                            "headers": {"Content-Type": "application/json"},
+                            "headers": {"Content-Type": "application/json",
+                                        'Access-Control-Allow-Headers': '*',
+                                        'Access-Control-Allow-Origin': '*',
+                                        'Access-Control-Allow-Methods': '*'},
                             "body": json.dumps({"message": "Event attendance updated"}),
                         }
                 # if event does not exist
@@ -75,14 +85,20 @@ def lambda_handler(event, context):
                     response = {
                         "isBase64Encoded": False,
                         "statusCode": 404,
-                        "headers": {"Content-Type": "application/json"},
+                        "headers": {"Content-Type": "application/json",
+                                    'Access-Control-Allow-Headers': '*',
+                                    'Access-Control-Allow-Origin': '*',
+                                    'Access-Control-Allow-Methods': '*'},
                         "body": json.dumps({"message": "Event not found"}),
                     }
             except Exception as error:
                 response = {
                     "isBase64Encoded": False,
                     "statusCode": 500,
-                    "headers": {"Content-Type": "application/json"},
+                    "headers": {"Content-Type": "application/json",
+                                'Access-Control-Allow-Headers': '*',
+                                'Access-Control-Allow-Origin': '*',
+                                'Access-Control-Allow-Methods': '*'},
                     "body": json.dumps({"message": error.args[1]}),
                 }
     return response

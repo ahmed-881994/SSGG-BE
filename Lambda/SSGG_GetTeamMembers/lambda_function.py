@@ -2,6 +2,7 @@ import json
 import os
 import pymysql.cursors
 
+
 def connect():
     try:
         # Connect to the database
@@ -20,10 +21,14 @@ def connect():
         response = {
             "isBase64Encoded": False,
             "statusCode": 500,
-            "headers": {"Content-Type": "application/json"},
+            "headers": {"Content-Type": "application/json",
+                        'Access-Control-Allow-Headers': '*',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': '*'},
             "body": json.dumps({"message": error.args[1]}),
         }
     return conn, response
+
 
 def format_record(records):
     entry = {
@@ -52,44 +57,54 @@ def format_record(records):
             }
         }
 
-        if record['is_leader']==1:
+        if record['is_leader'] == 1:
             entry['Leaders'].append(member_entry)
         else:
             entry['Members'].append(member_entry)
 
     return entry
 
+
 def lambda_handler(event, context):
     conn, response = connect()
-    
+
     if response is None:
         with conn.cursor() as cursor:
             try:
                 teamID = event['pathParameters']['teamID']
                 cursor.callproc("GetTeamMembers", [teamID])
                 records = cursor.fetchall()
-                
-                if len(records)>0:
+
+                if len(records) > 0:
                     data = format_record(records)
                     response = {
                         "isBase64Encoded": False,
                         "statusCode": 200,
-                        "headers": {"Content-Type": "application/json"},
+                        "headers": {"Content-Type": "application/json",
+                                    'Access-Control-Allow-Headers': '*',
+                                    'Access-Control-Allow-Origin': '*',
+                                    'Access-Control-Allow-Methods': '*'},
                         "body": json.dumps(data, default=str),
                     }
                 else:
                     response = {
                         "isBase64Encoded": False,
                         "statusCode": 404,
-                        "headers": {"Content-Type": "application/json"},
+                        "headers": {"Content-Type": "application/json",
+                                    'Access-Control-Allow-Headers': '*',
+                                    'Access-Control-Allow-Origin': '*',
+                                    'Access-Control-Allow-Methods': '*'},
                         "body": json.dumps({"message": "Team has no members or teamID is not correct"}),
                     }
             except Exception as error:
                 response = {
                     "isBase64Encoded": False,
                     "statusCode": 500,
-                    "headers": {"Content-Type": "application/json"},
+                    "headers": {"Content-Type": "application/json",
+                                'Access-Control-Allow-Headers': '*',
+                                'Access-Control-Allow-Origin': '*',
+                                'Access-Control-Allow-Methods': '*'},
                     "body": json.dumps({"message": error.args[1]}),
                 }
-    
+
     return response

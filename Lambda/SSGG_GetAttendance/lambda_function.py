@@ -2,6 +2,7 @@ import json
 import os
 import pymysql.cursors
 
+
 def connect():
     try:
         # connect to database
@@ -21,16 +22,19 @@ def connect():
         response = {
             "isBase64Encoded": False,
             "statusCode": 500,
-            "headers": {"Content-Type": "application/json"},
+            "headers": {"Content-Type": "application/json",
+                        'Access-Control-Allow-Headers': '*',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': '*'},
             "body": json.dumps({"message": error.args[1]}),
         }
     return conn, response
 
 
 def format_records(records):
-    result= {}
-    result['EventID']= records[0].get('event_id')
-    result['Attendance']=[]
+    result = {}
+    result['EventID'] = records[0].get('event_id')
+    result['Attendance'] = []
     for record in records:
         entry = {
             "MemberID": record.get("member_id"),
@@ -57,21 +61,30 @@ def lambda_handler(event, context):
                     response = {
                         "isBase64Encoded": False,
                         "statusCode": 200,
-                        "headers": {"Content-Type": "application/json"},
+                        "headers": {"Content-Type": "application/json",
+                                    'Access-Control-Allow-Headers': '*',
+                                    'Access-Control-Allow-Origin': '*',
+                                    'Access-Control-Allow-Methods': '*'},
                         "body": json.dumps(data, default=str),
                     }
                 else:
                     response = {
                         "isBase64Encoded": False,
                         "statusCode": 404,
-                        "headers": {"Content-Type": "application/json"},
+                        "headers": {"Content-Type": "application/json",
+                                    'Access-Control-Allow-Headers': '*',
+                                    'Access-Control-Allow-Origin': '*',
+                                    'Access-Control-Allow-Methods': '*'},
                         "body": json.dumps({"message": "Event not found"}),
                     }
             except Exception as error:
                 response = {
                     "isBase64Encoded": False,
                     "statusCode": 500,
-                    "headers": {"Content-Type": "application/json"},
+                    "headers": {"Content-Type": "application/json",
+                                'Access-Control-Allow-Headers': '*',
+                                'Access-Control-Allow-Origin': '*',
+                                'Access-Control-Allow-Methods': '*'},
                     "body": json.dumps({"message": error.args[1]}),
                 }
 

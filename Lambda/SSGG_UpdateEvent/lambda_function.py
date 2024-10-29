@@ -22,10 +22,14 @@ def connect():
         response = {
             "isBase64Encoded": False,
             "statusCode": 500,
-            "headers": {"Content-Type": "application/json"},
+            "headers": {"Content-Type": "application/json",
+                        'Access-Control-Allow-Headers': '*',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': '*'},
             "body": json.dumps({"message": error.args[1]}),
         }
     return conn, response
+
 
 def lambda_handler(event, context):
     conn, response = connect()
@@ -40,7 +44,7 @@ def lambda_handler(event, context):
                 # if event exists
                 if eventRecord is not None:
                     body = json.loads(event.get("body"))
-                    args=[]
+                    args = []
                     args.append(eventID)
                     args.append(body.get("EventTypeID"))
                     args.append(body.get("EventName").get("EN"))
@@ -53,23 +57,32 @@ def lambda_handler(event, context):
                     cursor.callproc("UpdateEvent", args)
                     conn.commit()
                     response = {
-                            "isBase64Encoded": False,
-                            "statusCode": 200,
-                            "headers": {"Content-Type": "application/json"},
-                            "body": json.dumps({"message": "Event updated"}),
-                        }
+                        "isBase64Encoded": False,
+                        "statusCode": 200,
+                        "headers": {"Content-Type": "application/json",
+                                    'Access-Control-Allow-Headers': '*',
+                                    'Access-Control-Allow-Origin': '*',
+                                    'Access-Control-Allow-Methods': '*'},
+                        "body": json.dumps({"message": "Event updated"}),
+                    }
                 else:
                     response = {
                         "isBase64Encoded": False,
                         "statusCode": 404,
-                        "headers": {"Content-Type": "application/json"},
+                        "headers": {"Content-Type": "application/json",
+                                    'Access-Control-Allow-Headers': '*',
+                                    'Access-Control-Allow-Origin': '*',
+                                    'Access-Control-Allow-Methods': '*'},
                         "body": json.dumps({"message": "Event not found"}),
                     }
             except Exception as error:
                 response = {
                     "isBase64Encoded": False,
                     "statusCode": 500,
-                    "headers": {"Content-Type": "application/json"},
+                    "headers": {"Content-Type": "application/json",
+                                'Access-Control-Allow-Headers': '*',
+                                'Access-Control-Allow-Origin': '*',
+                                'Access-Control-Allow-Methods': '*'},
                     "body": json.dumps({"message": error.args[1]}),
                 }
     return response

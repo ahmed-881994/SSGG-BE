@@ -5,8 +5,8 @@ on:
     branches:
       - '*'
     paths:
-      - SwaggerUI
-      - API
+      - SwaggerUI/*
+      - API/*
       - .github/workflows/UpdateSwaggerUI.yml
 jobs:
   checkout-and-upload-swagger:

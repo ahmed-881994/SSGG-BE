@@ -19,6 +19,22 @@ tags:
   - name: Events
     description: Everything about events
 paths:
+  /:
+    options:
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content: {}
   /members:
     get:
       tags:
@@ -52,6 +68,10 @@ paths:
       responses:
         '200':
           description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
           content:
             application/json:
               schema:
@@ -77,6 +97,10 @@ paths:
       responses:
         '201':
           description: member added
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
           content:
             application/json:
               schema:
@@ -87,6 +111,23 @@ paths:
           description: Unauthorized
         '500':
           description: Internal Server Error
+    options:
+      tags:
+        - Members
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content: {}
   /members/{memberID}:
     get:
       tags:
@@ -103,6 +144,10 @@ paths:
       responses:
         '200':
           description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
           content:
             application/json:
               schema:
@@ -135,6 +180,10 @@ paths:
       responses:
         '200':
           description: member updated
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
           content:
             application/json:
               schema:
@@ -147,7 +196,47 @@ paths:
           description: Member not found
         '500':
           description: Internal Server Error
+    options:
+      tags:
+        - Members
+      parameters:
+      - name: "memberID"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content: {}
   /events:
+    options:
+      tags:
+        - Events
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content: {}
     get:
       tags:
         - Events
@@ -194,6 +283,10 @@ paths:
       responses:
         '200':
           description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
           content:
             application/json:
               schema:
@@ -219,6 +312,10 @@ paths:
       responses:
         '201':
           description: Event created
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
           content:
             application/json:
               schema:
@@ -230,6 +327,23 @@ paths:
         '500':
           description: Internal Server Error
   /events/{eventID}:
+    options:
+      tags:
+        - Events
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content: {}
     get:
       operationId: getEvent
       description: Gets event by ID
@@ -245,6 +359,10 @@ paths:
       responses:
         '200':
           description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
           content:
             application/json:
               schema:
@@ -277,6 +395,10 @@ paths:
       responses:
         '200':
           description: event updated
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
         '400':
           description: Bad request
         '401':
@@ -286,6 +408,23 @@ paths:
         '500':
           description: Internal Server Error
   /events/{eventID}/attendance:
+    options:
+      tags:
+        - Events
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content: {}
     post:
       tags:
         - Events
@@ -306,6 +445,10 @@ paths:
       responses:
         '200':
           description: attendance taken
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
         '400':
           description: Bad request
         '401':
@@ -334,6 +477,10 @@ paths:
       responses:
         '200':
           description: attendance updated
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
         '400':
           description: Bad request
         '401':
@@ -357,6 +504,10 @@ paths:
       responses:
         '200':
           description: Success
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
           content:
             application/json:
               schema:
@@ -370,6 +521,23 @@ paths:
         '500':
           description: Internal Server Error
   /teams:
+    options:
+      tags:
+        - Teams
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content: {}
     get:
       tags:
         - Teams
@@ -391,6 +559,10 @@ paths:
       responses:
         '200':
           description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
           content:
             application/json:
               schema:
@@ -404,6 +576,23 @@ paths:
         '500':
           description: Internal Server Error
   /teams/{teamID}/members:
+    options:
+      tags:
+        - Teams
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content: {}
     get:
       tags:
         - Teams
@@ -430,6 +619,10 @@ paths:
       responses:
         '200':
           description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
           content:
             application/json:
               schema:
@@ -473,6 +666,10 @@ paths:
       responses:
         '200':
           description: Member added
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
         '400':
           description: Bad request
         '401':
@@ -482,6 +679,23 @@ paths:
         '500':
           description: Internal Server Error
   /teams/transfer:
+    options:
+      tags:
+        - Teams
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content: {}
     post:
       tags:
         - Teams
@@ -495,6 +709,10 @@ paths:
       responses:
         '200':
           description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
         '400':
           description: Bad request
         '401':

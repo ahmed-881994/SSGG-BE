@@ -330,6 +330,13 @@ paths:
     options:
       tags:
         - Events
+      parameters:
+        - in: path
+          name: eventID
+          required: true
+          schema:
+            type: integer
+          description: The event ID
       responses:
         "200":
           description: "200 response"
@@ -411,6 +418,13 @@ paths:
     options:
       tags:
         - Events
+      parameters:
+        - in: path
+          name: eventID
+          required: true
+          schema:
+            type: integer
+          description: The event ID
       responses:
         "200":
           description: "200 response"
@@ -579,6 +593,24 @@ paths:
     options:
       tags:
         - Teams
+      parameters:
+        - in: path
+          name: teamID
+          required: true
+          schema:
+            type: integer
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+              - 6
+              - 7
+              - 8
+              - 9
+              - 10
+          description: The team ID
       responses:
         "200":
           description: "200 response"

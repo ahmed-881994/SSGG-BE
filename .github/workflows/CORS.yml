@@ -20,10 +20,18 @@ jobs:
           branch_name="${GITHUB_REF##*/}"
           if [ "$branch_name" == "main" ]; then
             service_name="CORS"
+            host=${{ secrets.HOST }}
             port=${{ secrets.PORT }}
+            database=${{ secrets.DATABASE }}
+            user=${{ secrets.USERNAME }}
+            password=${{ secrets.PASSWORD }}
           elif [ "$branch_name" == "staging" ]; then
             service_name="CORS_STG"
+            host=${{ secrets.HOST_STG }}
             port=${{ secrets.PORT_STG }}
+            database=${{ secrets.DATABASE_STG }}
+            user=${{ secrets.USERNAME_STG }}
+            password=${{ secrets.PASSWORD_STG }}
           else
             service_name="CORS_$branch_name"
           fi

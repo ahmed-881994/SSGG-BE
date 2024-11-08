@@ -20,10 +20,18 @@ jobs:
           branch_name="${GITHUB_REF##*/}"
           if [ "$branch_name" == "main" ]; then
             service_name="SSGG_GetMember"
+            host=${{ secrets.HOST }}
             port=${{ secrets.PORT }}
+            database=${{ secrets.DATABASE }}
+            user=${{ secrets.USERNAME }}
+            password=${{ secrets.PASSWORD }}
           elif [ "$branch_name" == "staging" ]; then
             service_name="SSGG_GetMember_STG"
+            host=${{ secrets.HOST_STG }}
             port=${{ secrets.PORT_STG }}
+            database=${{ secrets.DATABASE_STG }}
+            user=${{ secrets.USERNAME_STG }}
+            password=${{ secrets.PASSWORD_STG }}
           else
             service_name="SSGG_GetMember_$branch_name"
           fi
@@ -58,7 +66,7 @@ jobs:
             --timeout 60 \
             --architectures arm64 \
             --zip-file fileb://${{ steps.set-service-name.outputs.service_name }}.zip \
-            --environment "Variables={database=${{ secrets.DATABASE }},host=${{ secrets.HOST }},password=${{ secrets.PASSWORD }},port=${{ steps.set-service-name.outputs.port }},username=${{ secrets.USERNAME }}}" \
+            --environment "Variables={database=${{ steps.set-service-name.outputs.database }},host=${{ steps.set-service-name.outputs.host }},password=${{ steps.set-service-name.outputs.password }},port=${{ steps.set-service-name.outputs.port }},username=${{ steps.set-service-name.outputs.username }}}" \
             --layers arn:aws:lambda:eu-north-1:998833888842:layer:pymysql:3
       - name: Update Lambda Function
         if: steps.lambda-exists.outputs.exists == 'true'
@@ -70,6 +78,6 @@ jobs:
           aws lambda update-function-configuration \
             --function-name $lambda_name \
             --timeout 60 \
-            --environment "Variables={database=${{ secrets.DATABASE }},host=${{ secrets.HOST }},password=${{ secrets.PASSWORD }},port=${{ steps.set-service-name.outputs.port }},username=${{ secrets.USERNAME }}}" \
+            --environment "Variables={database=${{ steps.set-service-name.outputs.database }},host=${{ steps.set-service-name.outputs.host }},password=${{ steps.set-service-name.outputs.password }},port=${{ steps.set-service-name.outputs.port }},username=${{ steps.set-service-name.outputs.username }}}" \
             --runtime python3.11
       

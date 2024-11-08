@@ -70,7 +70,7 @@ jobs:
             --timeout 60 \
             --architectures arm64 \
             --zip-file fileb://${{ steps.set-service-name.outputs.service_name }}.zip \
-            --environment "Variables={database=${{ steps.set-service-name.outputs.database }},host=${{ steps.set-service-name.outputs.host }},password=${{ steps.set-service-name.outputs.pw }},port=${{ steps.set-service-name.outputs.port }},username=${{ steps.set-service-name.outputs.username }}}" \
+            --environment "Variables={database="${{ steps.set-service-name.outputs.database }}",host="${{ steps.set-service-name.outputs.host }}",password="${{ steps.set-service-name.outputs.pw }}",port="${{ steps.set-service-name.outputs.port }}",username="${{ steps.set-service-name.outputs.username }}"}" \
             --layers arn:aws:lambda:eu-north-1:998833888842:layer:pymysql:3
       - name: Update Lambda Function
         if: steps.lambda-exists.outputs.exists == 'true'
@@ -82,5 +82,5 @@ jobs:
           aws lambda update-function-configuration \
             --function-name $lambda_name \
             --timeout 60 \
-            --environment "Variables={database=${{ steps.set-service-name.outputs.database }},host=${{ steps.set-service-name.outputs.host }},password=${{ steps.set-service-name.outputs.pw }},port=${{ steps.set-service-name.outputs.port }},username=${{ steps.set-service-name.outputs.username }}}" \
+            --environment "Variables={database="${{ steps.set-service-name.outputs.database }}",host="${{ steps.set-service-name.outputs.host }}",password="${{ steps.set-service-name.outputs.pw }}",port="${{ steps.set-service-name.outputs.port }}",username="${{ steps.set-service-name.outputs.username }}"}" \
             --runtime python3.11

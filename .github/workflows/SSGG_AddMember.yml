@@ -24,14 +24,14 @@ jobs:
             port=${{ secrets.PORT }}
             database=${{ secrets.DATABASE }}
             username=${{ secrets.USERNAME }}
-            password=${{ secrets.PASSWORD }}
+            pw=${{ secrets.PASSWORD }}
           elif [ "$branch_name" == "staging" ]; then
             service_name="SSGG_AddMember_STG"
             host=${{ secrets.HOST_STG }}
             port=${{ secrets.PORT_STG }}
             database=${{ secrets.DATABASE_STG }}
             username=${{ secrets.USERNAME_STG }}
-            password=${{ secrets.PASSWORD_STG }}
+            pw=${{ secrets.PASSWORD_STG }}
           else
             service_name="SSGG_AddMember_$branch_name"
           fi
@@ -40,7 +40,7 @@ jobs:
           echo "port=$port" >> $GITHUB_OUTPUT
           echo "database=$database" >> $GITHUB_OUTPUT
           echo "username=$username" >> $GITHUB_OUTPUT
-          echo "pw=$password" >> $GITHUB_OUTPUT
+          echo "pw=$pw" >> $GITHUB_OUTPUT
       - name: Package source
         run: zip -j ${{ steps.set-service-name.outputs.service_name }}.zip Lambda/SSGG_AddMember/*
       - name: Configure AWS credentials

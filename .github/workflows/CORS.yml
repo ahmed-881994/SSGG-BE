@@ -23,15 +23,15 @@ jobs:
             host=${{ secrets.HOST }}
             port=${{ secrets.PORT }}
             database=${{ secrets.DATABASE }}
-            user=${{ secrets.USERNAME }}
-            password=${{ secrets.PASSWORD }}
+            username=${{ secrets.USERNAME }}
+            pw=${{ secrets.PASSWORD }}
           elif [ "$branch_name" == "staging" ]; then
             service_name="CORS_STG"
             host=${{ secrets.HOST_STG }}
             port=${{ secrets.PORT_STG }}
             database=${{ secrets.DATABASE_STG }}
             username=${{ secrets.USERNAME_STG }}
-            password=${{ secrets.PASSWORD_STG }}
+            pw=${{ secrets.PASSWORD_STG }}
           else
             service_name="CORS_$branch_name"
           fi
@@ -39,8 +39,8 @@ jobs:
           echo "host=$host" >> $GITHUB_OUTPUT
           echo "port=$port" >> $GITHUB_OUTPUT
           echo "database=$database" >> $GITHUB_OUTPUT
-          echo "user=$user" >> $GITHUB_OUTPUT
-          echo "password=$password" >> $GITHUB_OUTPUT
+          echo "username=$username" >> $GITHUB_OUTPUT
+          echo "pw=$pw" >> $GITHUB_OUTPUT
       - name: Package source
         run: zip -j ${{ steps.set-service-name.outputs.service_name }}.zip Lambda/CORS/*
       - name: Configure AWS credentials

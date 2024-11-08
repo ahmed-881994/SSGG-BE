@@ -30,7 +30,7 @@ jobs:
             host=${{ secrets.HOST_STG }}
             port=${{ secrets.PORT_STG }}
             database=${{ secrets.DATABASE_STG }}
-            user=${{ secrets.USERNAME_STG }}
+            username=${{ secrets.USERNAME_STG }}
             password=${{ secrets.PASSWORD_STG }}
           else
             service_name="CORS_$branch_name"

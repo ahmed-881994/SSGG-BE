@@ -1,7 +1,7 @@
 import json
 import os
 import pymysql.cursors
-
+import logging
 
 def connect():
     try:
@@ -89,6 +89,9 @@ def format_records(records):
 
 
 def lambda_handler(event, context):
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+    logger.info(event)
     conn, response = connect()
 
     if response is None:

@@ -79,6 +79,7 @@ jobs:
           aws lambda update-function-code \
             --function-name $lambda_name \
             --zip-file fileb://${{steps.set-service-name.outputs.service_name}}.zip
+          aws lambda wait function-updated-v2 --function-name $lambda_name
           aws lambda update-function-configuration \
             --function-name $lambda_name \
             --timeout 60 \

@@ -1,16 +1,13 @@
 openapi: 3.0.2
 info:
   title: SSGG
-  version: '1.0'
-  description: >-
-    This is the documentation for the backend APIs for the Sporting Scouts and
-    Girl Guides members management app
+  version: "1.0"
+  description: This is the documentation for the backend APIs for the Sporting
+    Scouts and Girl Guides members management app
   contact:
     email: ssgdtc@gmail.com
 servers:
   - url: https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/stg
-security:
-  - cognito: []
 tags:
   - name: Members
     description: Everything about members
@@ -50,24 +47,28 @@ paths:
             type: string
           description: The member's name
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Access-Control-Allow-Origin:
               schema:
-                type: "string"
+                type: string
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/members'
-        '400':
+                $ref: "#/components/schemas/members"
+        "400":
           description: Bad request
-        '401':
+        "401":
           description: Unauthorized
-        '404':
+        "404":
           description: Member not found
-        '500':
+        "500":
           description: Internal Server Error
+      security:
+        - cognito:
+            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:read:member
+            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/member:read:member
     post:
       tags:
         - Members
@@ -77,40 +78,43 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/memberAdd'
+              $ref: "#/components/schemas/memberAdd"
       responses:
-        '201':
+        "201":
           description: member added
           headers:
             Access-Control-Allow-Origin:
               schema:
-                type: "string"
+                type: string
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/member'
-        '400':
+                $ref: "#/components/schemas/member"
+        "400":
           description: Bad request
-        '401':
+        "401":
           description: Unauthorized
-        '500':
+        "500":
           description: Internal Server Error
+      security:
+        - cognito:
+            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:write:member
     options:
       tags:
         - Members
       responses:
         "200":
-          description: "200 response"
+          description: 200 response
           headers:
             Access-Control-Allow-Origin:
               schema:
-                type: "string"
+                type: string
             Access-Control-Allow-Methods:
               schema:
-                type: "string"
+                type: string
             Access-Control-Allow-Headers:
               schema:
-                type: "string"
+                type: string
           content: {}
   /members/{memberID}:
     get:
@@ -126,24 +130,28 @@ paths:
             type: string
           description: The member ID
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Access-Control-Allow-Origin:
               schema:
-                type: "string"
+                type: string
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/member'
-        '400':
+                $ref: "#/components/schemas/member"
+        "400":
           description: Bad request
-        '401':
+        "401":
           description: Unauthorized
-        '404':
+        "404":
           description: Member not found
-        '500':
+        "500":
           description: Internal Server Error
+      security:
+        - cognito:
+            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:read:member
+            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/member:read:member
     patch:
       tags:
         - Members
@@ -160,48 +168,51 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/memberUpdate'
+              $ref: "#/components/schemas/memberUpdate"
       responses:
-        '200':
+        "200":
           description: member updated
           headers:
             Access-Control-Allow-Origin:
               schema:
-                type: "string"
+                type: string
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/member'
-        '400':
+                $ref: "#/components/schemas/member"
+        "400":
           description: Bad request
-        '401':
+        "401":
           description: Unauthorized
-        '404':
+        "404":
           description: Member not found
-        '500':
+        "500":
           description: Internal Server Error
+      security:
+        - cognito:
+            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:write:member
     options:
       tags:
         - Members
       parameters:
-      - name: "memberID"
-        in: "path"
-        required: true
-        schema:
-          type: "string"
+        - name: memberID
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         "200":
-          description: "200 response"
+          description: 200 response
           headers:
             Access-Control-Allow-Origin:
               schema:
-                type: "string"
+                type: string
             Access-Control-Allow-Methods:
               schema:
-                type: "string"
+                type: string
             Access-Control-Allow-Headers:
               schema:
-                type: "string"
+                type: string
           content: {}
   /events:
     options:
@@ -209,17 +220,17 @@ paths:
         - Events
       responses:
         "200":
-          description: "200 response"
+          description: 200 response
           headers:
             Access-Control-Allow-Origin:
               schema:
-                type: "string"
+                type: string
             Access-Control-Allow-Methods:
               schema:
-                type: "string"
+                type: string
             Access-Control-Allow-Headers:
               schema:
-                type: "string"
+                type: string
           content: {}
     get:
       tags:
@@ -265,24 +276,28 @@ paths:
             format: date
           description: The event's end date
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Access-Control-Allow-Origin:
               schema:
-                type: "string"
+                type: string
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/events'
-        '400':
+                $ref: "#/components/schemas/events"
+        "400":
           description: Bad request
-        '401':
+        "401":
           description: Unauthorized
-        '404':
+        "404":
           description: Event not found
-        '500':
+        "500":
           description: Internal Server Error
+      security:
+        - cognito:
+            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:read:event
+            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/member:read:event
     post:
       tags:
         - Events
@@ -292,24 +307,27 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/updateEvent'
+              $ref: "#/components/schemas/updateEvent"
       responses:
-        '201':
+        "201":
           description: Event created
           headers:
             Access-Control-Allow-Origin:
               schema:
-                type: "string"
+                type: string
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/getEvent'
-        '400':
+                $ref: "#/components/schemas/getEvent"
+        "400":
           description: Bad request
-        '401':
+        "401":
           description: Unauthorized
-        '500':
+        "500":
           description: Internal Server Error
+      security:
+        - cognito:
+            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:write:event
   /events/{eventID}:
     options:
       tags:
@@ -323,17 +341,17 @@ paths:
           description: The event ID
       responses:
         "200":
-          description: "200 response"
+          description: 200 response
           headers:
             Access-Control-Allow-Origin:
               schema:
-                type: "string"
+                type: string
             Access-Control-Allow-Methods:
               schema:
-                type: "string"
+                type: string
             Access-Control-Allow-Headers:
               schema:
-                type: "string"
+                type: string
           content: {}
     get:
       operationId: getEvent
@@ -348,24 +366,28 @@ paths:
             type: integer
           description: The event ID
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Access-Control-Allow-Origin:
               schema:
-                type: "string"
+                type: string
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/getEvent'
-        '400':
+                $ref: "#/components/schemas/getEvent"
+        "400":
           description: Bad request
-        '401':
+        "401":
           description: Unauthorized
-        '404':
+        "404":
           description: Event not found
-        '500':
+        "500":
           description: Internal Server Error
+      security:
+        - cognito:
+            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:read:event
+            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/member:read:event
     patch:
       tags:
         - Events
@@ -382,22 +404,25 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/updateEvent'
+              $ref: "#/components/schemas/updateEvent"
       responses:
-        '200':
+        "200":
           description: event updated
           headers:
             Access-Control-Allow-Origin:
               schema:
-                type: "string"
-        '400':
+                type: string
+        "400":
           description: Bad request
-        '401':
+        "401":
           description: Unauthorized
-        '404':
+        "404":
           description: Event not found
-        '500':
+        "500":
           description: Internal Server Error
+      security:
+        - cognito:
+            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:write:event
   /events/{eventID}/attendance:
     options:
       tags:
@@ -411,17 +436,17 @@ paths:
           description: The event ID
       responses:
         "200":
-          description: "200 response"
+          description: 200 response
           headers:
             Access-Control-Allow-Origin:
               schema:
-                type: "string"
+                type: string
             Access-Control-Allow-Methods:
               schema:
-                type: "string"
+                type: string
             Access-Control-Allow-Headers:
               schema:
-                type: "string"
+                type: string
           content: {}
     post:
       tags:
@@ -439,22 +464,25 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/takeEventAttendance'
+              $ref: "#/components/schemas/takeEventAttendance"
       responses:
-        '200':
+        "200":
           description: attendance taken
           headers:
             Access-Control-Allow-Origin:
               schema:
-                type: "string"
-        '400':
+                type: string
+        "400":
           description: Bad request
-        '401':
+        "401":
           description: Unauthorized
-        '404':
+        "404":
           description: Event not found
-        '500':
+        "500":
           description: Internal Server Error
+      security:
+        - cognito:
+            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:write:event
     patch:
       tags:
         - Events
@@ -471,22 +499,25 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/takeEventAttendance'
+              $ref: "#/components/schemas/takeEventAttendance"
       responses:
-        '200':
+        "200":
           description: attendance updated
           headers:
             Access-Control-Allow-Origin:
               schema:
-                type: "string"
-        '400':
+                type: string
+        "400":
           description: Bad request
-        '401':
+        "401":
           description: Unauthorized
-        '404':
+        "404":
           description: Event not found
-        '500':
+        "500":
           description: Internal Server Error
+      security:
+        - cognito:
+            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:write:event
     get:
       tags:
         - Events
@@ -500,41 +531,44 @@ paths:
             type: integer
           description: The event ID
       responses:
-        '200':
+        "200":
           description: Success
           headers:
             Access-Control-Allow-Origin:
               schema:
-                type: "string"
+                type: string
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/getEventAttendance'
-        '400':
+                $ref: "#/components/schemas/getEventAttendance"
+        "400":
           description: Bad request
-        '401':
+        "401":
           description: Unauthorized
-        '404':
+        "404":
           description: Event or Member not found
-        '500':
+        "500":
           description: Internal Server Error
+      security:
+        - cognito:
+            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:read:event
   /teams:
     options:
       tags:
         - Teams
       responses:
         "200":
-          description: "200 response"
+          description: 200 response
           headers:
             Access-Control-Allow-Origin:
               schema:
-                type: "string"
+                type: string
             Access-Control-Allow-Methods:
               schema:
-                type: "string"
+                type: string
             Access-Control-Allow-Headers:
               schema:
-                type: "string"
+                type: string
           content: {}
     get:
       tags:
@@ -555,24 +589,29 @@ paths:
             type: integer
           description: The stage id
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Access-Control-Allow-Origin:
               schema:
-                type: "string"
+                type: string
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/teams'
-        '400':
+                $ref: "#/components/schemas/teams"
+        "400":
           description: Bad request
-        '401':
+        "401":
           description: Unauthorized
-        '404':
+        "404":
           description: Team not found
-        '500':
+        "500":
           description: Internal Server Error
+      security:
+        - cognito:
+            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:read:team
+            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:write:team
+            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/member:read:team
   /teams/{teamID}/members:
     options:
       tags:
@@ -597,17 +636,17 @@ paths:
           description: The team ID
       responses:
         "200":
-          description: "200 response"
+          description: 200 response
           headers:
             Access-Control-Allow-Origin:
               schema:
-                type: "string"
+                type: string
             Access-Control-Allow-Methods:
               schema:
-                type: "string"
+                type: string
             Access-Control-Allow-Headers:
               schema:
-                type: "string"
+                type: string
           content: {}
     get:
       tags:
@@ -633,24 +672,27 @@ paths:
               - 10
           description: The team ID
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Access-Control-Allow-Origin:
               schema:
-                type: "string"
+                type: string
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/team'
-        '400':
+                $ref: "#/components/schemas/team"
+        "400":
           description: Bad request
-        '401':
+        "401":
           description: Unauthorized
-        '404':
+        "404":
           description: Team not found
-        '500':
+        "500":
           description: Internal Server Error
+      security:
+        - cognito:
+            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:read:team
     post:
       tags:
         - Teams
@@ -678,39 +720,42 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/teamMemberAdd'
+              $ref: "#/components/schemas/teamMemberAdd"
       responses:
-        '200':
+        "200":
           description: Member added
           headers:
             Access-Control-Allow-Origin:
               schema:
-                type: "string"
-        '400':
+                type: string
+        "400":
           description: Bad request
-        '401':
+        "401":
           description: Unauthorized
-        '404':
+        "404":
           description: Team not found
-        '500':
+        "500":
           description: Internal Server Error
+      security:
+        - cognito:
+            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:write:team
   /teams/transfer:
     options:
       tags:
         - Teams
       responses:
         "200":
-          description: "200 response"
+          description: 200 response
           headers:
             Access-Control-Allow-Origin:
               schema:
-                type: "string"
+                type: string
             Access-Control-Allow-Methods:
               schema:
-                type: "string"
+                type: string
             Access-Control-Allow-Headers:
               schema:
-                type: "string"
+                type: string
           content: {}
     post:
       tags:
@@ -721,33 +766,45 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/teamMemberTransfer'
+              $ref: "#/components/schemas/teamMemberTransfer"
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Access-Control-Allow-Origin:
               schema:
-                type: "string"
-        '400':
+                type: string
+        "400":
           description: Bad request
-        '401':
+        "401":
           description: Unauthorized
-        '404':
+        "404":
           description: Team not found
-        '500':
+        "500":
           description: Internal Server Error
+      security:
+        - cognito:
+            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:write:team
 components:
   securitySchemes:
     cognito:
       type: oauth2
-      x-tokenName: id_token
+      #x-tokenName: id_token
       flows:
         authorizationCode:
           authorizationUrl: https://ssgg-dev.auth.eu-north-1.amazoncognito.com/oauth2/authorize
           tokenUrl: https://ssgg-dev.auth.eu-north-1.amazoncognito.com/oauth2/token
           refreshUrl: https://ssgg-dev.auth.eu-north-1.amazoncognito.com/oauth2/token
-          scopes: {}
+          scopes:
+            https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:read:member: Reads all details about a member
+            https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:write:member: updates all details about a member
+            https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:read:team: Reads all details about a team
+            https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:write:team: updates all details about a team
+            https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:read:event: Reads all details about an event
+            https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:write:event: updates all details about an event
+            https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/member:read:member: Reads public details about a member
+            https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/member:read:team: Reads public details about a team
+            https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/member:read:event: Reads public details about an event
   schemas:
     member:
       type: object
@@ -1047,7 +1104,7 @@ components:
     members:
       type: array
       items:
-        $ref: '#/components/schemas/member'
+        $ref: "#/components/schemas/member"
     updateEvent:
       type: object
       properties:
@@ -1123,7 +1180,7 @@ components:
     events:
       type: array
       items:
-        $ref: '#/components/schemas/getEvent'
+        $ref: "#/components/schemas/getEvent"
     team:
       type: object
       properties:
@@ -1195,7 +1252,7 @@ components:
     teams:
       type: array
       items:
-        $ref: '#/components/schemas/team'
+        $ref: "#/components/schemas/team"
     teamMemberTransfer:
       type: object
       properties:

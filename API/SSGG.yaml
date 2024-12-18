@@ -789,7 +789,7 @@ components:
   securitySchemes:
     cognito:
       type: oauth2
-      x-tokenName: id_token
+      #x-tokenName: id_token
       flows:
         authorizationCode:
           authorizationUrl: https://ssgg-dev.auth.eu-north-1.amazoncognito.com/oauth2/authorize

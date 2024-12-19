@@ -8,6 +8,8 @@ info:
     email: ssgdtc@gmail.com
 servers:
   - url: https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/stg
+security:
+  - cognito: []
 tags:
   - name: Members
     description: Everything about members
@@ -15,6 +17,8 @@ tags:
     description: Everything about teams
   - name: Events
     description: Everything about events
+  - name: Lookups
+    description: Everything about Lookups
 paths:
   /members:
     get:
@@ -65,10 +69,6 @@ paths:
           description: Member not found
         "500":
           description: Internal Server Error
-      security:
-        - cognito:
-            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:read:member
-            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/member:read:member
     post:
       tags:
         - Members
@@ -96,9 +96,6 @@ paths:
           description: Unauthorized
         "500":
           description: Internal Server Error
-      security:
-        - cognito:
-            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:write:member
     options:
       tags:
         - Members
@@ -148,10 +145,6 @@ paths:
           description: Member not found
         "500":
           description: Internal Server Error
-      security:
-        - cognito:
-            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:read:member
-            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/member:read:member
     patch:
       tags:
         - Members
@@ -188,9 +181,6 @@ paths:
           description: Member not found
         "500":
           description: Internal Server Error
-      security:
-        - cognito:
-            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:write:member
     options:
       tags:
         - Members
@@ -294,10 +284,6 @@ paths:
           description: Event not found
         "500":
           description: Internal Server Error
-      security:
-        - cognito:
-            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:read:event
-            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/member:read:event
     post:
       tags:
         - Events
@@ -325,9 +311,6 @@ paths:
           description: Unauthorized
         "500":
           description: Internal Server Error
-      security:
-        - cognito:
-            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:write:event
   /events/{eventID}:
     options:
       tags:
@@ -384,10 +367,6 @@ paths:
           description: Event not found
         "500":
           description: Internal Server Error
-      security:
-        - cognito:
-            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:read:event
-            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/member:read:event
     patch:
       tags:
         - Events
@@ -420,9 +399,6 @@ paths:
           description: Event not found
         "500":
           description: Internal Server Error
-      security:
-        - cognito:
-            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:write:event
   /events/{eventID}/attendance:
     options:
       tags:
@@ -480,9 +456,6 @@ paths:
           description: Event not found
         "500":
           description: Internal Server Error
-      security:
-        - cognito:
-            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:write:event
     patch:
       tags:
         - Events
@@ -515,9 +488,6 @@ paths:
           description: Event not found
         "500":
           description: Internal Server Error
-      security:
-        - cognito:
-            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:write:event
     get:
       tags:
         - Events
@@ -549,9 +519,6 @@ paths:
           description: Event or Member not found
         "500":
           description: Internal Server Error
-      security:
-        - cognito:
-            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:read:event
   /teams:
     options:
       tags:
@@ -607,11 +574,6 @@ paths:
           description: Team not found
         "500":
           description: Internal Server Error
-      security:
-        - cognito:
-            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:read:team
-            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:write:team
-            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/member:read:team
   /teams/{teamID}/members:
     options:
       tags:
@@ -690,9 +652,6 @@ paths:
           description: Team not found
         "500":
           description: Internal Server Error
-      security:
-        - cognito:
-            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:read:team
     post:
       tags:
         - Teams
@@ -736,9 +695,6 @@ paths:
           description: Team not found
         "500":
           description: Internal Server Error
-      security:
-        - cognito:
-            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:write:team
   /teams/transfer:
     options:
       tags:
@@ -782,30 +738,83 @@ paths:
           description: Team not found
         "500":
           description: Internal Server Error
-      security:
-        - cognito:
-            - https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:write:team
+  /lookups:
+    options:
+      tags:
+        - Lookups
+      operationId: getLookups
+      description: Gets all lookups
+      responses:
+        "200":
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content: {}
+    get:
+      tags:
+        - Lookups
+      responses:
+        "200":
+          description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/lookups"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Team not found
+        "500":
+          description: Internal Server Error
 components:
   securitySchemes:
     cognito:
       type: oauth2
-      #x-tokenName: id_token
+      x-tokenName: id_token
       flows:
         authorizationCode:
           authorizationUrl: https://ssgg-dev.auth.eu-north-1.amazoncognito.com/oauth2/authorize
           tokenUrl: https://ssgg-dev.auth.eu-north-1.amazoncognito.com/oauth2/token
           refreshUrl: https://ssgg-dev.auth.eu-north-1.amazoncognito.com/oauth2/token
-          scopes:
-            https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:read:member: Reads all details about a member
-            https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:write:member: updates all details about a member
-            https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:read:team: Reads all details about a team
-            https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:write:team: updates all details about a team
-            https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:read:event: Reads all details about an event
-            https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/leader:write:event: updates all details about an event
-            https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/member:read:member: Reads public details about a member
-            https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/member:read:team: Reads public details about a team
-            https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/member:read:event: Reads public details about an event
+          scopes: {}
   schemas:
+    lookups:
+      type: array
+      items:
+        type: object
+        properties:
+          LookupName:
+            type: string
+          Description:
+            type: string
+          LookupValues:
+            type: array
+            items:
+              type: object
+              properties:
+                LookupID:
+                  type: integer
+                LookupValue:
+                  type: object
+                  properties:
+                    EN:
+                      type: string
+                    AR:
+                      type: string
     member:
       type: object
       properties:
@@ -842,6 +851,7 @@ components:
                     type: string
                   AR:
                     type: string
+
         PlaceOfBirth:
           type: string
         DateOfBirth:

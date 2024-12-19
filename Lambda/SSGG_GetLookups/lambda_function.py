@@ -22,7 +22,10 @@ def connect():
         response = {
             "isBase64Encoded": False,
             "statusCode": 500,
-            "headers": {"Content-Type": "application/json"},
+            "headers": {"Content-Type": "application/json",
+                        'Access-Control-Allow-Headers': '*',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': '*'},
             "body": json.dumps({"message": error.args[1]}),
         }
     return conn, response
@@ -33,7 +36,7 @@ def lambda_handler(event, context):
     if response is None:
         with conn.cursor() as cursor:
             try:
-                cursor.execute("SELECT * FROM lookups")
+                cursor.execute(f"SELECT * FROM {os.environ.get('database')}.lookups")
                 tables = cursor.fetchall()
                 if tables:
                     data = []
@@ -42,9 +45,9 @@ def lambda_handler(event, context):
                         table_name = table.get("table_name")
                         record['TableName'] = table_name
                         record['Description'] = table.get("description")
-                        cursor.execute(f"SELECT {table_name[:-1] + '_id'}, {table_name[:-1]+'_name_ar'}, {table_name[:-1]+'_name_en'} FROM ssgg.{table_name}")
+                        cursor.execute(f"SELECT {table_name[:-1] + '_id'}, {table_name[:-1]+'_name_ar'}, {table_name[:-1]+'_name_en'} FROM {os.environ.get('database')}.{table_name}")
                         records = cursor.fetchall()
-                        # pprint(records)
+                        print(records)
                         if records:
                             record['LookupValues'] = []
                             for record_ in records:
@@ -54,25 +57,33 @@ def lambda_handler(event, context):
                                     "EN": record_.get(table_name[:-1] + "_name_en"),
                                 }
                                 record['LookupValues'].append(record_entry)
-                        # pprint(records)
                         data.append(record)
                     response = {
                         "isBase64Encoded": False,
                         "statusCode": 200,
-                        "headers": {"Content-Type": "application/json"},
-                        "body": json.dumps(data),
+                        "headers": {"Content-Type": "application/json",
+                                    'Access-Control-Allow-Headers': '*',
+                                    'Access-Control-Allow-Origin': '*',
+                                    'Access-Control-Allow-Methods': '*'},
+                        "body": json.dumps(data, default=str),
                     }
                 else:
                     response = {
                         "isBase64Encoded": False,
                         "statusCode": 404,
-                        "headers": {"Content-Type": "application/json"},
+                        "headers": {"Content-Type": "application/json",
+                                    'Access-Control-Allow-Headers': '*',
+                                    'Access-Control-Allow-Origin': '*',
+                                    'Access-Control-Allow-Methods': '*'},
                         "body": json.dumps({"message": "No data found"}),
                     }
             except Exception as error:
                 response = {
                     "isBase64Encoded": False,
                     "statusCode": 500,
-                    "headers": {"Content-Type": "application/json"},
+                    "headers": {"Content-Type": "application/json",
+                                'Access-Control-Allow-Headers': '*',
+                                'Access-Control-Allow-Origin': '*',
+                                'Access-Control-Allow-Methods': '*'},
                     "body": json.dumps({"message": error.args[1]}),
                 }

@@ -3,7 +3,8 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - '*'
+      - 'main'
+      - 'staging'
     paths:
       - Lambda/SSGG_UpdateAttendance/*
       - .github/workflows/SSGG_UpdateAttendance.yml

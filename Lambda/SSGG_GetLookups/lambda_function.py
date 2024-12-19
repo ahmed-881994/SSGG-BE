@@ -42,9 +42,7 @@ def lambda_handler(event, context):
                         table_name = table.get("table_name")
                         record['TableName'] = table_name
                         record['Description'] = table.get("description")
-                        cursor.execute(f"SELECT {table_name[:-1] + '_id'}, {table_name[:-1]+'_name_ar'}, {
-                                       table_name[:-1]+'_name_en'} FROM ssgg.{table_name}")
-
+                        cursor.execute(f"SELECT {table_name[:-1] + '_id'}, {table_name[:-1]+'_name_ar'}, {table_name[:-1]+'_name_en'} FROM ssgg.{table_name}")
                         records = cursor.fetchall()
                         # pprint(records)
                         if records:

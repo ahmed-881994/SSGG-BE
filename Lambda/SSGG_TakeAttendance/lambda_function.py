@@ -48,7 +48,7 @@ def lambda_handler(event, context):
                     success_flag = True
                     for attendance in attendanceList:
                         memberID = attendance.get("MemberID")
-                        attendanceState = attendance.get("AttendanceState")
+                        attendanceState = attendance.get("AttendanceStateID")
                         cursor.callproc("GetMember", [memberID])
                         member = cursor.fetchone()
                         if member is not None:

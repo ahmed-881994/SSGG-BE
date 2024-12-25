@@ -72,16 +72,6 @@ def lambda_handler(event, context):
                             "headers": {"Content-Type": "application/json"},
                             "body": json.dumps(data, default=str),
                         }
-                    data = format_records(records)
-                    response = {
-                        "isBase64Encoded": False,
-                        "statusCode": 200,
-                        "headers": {"Content-Type": "application/json",
-                                    'Access-Control-Allow-Headers': '*',
-                                    'Access-Control-Allow-Origin': '*',
-                                    'Access-Control-Allow-Methods': '*'},
-                        "body": json.dumps(data, default=str),
-                    }
                 else:
                     response = {
                         "isBase64Encoded": False,

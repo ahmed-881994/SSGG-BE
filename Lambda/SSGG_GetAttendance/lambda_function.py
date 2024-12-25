@@ -57,6 +57,21 @@ def lambda_handler(event, context):
                 if eventRecord is not None:
                     cursor.callproc("GetAttendance", args)
                     records = cursor.fetchall()
+                    if len(records) == 0:
+                        response = {
+                            "isBase64Encoded": False,
+                            "statusCode": 404,
+                            "headers": {"Content-Type": "application/json"},
+                            "body": json.dumps({"message": "Attendance not found"}),
+                        }
+                    else:
+                        data = format_records(records)
+                        response = {
+                            "isBase64Encoded": False,
+                            "statusCode": 200,
+                            "headers": {"Content-Type": "application/json"},
+                            "body": json.dumps(data, default=str),
+                        }
                     data = format_records(records)
                     response = {
                         "isBase64Encoded": False,

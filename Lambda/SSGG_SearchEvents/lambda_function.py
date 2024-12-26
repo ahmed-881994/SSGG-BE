@@ -45,7 +45,7 @@ def format_records(records):
             "Location": record.get("event_location"),
             "StartDate": record.get("event_start_date"),
             "EndDate": record.get("event_end_date"),
-            "IsMultiTeam": record.get("is_multi_team"),
+            "IsMultiTeam": True if record.get("is_multi_team")==1 else False,
             "TeamID": record.get("team_id"),
         }
         formatted_entries.append(entry)

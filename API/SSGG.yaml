@@ -43,6 +43,14 @@ paths:
               - 8
               - 9
               - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              - 16
+              - 17
+              - 18
           description: The team id
         - in: query
           name: name
@@ -244,6 +252,14 @@ paths:
               - 8
               - 9
               - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              - 16
+              - 17
+              - 18
           description: The team id
         - in: query
           name: name
@@ -595,6 +611,14 @@ paths:
               - 8
               - 9
               - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              - 16
+              - 17
+              - 18
           description: The team ID
       responses:
         "200":
@@ -632,6 +656,14 @@ paths:
               - 8
               - 9
               - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              - 16
+              - 17
+              - 18
           description: The team ID
       responses:
         "200":
@@ -674,6 +706,14 @@ paths:
               - 8
               - 9
               - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              - 16
+              - 17
+              - 18
           description: The team ID
       requestBody:
         content:
@@ -844,6 +884,14 @@ components:
                   - 8
                   - 9
                   - 10
+                  - 11
+                  - 12
+                  - 13
+                  - 14
+                  - 15
+                  - 16
+                  - 17
+                  - 18
               TeamName:
                 type: object
                 properties:
@@ -1187,6 +1235,14 @@ components:
             - 8
             - 9
             - 10
+            - 11
+            - 12
+            - 13
+            - 14
+            - 15
+            - 16
+            - 17
+            - 18
     events:
       type: array
       items:
@@ -1207,6 +1263,14 @@ components:
             - 8
             - 9
             - 10
+            - 11
+            - 12
+            - 13
+            - 14
+            - 15
+            - 16
+            - 17
+            - 18
         TeamName:
           type: object
           properties:
@@ -1279,6 +1343,14 @@ components:
             - 8
             - 9
             - 10
+            - 11
+            - 12
+            - 13
+            - 14
+            - 15
+            - 16
+            - 17
+            - 18
         ToTeamID:
           type: integer
           enum:
@@ -1292,6 +1364,14 @@ components:
             - 8
             - 9
             - 10
+            - 11
+            - 12
+            - 13
+            - 14
+            - 15
+            - 16
+            - 17
+            - 18
         TransferDate:
           type: string
           format: date

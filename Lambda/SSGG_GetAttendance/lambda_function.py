@@ -35,10 +35,12 @@ def format_records(records):
     result = {}
     result['EventID'] = records[0].get('event_id')
     result['Attendance'] = []
+    result['AttendanceStateName'] = {}
     for record in records:
         entry = {
             "MemberID": record.get("member_id"),
             "AttendanceStateID": record.get("attendance_state_id"),
+            "AttendanceStateName":{"EN": record.get("attendance_state_name_en"), "AR": record.get("attendance_state_name_ar")},
         }
         result['Attendance'].append(entry)
     return result

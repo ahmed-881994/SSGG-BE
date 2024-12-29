@@ -557,7 +557,7 @@ paths:
       tags:
         - Teams
       operationId: searchTeams
-      description: Search teams by (LeaderID, StageID)
+      description: Search teams by (TeamName, LeaderID, StageID)
       parameters:
         - in: query
           name: leaderID
@@ -571,6 +571,12 @@ paths:
           schema:
             type: integer
           description: The stage id
+        - in: query
+          name: teamName
+          required: false
+          schema:
+            type: string
+          description: The team name
       responses:
         "200":
           description: OK

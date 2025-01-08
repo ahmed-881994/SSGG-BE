@@ -13,7 +13,7 @@ def insert_log(cursor, event, response, function_name):
     response_payload = response
     response_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
     status_code = response.get("statusCode")
-    error_message = response.get("body") if response.get("statusCode") != 200 else None
+    error_message = response.get("body").get("message") if response.get("statusCode") != 200 else 'Success'
     cursor.callproc("InsertLogs", [request_id, function_name, json.dumps(request_payload), request_time, json.dumps(response_payload), response_time, status_code, error_message])
     return
 

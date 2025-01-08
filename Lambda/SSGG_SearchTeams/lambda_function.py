@@ -114,7 +114,7 @@ def lambda_handler(event, context):
                     "headers": {"Content-Type": "application/json"},
                     "body": json.dumps({"message": error.args}),
                 }
-            insert_log(cursor, event, response, "GetMember")
+            insert_log(cursor, event, response, "SearchTeams")
             conn.commit()
 
     return response

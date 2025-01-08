@@ -1,7 +1,21 @@
+from datetime import datetime
 import json
 import os
 import pymysql.cursors
-import logging
+
+def insert_log(cursor, event, response, function_name):
+    request_payload = response_payload = {}
+    request_id = event.get('requestContext').get('requestId')
+    request_payload['queryStringParameters'] = event.get("queryStringParameters")
+    request_payload['pathParameters'] = event.get("pathParameters")
+    request_payload['body'] = event.get("body")
+    request_time = datetime.fromtimestamp(event.get('requestContext').get('requestTimeEpoch')/1000).strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
+    response_payload = response
+    response_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
+    status_code = response.get("statusCode")
+    error_message = response.get("body") if response.get("statusCode") != 200 else None
+    cursor.callproc("InsertLogs", [request_id, function_name, json.dumps(request_payload), request_time, json.dumps(response_payload), response_time, status_code, error_message])
+    return
 
 def connect():
     try:
@@ -89,9 +103,6 @@ def format_records(records):
 
 
 def lambda_handler(event, context):
-    logger = logging.getLogger()
-    logger.setLevel(logging.INFO)
-    logger.info(event)
     conn, response = connect()
 
     if response is None:
@@ -106,31 +117,24 @@ def lambda_handler(event, context):
                     response = {
                         "isBase64Encoded": False,
                         "statusCode": 200,
-                        "headers": {"Content-Type": "application/json",
-                                    'Access-Control-Allow-Headers': '*',
-                                    'Access-Control-Allow-Origin': '*',
-                                    'Access-Control-Allow-Methods': '*'},
+                        "headers": {"Content-Type": "application/json"},
                         "body": json.dumps(data, default=str),
                     }
                 else:
                     response = {
                         "isBase64Encoded": False,
                         "statusCode": 404,
-                        "headers": {"Content-Type": "application/json",
-                                    'Access-Control-Allow-Headers': '*',
-                                    'Access-Control-Allow-Origin': '*',
-                                    'Access-Control-Allow-Methods': '*'},
+                        "headers": {"Content-Type": "application/json"},
                         "body": json.dumps({"message": "Member not found"}),
                     }
             except Exception as error:
                 response = {
                     "isBase64Encoded": False,
                     "statusCode": 500,
-                    "headers": {"Content-Type": "application/json",
-                                'Access-Control-Allow-Headers': '*',
-                                'Access-Control-Allow-Origin': '*',
-                                'Access-Control-Allow-Methods': '*'},
+                    "headers": {"Content-Type": "application/json"},
                     "body": json.dumps({"message": error.args[1]}),
                 }
+            insert_log(cursor, event, response, "GetMember")
+            conn.commit()
 
     return response

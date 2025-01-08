@@ -88,6 +88,6 @@ def lambda_handler(event, context):
                     "headers": {"Content-Type": "application/json"},
                     "body": json.dumps({"message": error.args[1]}),
                 }
-            insert_log(cursor, event, response, "GetMember")
+            insert_log(cursor, event, response, "GetLookups")
             conn.commit()
     return response

@@ -1,4 +1,4 @@
-name: Deploy SSGG_UpdateMemberlambda function
+name: Deploy SSGG_UpdateMember lambda function
 on:
   workflow_dispatch:
   push:

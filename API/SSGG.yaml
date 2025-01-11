@@ -898,6 +898,16 @@ components:
                   - 16
                   - 17
                   - 18
+              IsTeamLeader:
+                type: boolean
+              DateJoined: 
+                type: string
+                format: date
+              DateTransferred: 
+                type: string
+                format: date
+              IsCurrentTeam:
+                type: boolean
               TeamName:
                 type: object
                 properties:
@@ -905,7 +915,6 @@ components:
                     type: string
                   AR:
                     type: string
-
         PlaceOfBirth:
           type: string
         DateOfBirth:
@@ -982,9 +991,9 @@ components:
           type: string
           format: uri
         PhotoConsent:
-          type: integer
+          type: boolean
         ConditionsConsent:
-          type: integer
+          type: boolean
     memberAdd:
       type: object
       properties:
@@ -1073,9 +1082,9 @@ components:
           type: string
           format: uri
         PhotoConsent:
-          type: integer
+          type: boolean
         ConditionsConsent:
-          type: integer
+          type: boolean
     memberUpdate:
       type: object
       properties:
@@ -1162,9 +1171,9 @@ components:
           type: string
           format: uri
         PhotoConsent:
-          type: integer
+          type: boolean
         ConditionsConsent:
-          type: integer
+          type: boolean
     members:
       type: array
       items:

@@ -84,14 +84,17 @@ def format_records(records):
         "ClubIdURL": records[0].get("club_id_url"),
         "PassportURL": records[0].get("passport_url"),
         "BirthCertificateURL": records[0].get("birth_certificate_url"),
-        "PhotoConsent": records[0].get("photo_consent"),
-        "ConditionsConsent": records[0].get("conditions_consent"),
+        "PhotoConsent": True if records[0].get("photo_consent") == 1 else False,
+        "ConditionsConsent": True if records[0].get("conditions_consent") == 1 else False,
     }
 
     for record in records:
         team_entry = {
             "TeamID": record.get("team_id"),
-            "IsTeamLeader": record.get("is_leader"),
+            "IsTeamLeader": True if record.get("is_leader") == 1 else False,
+            "DateJoined": record.get("team_join_date"),
+            "DateTransferred": record.get("team_transfer_date"),
+            "IsCurrentTeam": True if record.get("team_transfer_date") is None and record.get("is_leader") == 0 else False,
             "TeamName": {
                 "EN": record.get("team_name_en"),
                 "AR": record.get("team_name_ar"),

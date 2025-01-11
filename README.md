@@ -13,7 +13,7 @@ The API is deployed on AWS API Gateway with AWS Lambda as it's integration. The 
 
 ## Authors
 
-- [@ahmed-881994](https://www.github.com/ahmed-881994)
+- [Ahmed Safwat](https://www.github.com/ahmed-881994)
 
 
 ## 🔗 Links

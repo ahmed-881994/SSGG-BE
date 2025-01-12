@@ -36,9 +36,9 @@ def connect():
             "isBase64Encoded": False,
             "statusCode": 500,
             "headers": {"Content-Type": "application/json",
-                                    'Access-Control-Allow-Headers': '*',
-                                    'Access-Control-Allow-Origin': '*',
-                                    'Access-Control-Allow-Methods': '*'},
+                        'Access-Control-Allow-Headers': '*',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': '*'},
             "body": json.dumps({"message": error.args[1]}),
         }
     return conn, response
@@ -87,8 +87,8 @@ def lambda_handler(event, context):
                     body.get("ClubIdURL"),
                     body.get("PassportURL"),
                     body.get("BirthCertificateURL"),
-                    body.get("PhotoConsent"),
-                    body.get("ConditionsConsent"),
+                    1 if body.get("PhotoConsent") == True else 0,
+                    1 if body.get("ConditionsConsent") == True else 0,
                 ]
                 cursor.callproc("AddMember", args)
                 conn.commit()
@@ -96,9 +96,9 @@ def lambda_handler(event, context):
                     "isBase64Encoded": False,
                     "statusCode": 201,
                     "headers": {"Content-Type": "application/json",
-                                    'Access-Control-Allow-Headers': '*',
-                                    'Access-Control-Allow-Origin': '*',
-                                    'Access-Control-Allow-Methods': '*'},
+                                'Access-Control-Allow-Headers': '*',
+                                'Access-Control-Allow-Origin': '*',
+                                'Access-Control-Allow-Methods': '*'},
                     "body": json.dumps(
                         {"message": "Member added", "MemberDetails": body}
                     ),
@@ -108,9 +108,9 @@ def lambda_handler(event, context):
                     "isBase64Encoded": False,
                     "statusCode": 500,
                     "headers": {"Content-Type": "application/json",
-                                    'Access-Control-Allow-Headers': '*',
-                                    'Access-Control-Allow-Origin': '*',
-                                    'Access-Control-Allow-Methods': '*'},
+                                'Access-Control-Allow-Headers': '*',
+                                'Access-Control-Allow-Origin': '*',
+                                'Access-Control-Allow-Methods': '*'},
                     "body": json.dumps({"message": error.args[1]}),
                 }
                 

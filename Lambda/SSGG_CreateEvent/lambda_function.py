@@ -37,9 +37,9 @@ def connect():
             "isBase64Encoded": False,
             "statusCode": 500,
             "headers": {"Content-Type": "application/json",
-                                    'Access-Control-Allow-Headers': '*',
-                                    'Access-Control-Allow-Origin': '*',
-                                    'Access-Control-Allow-Methods': '*'},
+                        'Access-Control-Allow-Headers': '*',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': '*'},
             "body": json.dumps({"message": error.args[1]}),
         }
     return conn, response
@@ -55,7 +55,7 @@ def format_records(record):
         "EventLocation": record.get("event_location"),
         "EventStartDate": record.get("event_start_date"),
         "EventEndDate": record.get("event_end_date"),
-        "IsMultiTeam": record.get("is_multi_team"),
+        "IsMultiTeam": True if record.get("is_multi_team") == 1 else False,
         "TeamID": record.get("team_id"),
     }
     return entry
@@ -110,9 +110,9 @@ def lambda_handler(event, context):
                     "isBase64Encoded": False,
                     "statusCode": 500,
                     "headers": {"Content-Type": "application/json",
-                                    'Access-Control-Allow-Headers': '*',
-                                    'Access-Control-Allow-Origin': '*',
-                                    'Access-Control-Allow-Methods': '*'},
+                                'Access-Control-Allow-Headers': '*',
+                                'Access-Control-Allow-Origin': '*',
+                                'Access-Control-Allow-Methods': '*'},
                     "body": json.dumps({"message": error.args[1]}),
                 }
             insert_log(cursor, event, response, "CreateEvent")

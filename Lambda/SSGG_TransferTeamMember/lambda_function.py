@@ -37,9 +37,9 @@ def connect():
             "isBase64Encoded": False,
             "statusCode": 500,
             "headers": {"Content-Type": "application/json",
-                                    'Access-Control-Allow-Headers': '*',
-                                    'Access-Control-Allow-Origin': '*',
-                                    'Access-Control-Allow-Methods': '*'},
+                        'Access-Control-Allow-Headers': '*',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': '*'},
             "body": json.dumps({"message": "Couldn't reach the database"}),
         }
     return conn, response
@@ -53,7 +53,7 @@ def lambda_handler(event, context):
             try:
                 body = json.loads(event.get("body"))
                 memberID = body.get("Member").get("MemberID")
-                isLeader = body.get("Member").get("IsLeader")
+                isLeader = 1 if body.get("Member").get("IsLeader") == True else 0
                 fromTeamID = body.get("FromTeamID")
                 toTeamID = body.get("ToTeamID")
                 transferDate = body.get("TransferDate")
@@ -66,9 +66,9 @@ def lambda_handler(event, context):
                                 "isBase64Encoded": False,
                                 "statusCode": 400,
                                 "headers": {"Content-Type": "application/json",
-                                    'Access-Control-Allow-Headers': '*',
-                                    'Access-Control-Allow-Origin': '*',
-                                    'Access-Control-Allow-Methods': '*'},
+                                            'Access-Control-Allow-Headers': '*',
+                                            'Access-Control-Allow-Origin': '*',
+                                            'Access-Control-Allow-Methods': '*'},
                                 "body": json.dumps(
                                     {"message": "Member already belongs to team"}
                                 ),
@@ -85,9 +85,9 @@ def lambda_handler(event, context):
                             "isBase64Encoded": False,
                             "statusCode": 201,
                             "headers": {"Content-Type": "application/json",
-                                    'Access-Control-Allow-Headers': '*',
-                                    'Access-Control-Allow-Origin': '*',
-                                    'Access-Control-Allow-Methods': '*'},
+                                        'Access-Control-Allow-Headers': '*',
+                                        'Access-Control-Allow-Origin': '*',
+                                        'Access-Control-Allow-Methods': '*'},
                             "body": json.dumps({"message": "Member transferred"}),
                         }
                 else:
@@ -105,9 +105,9 @@ def lambda_handler(event, context):
                     "isBase64Encoded": False,
                     "statusCode": 500,
                     "headers": {"Content-Type": "application/json",
-                                    'Access-Control-Allow-Headers': '*',
-                                    'Access-Control-Allow-Origin': '*',
-                                    'Access-Control-Allow-Methods': '*'},
+                                'Access-Control-Allow-Headers': '*',
+                                'Access-Control-Allow-Origin': '*',
+                                'Access-Control-Allow-Methods': '*'},
                     "body": json.dumps({"message": error.args[1]}),
                 }
             insert_log(cursor, event, response, "TransferTeamMember")

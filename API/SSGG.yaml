@@ -1396,7 +1396,7 @@ components:
             MemberID:
               type: string
             IsLeader:
-              type: integer
+              type: boolean
     takeEventAttendance:
       type: object
       properties:

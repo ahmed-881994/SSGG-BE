@@ -37,9 +37,9 @@ def connect():
             "isBase64Encoded": False,
             "statusCode": 500,
             "headers": {"Content-Type": "application/json",
-                                    'Access-Control-Allow-Headers': '*',
-                                    'Access-Control-Allow-Origin': '*',
-                                    'Access-Control-Allow-Methods': '*'},
+                        'Access-Control-Allow-Headers': '*',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': '*'},
             "body": json.dumps({"message": error.args[1]}),
         }
     return conn, response
@@ -136,8 +136,7 @@ def lambda_handler(event, context):
                     conditionsConsent = body.get("ConditionsConsent") if body.get(
                         "ConditionsConsent") else memberRecord.get("conditions_consent")
                     args.append(
-                        1 if body.get(
-                            "conditionsConsent") == True else 0
+                        1 if conditionsConsent == True else 0
                     )
                     cursor.callproc("UpdateMember", args)
                     conn.commit()
@@ -165,9 +164,9 @@ def lambda_handler(event, context):
                     "isBase64Encoded": False,
                     "statusCode": 500,
                     "headers": {"Content-Type": "application/json",
-                                    'Access-Control-Allow-Headers': '*',
-                                    'Access-Control-Allow-Origin': '*',
-                                    'Access-Control-Allow-Methods': '*'},
+                                'Access-Control-Allow-Headers': '*',
+                                'Access-Control-Allow-Origin': '*',
+                                'Access-Control-Allow-Methods': '*'},
                     "body": json.dumps({"message": error.args[1]}),
                 }
             insert_log(cursor, event, response, "UpdateMember")

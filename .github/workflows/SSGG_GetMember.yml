@@ -18,8 +18,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Set Service Name
-        id: set-service-name
+      - name: Set File Name
+        id: set-file-name
         run: |
           # Get all changed paths
           changed_paths=$(git diff --name-only HEAD~1 HEAD)
@@ -46,36 +46,33 @@ jobs:
             exit 1
           fi
           echo "file_name=$lambda_name" >> $GITHUB_OUTPUT
-          echo "service_name=${lambda_name}_${{github.ref_name}}" >> $GITHUB_OUTPUT
-      # - name: Set Service Name
-      #   id: set-service-name
-      #   run: |
-      #     branch_name=${{github.ref_name}}
-      #     if [ "$branch_name" == "main" ]; then
-      #       service_name="SSGG_GetMember"
-      #       host=${{ secrets.HOST }}
-      #       port=${{ secrets.PORT }}
-      #       database=${{ secrets.DATABASE }}
-      #       username=${{ secrets.USERNAME }}
-      #       pw=${{ secrets.PASSWORD }}
-      #     elif [ "$branch_name" == "staging" ]; then
-      #       service_name="SSGG_GetMember_STG"
-      #       host=${{ secrets.HOST_STG }}
-      #       port=${{ secrets.PORT_STG }}
-      #       database=${{ secrets.DATABASE_STG }}
-      #       username=${{ secrets.USERNAME_STG }}
-      #       pw=${{ secrets.PASSWORD_STG }}
-      #     else
-      #       service_name="SSGG_GetMember_$branch_name"
-      #     fi
-      #     echo "service_name=$service_name" >> $GITHUB_OUTPUT
-      #     echo "host=$host" >> $GITHUB_OUTPUT
-      #     echo "port=$port" >> $GITHUB_OUTPUT
-      #     echo "database=$database" >> $GITHUB_OUTPUT
-      #     echo "username=$username" >> $GITHUB_OUTPUT
-      #     echo "pw=$pw" >> $GITHUB_OUTPUT
+      - name: Set Service Name
+        id: set-service-name
+        run: |
+          branch_name=${{github.ref_name}}
+          if [ "$branch_name" == "main" ]; then
+            service_name=${{ steps.set-file-name.outputs.file_name }}
+            # host=${{ secrets.HOST }}
+            # port=${{ secrets.PORT }}
+            # database=${{ secrets.DATABASE }}
+            # username=${{ secrets.USERNAME }}
+            # pw=${{ secrets.PASSWORD }}
+          elif [ "$branch_name" == "staging" ]; then
+            service_name="${{ steps.set-file-name.outputs.file_name }}_STG"
+            # host=${{ secrets.HOST_STG }}
+            # port=${{ secrets.PORT_STG }}
+            # database=${{ secrets.DATABASE_STG }}
+            # username=${{ secrets.USERNAME_STG }}
+            # pw=${{ secrets.PASSWORD_STG }}
+          fi
+          # echo "service_name=$service_name" >> $GITHUB_OUTPUT
+          # echo "host=$host" >> $GITHUB_OUTPUT
+          # echo "port=$port" >> $GITHUB_OUTPUT
+          # echo "database=$database" >> $GITHUB_OUTPUT
+          # echo "username=$username" >> $GITHUB_OUTPUT
+          # echo "pw=$pw" >> $GITHUB_OUTPUT
       - name: Package source
-        run: zip -j ${{ steps.set-service-name.outputs.service_name }}.zip Lambda/${{ steps.set-service-name.outputs.file_name }}/*
+        run: zip -j ${{ steps.set-service-name.outputs.service_name }}.zip Lambda/${{ steps.set-file-name.outputs.file_name }}/*
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:

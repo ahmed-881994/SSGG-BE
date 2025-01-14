@@ -71,6 +71,7 @@ jobs:
           # echo "database=$database" >> $GITHUB_OUTPUT
           # echo "username=$username" >> $GITHUB_OUTPUT
           # echo "pw=$pw" >> $GITHUB_OUTPUT
+          echo "service_name=$service_name" >> $GITHUB_OUTPUT
       - name: Package source
         run: zip -j ${{ steps.set-service-name.outputs.service_name }}.zip Lambda/${{ steps.set-file-name.outputs.file_name }}/*
       - name: Configure AWS credentials

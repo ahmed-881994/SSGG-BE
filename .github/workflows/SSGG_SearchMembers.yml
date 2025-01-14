@@ -12,36 +12,20 @@ jobs:
   checkout-package-and-deploy-source:
     name: Package and deploy source code
     runs-on: ubuntu-latest
+    environment: ${{ github.ref_name == 'main' && 'production' || github.ref_name == 'staging' && 'staging' }}
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
       - name: Set Service Name
         id: set-service-name
         run: |
-          branch_name="${GITHUB_REF##*/}"
+          branch_name=${{github.ref_name}}
           if [ "$branch_name" == "main" ]; then
             service_name="SSGG_SearchMembers"
-            host=${{ secrets.HOST }}
-            port=${{ secrets.PORT }}
-            database=${{ secrets.DATABASE }}
-            username=${{ secrets.USERNAME }}
-            pw=${{ secrets.PASSWORD }}
           elif [ "$branch_name" == "staging" ]; then
             service_name="SSGG_SearchMembers_STG"
-            host=${{ secrets.HOST_STG }}
-            port=${{ secrets.PORT_STG }}
-            database=${{ secrets.DATABASE_STG }}
-            username=${{ secrets.USERNAME_STG }}
-            pw=${{ secrets.PASSWORD_STG }}
-          else
-            service_name="SSGG_SearchMembers_$branch_name"
           fi
           echo "service_name=$service_name" >> $GITHUB_OUTPUT
-          echo "host=$host" >> $GITHUB_OUTPUT
-          echo "port=$port" >> $GITHUB_OUTPUT
-          echo "database=$database" >> $GITHUB_OUTPUT
-          echo "username=$username" >> $GITHUB_OUTPUT
-          echo "pw=$pw" >> $GITHUB_OUTPUT
       - name: Package source
         run: zip -j ${{ steps.set-service-name.outputs.service_name }}.zip Lambda/SSGG_SearchMembers/*
       - name: Configure AWS credentials
@@ -71,7 +55,7 @@ jobs:
             --timeout 60 \
             --architectures arm64 \
             --zip-file fileb://${{ steps.set-service-name.outputs.service_name }}.zip \
-            --environment "Variables={database="${{ steps.set-service-name.outputs.database }}",host="${{ steps.set-service-name.outputs.host }}",password="${{ steps.set-service-name.outputs.pw }}",port="${{ steps.set-service-name.outputs.port }}",username="${{ steps.set-service-name.outputs.username }}"}" \
+            --environment "Variables={database="${{ secrets.DATABASE }}",host="${{ secrets.HOST }}",password="${{ secrets.PASSWORD }}",port="${{ secrets.PORT }}",username="${{ secrets.USERNAME }}"}" \
             --layers arn:aws:lambda:eu-north-1:998833888842:layer:pymysql:3
       - name: Update Lambda Function
         if: steps.lambda-exists.outputs.exists == 'true'
@@ -84,5 +68,6 @@ jobs:
           aws lambda update-function-configuration \
             --function-name $lambda_name \
             --timeout 60 \
-            --environment "Variables={database="${{ steps.set-service-name.outputs.database }}",host="${{ steps.set-service-name.outputs.host }}",password="${{ steps.set-service-name.outputs.pw }}",port="${{ steps.set-service-name.outputs.port }}",username="${{ steps.set-service-name.outputs.username }}"}" \
+            --environment "Variables={database="${{ secrets.DATABASE }}",host="${{ secrets.HOST }}",password="${{ secrets.PASSWORD }}",port="${{ secrets.PORT }}",username="${{ secrets.USERNAME }}"}" \
             --runtime python3.11
+      

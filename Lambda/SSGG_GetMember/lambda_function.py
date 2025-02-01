@@ -39,7 +39,7 @@ def connect():
                                     'Access-Control-Allow-Headers': '*',
                                     'Access-Control-Allow-Origin': '*',
                                     'Access-Control-Allow-Methods': '*'},
-            "body": json.dumps({"message": error.args[1]}),
+            "body": json.dumps({"message": error.args[-1]}),
         }
     return conn, response
 
@@ -107,14 +107,15 @@ def format_records(records):
 
 def lambda_handler(event, context):
     conn, response = connect()
-
+    print(conn)
+    print(response)
     if response is None:
         with conn.cursor() as cursor:
             try:
                 memberID = event["pathParameters"].get("memberID")
                 cursor.callproc("GetMember", [memberID])
                 records = cursor.fetchall()
-
+                print(records)
                 if records:
                     data = format_records(records)
                     response = {
@@ -150,3 +151,20 @@ def lambda_handler(event, context):
             conn.commit()
 
     return response
+
+if __name__ == "__main__":
+    import dotenv
+    import uuid
+    import time
+    dotenv.load_dotenv()
+    event = {
+        "pathParameters": {
+            "memberID": "s123",
+        },
+        "requestContext": {
+            "requestId": uuid.uuid4(),
+            "requestTimeEpoch": time.time() * 1000,
+        },
+    }
+    context = None
+    print(lambda_handler(event, context))

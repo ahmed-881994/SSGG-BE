@@ -46,17 +46,21 @@ def connect():
 
 
 def format_records(records):
-    result = {}
-    result['EventID'] = records[0].get('event_id')
-    result['Attendance'] = []
-    result['AttendanceStateName'] = {}
+    result = []
     for record in records:
-        entry = {
-            "MemberID": record.get("member_id"),
-            "AttendanceStateID": record.get("attendance_state_id"),
-            "AttendanceStateName":{"EN": record.get("attendance_state_name_en"), "AR": record.get("attendance_state_name_ar")},
+        entry={
+            "EventID": record.get('event_id'),
+            "EventNameEN": record.get('event_id'),
+            "EventNameEN": record.get('event_name_en'),
+            "EventNameAR": record.get('event_name_ar'),
+            "EventStartDate": record.get("event_start_date"),
+            "EventEndDate": record.get("event_end_date"),
+            "EventTypeNameEN": record.get("event_type_name_en"),
+            "EventTypeNameAR": record.get("event_type_name_ar"),
+            "AttendanceStateNameEN": record.get("attendance_state_name_en"),
+            "AttendanceStateNameAR": record.get("attendance_state_name_ar"),
         }
-        result['Attendance'].append(entry)
+        result.append(entry)
     return result
 
 
@@ -66,12 +70,12 @@ def lambda_handler(event, context):
     if response is None:
         with conn.cursor() as cursor:
             try:
-                event_id = event.get("pathParameters").get("eventID")
-                args = [event_id]
-                cursor.callproc("GetEvent", args)
-                eventRecord = cursor.fetchone()
-                if eventRecord is not None:
-                    cursor.callproc("GetEventAttendance", args)
+                member_id = event.get("pathParameters").get("memberID")
+                args = [member_id]
+                cursor.callproc("GetMember", args)
+                memberRecord = cursor.fetchone()
+                if memberRecord:
+                    cursor.callproc("GetMemberAttendance", args)
                     records = cursor.fetchall()
                     if len(records) == 0:
                         response = {
@@ -102,7 +106,7 @@ def lambda_handler(event, context):
                                     'Access-Control-Allow-Headers': '*',
                                     'Access-Control-Allow-Origin': '*',
                                     'Access-Control-Allow-Methods': '*'},
-                        "body": json.dumps({"message": "Event not found"}),
+                        "body": json.dumps({"message": "Member not found"}),
                     }
             except Exception as error:
                 response = {
@@ -114,7 +118,7 @@ def lambda_handler(event, context):
                                     'Access-Control-Allow-Methods': '*'},
                     "body": json.dumps({"message": error.args[1]}),
                 }
-            insert_log(cursor, event, response, "GetEventAttendance")
+            insert_log(cursor, event, response, "GetMemberAttendance")
             conn.commit()
 
     return response
@@ -125,7 +129,7 @@ if __name__ == "__main__":
     dotenv.load_dotenv()
     event = {
         "pathParameters": {
-            "eventID": "23",
+            "memberID": "s123",
         },
         "requestContext": {
             "requestId": uuid.uuid4(),

@@ -25,10 +25,10 @@ def connect():
         cursor = pymysql.cursors.DictCursor
         conn = pymysql.connect(
             host=os.environ.get("host"),
-            port=int(os.environ.get("port")),
-            database=os.environ.get("database"),
-            user=os.environ.get("username"),
-            password=os.environ.get("password"),
+            port=int(os.environ["port"]),
+            database=os.environ["database"],
+            user=os.environ["username"],
+            password=os.environ["password"],
             cursorclass=cursor,
         )
     except Exception as error:
@@ -67,7 +67,7 @@ def format_records(records):
 def lambda_handler(event, context):
     conn, response = connect()
 
-    if response is None:
+    if conn is not None:
         with conn.cursor() as cursor:
             try:
                 member_id = event.get("pathParameters").get("memberID")

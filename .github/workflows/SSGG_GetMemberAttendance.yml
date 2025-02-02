@@ -1,4 +1,4 @@
-name: Deploy SSGG_GetAttendance lambda function
+name: Deploy SSGG_GetMemberAttendance lambda function
 on:
   workflow_dispatch:
   push:
@@ -6,8 +6,8 @@ on:
       - 'main'
       - 'staging'
     paths:
-      - Lambda/SSGG_GetAttendance/*
-      - .github/workflows/SSGG_GetAttendance.yml
+      - Lambda/SSGG_GetMemberAttendance/*
+      - .github/workflows/SSGG_GetMemberAttendance.yml
 jobs:
   checkout-package-and-deploy-source:
     name: Package and deploy source code
@@ -21,13 +21,13 @@ jobs:
         run: |
           branch_name=${{github.ref_name}}
           if [ "$branch_name" == "main" ]; then
-            service_name="SSGG_GetAttendance"
+            service_name="SSGG_GetMemberAttendance"
           elif [ "$branch_name" == "staging" ]; then
-            service_name="SSGG_GetAttendance_STG"
+            service_name="SSGG_GetMemberAttendance_STG"
           fi
           echo "service_name=$service_name" >> $GITHUB_OUTPUT
       - name: Package source
-        run: zip -j ${{ steps.set-service-name.outputs.service_name }}.zip Lambda/SSGG_GetAttendance/*
+        run: zip -j ${{ steps.set-service-name.outputs.service_name }}.zip Lambda/SSGG_GetMemberAttendance/*
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:

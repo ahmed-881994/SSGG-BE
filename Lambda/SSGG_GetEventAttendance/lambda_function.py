@@ -71,7 +71,7 @@ def lambda_handler(event, context):
                 cursor.callproc("GetEvent", args)
                 eventRecord = cursor.fetchone()
                 if eventRecord is not None:
-                    cursor.callproc("GetAttendance", args)
+                    cursor.callproc("GetEventAttendance", args)
                     records = cursor.fetchall()
                     if len(records) == 0:
                         response = {
@@ -118,3 +118,19 @@ def lambda_handler(event, context):
             conn.commit()
 
     return response
+if __name__ == "__main__":
+    import dotenv
+    import uuid
+    import time
+    dotenv.load_dotenv()
+    event = {
+        "pathParameters": {
+            "eventID": "23",
+        },
+        "requestContext": {
+            "requestId": uuid.uuid4(),
+            "requestTimeEpoch": time.time() * 1000,
+        },
+    }
+    context = None
+    print(lambda_handler(event, context))

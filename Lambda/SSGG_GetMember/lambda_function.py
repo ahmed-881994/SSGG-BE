@@ -150,3 +150,20 @@ def lambda_handler(event, context):
             conn.commit()
 
     return response
+
+if __name__ == "__main__":
+    import dotenv
+    import uuid
+    import time
+    dotenv.load_dotenv()
+    event = {
+        "pathParameters": {
+            "memberID": "s123",
+        },
+        "requestContext": {
+            "requestId": uuid.uuid4(),
+            "requestTimeEpoch": time.time() * 1000,
+        },
+    }
+    context = None
+    print(lambda_handler(event, context))

@@ -65,8 +65,9 @@ def lambda_handler(event, context):
     conn, response = connect()
 
     if conn is not None:
-        with conn.cursor() as cursor:
+        with conn as conn:
             try:
+                cursor = conn.cursor()
                 body = json.loads(event.get("body"))
                 args = []
                 args.append(body.get("EventTypeID"))

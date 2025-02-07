@@ -109,8 +109,9 @@ def lambda_handler(event, context):
     conn, response = connect()
 
     if conn is not None:
-        with conn.cursor() as cursor:
+        with conn as conn:
             try:
+                cursor = conn.cursor()
                 memberID = event["pathParameters"].get("memberID")
                 cursor.callproc("GetMember", [memberID])
                 records = cursor.fetchall()
@@ -148,7 +149,6 @@ def lambda_handler(event, context):
                 }
             insert_log(cursor, event, response, "GetMember")
             conn.commit()
-
     return response
 
 if __name__ == "__main__":

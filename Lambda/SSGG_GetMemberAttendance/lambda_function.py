@@ -68,8 +68,9 @@ def lambda_handler(event, context):
     conn, response = connect()
 
     if conn is not None:
-        with conn.cursor() as cursor:
+        with conn as conn:
             try:
+                cursor = conn.cursor()
                 member_id = event.get("pathParameters").get("memberID")
                 args = [member_id]
                 cursor.callproc("GetMember", args)

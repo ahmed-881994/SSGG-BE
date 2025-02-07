@@ -71,8 +71,9 @@ def lambda_handler(event, context):
     conn, response = connect()
 
     if conn is not None:
-        with conn.cursor() as cursor:
+        with conn as conn:
             try:
+                cursor = conn.cursor()
                 queryParams = event.get("queryStringParameters")
                 teamID = queryParams.get("teamID")
                 name = queryParams.get("name")

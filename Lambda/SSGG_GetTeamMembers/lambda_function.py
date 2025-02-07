@@ -83,8 +83,9 @@ def lambda_handler(event, context):
     conn, response = connect()
 
     if conn is not None:
-        with conn.cursor() as cursor:
+        with conn as conn:
             try:
+                cursor = conn.cursor()
                 teamID = event['pathParameters']['teamID']
                 cursor.callproc("GetTeamMembers", [teamID])
                 records = cursor.fetchall()

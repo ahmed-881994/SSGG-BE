@@ -47,8 +47,9 @@ def connect():
 def lambda_handler(event, context):
     conn, response = connect()
     if conn is not None:
-        with conn.cursor() as cursor:
+        with conn as conn:
             try:
+                cursor = conn.cursor()
                 cursor.execute(f"SELECT * FROM {os.environ.get('database')}.lookups")
                 tables = cursor.fetchall()
                 if tables:

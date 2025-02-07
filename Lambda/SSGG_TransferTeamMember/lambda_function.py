@@ -49,8 +49,9 @@ def lambda_handler(event, context):
     conn, response = connect()
 
     if conn is not None:
-        with conn.cursor() as cursor:
+        with conn as conn:
             try:
+                cursor = conn.cursor()
                 body = json.loads(event.get("body"))
                 memberID = body.get("Member").get("MemberID")
                 isLeader = 1 if body.get("Member").get("IsLeader") == True else 0

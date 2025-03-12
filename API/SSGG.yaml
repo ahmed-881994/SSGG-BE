@@ -498,6 +498,7 @@ paths:
     post:
       tags:
         - Events
+      deprecated: true
       operationId: takeAttendance
       description: Records members attendance in an event
       parameters:
@@ -531,7 +532,7 @@ paths:
       tags:
         - Events
       operationId: updateAttendance
-      description: Updates members attendance in an event
+      description: Records members attendance in an event
       parameters:
         - in: path
           name: eventID

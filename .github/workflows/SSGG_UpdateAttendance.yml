@@ -1,13 +1,13 @@
 name: Deploy SSGG_UpdateAttendance lambda function
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - 'main'
-      - 'staging'
-    paths:
-      - Lambda/SSGG_UpdateAttendance/*
-      - .github/workflows/SSGG_UpdateAttendance.yml
+  # push:
+  #   branches:
+  #     - 'main'
+  #     - 'staging'
+  #   paths:
+  #     - Lambda/SSGG_UpdateAttendance/*
+  #     - .github/workflows/SSGG_UpdateAttendance.yml
 jobs:
   checkout-package-and-deploy-source:
     name: Package and deploy source code

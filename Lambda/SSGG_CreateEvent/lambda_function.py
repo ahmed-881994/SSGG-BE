@@ -81,12 +81,23 @@ def lambda_handler(event, context):
 
                 cursor.callproc("CreateEvent", args)
                 conn.commit()
-                records = cursor.fetchone()
-                if records:
-                    args = [records.get("event_id")]
+                event_record = cursor.fetchone()
+                if event_record:
+                    args=[]
+                    args.append(body.get("TeamID"))
+                    cursor.callproc("GetTeamMembers",args)
+                    team_members = cursor.fetchall()
+                    for member in team_members:
+                        args=[]
+                        args.append(member.get("member_id"))
+                        args.append(event_record.get("event_id"))
+                        args.append(5)
+                        cursor.callproc("CreateAttendance",args)
+                    conn.commit()
+                    args = [event_record.get("event_id")]
                     cursor.callproc("GetEvent", args)
-                    records = cursor.fetchone()
-                    data = format_records(records)
+                    event_record = cursor.fetchone()
+                    data = format_records(event_record)
                     response = {
                         "isBase64Encoded": False,
                         "statusCode": 201,
@@ -120,3 +131,29 @@ def lambda_handler(event, context):
             conn.commit()
 
     return response
+
+if __name__ == "__main__":
+    import dotenv
+    import uuid
+    import time
+    dotenv.load_dotenv()
+    event = {
+        "body": """{
+            "EventTypeID": 1,
+            "EventName": {
+                "EN": "string",
+                "AR": "string"
+            },
+            "EventLocation": "string",
+            "EventStartDate": "2025-03-12",
+            "EventEndDate": "2025-03-12",
+            "IsMultiTeam": true,
+            "TeamID": 1
+            }""",
+        "requestContext": {
+            "requestId": uuid.uuid4(),
+            "requestTimeEpoch": time.time() * 1000,
+        },
+    }
+    context = None
+    print(lambda_handler(event, context))

@@ -49,10 +49,10 @@ def format_records(records):
     result = {}
     result['EventID'] = records[0].get('event_id')
     result['Attendance'] = []
-    result['AttendanceStateName'] = {}
     for record in records:
         entry = {
             "MemberID": record.get("member_id"),
+            "MemberName":{"EN":record.get("member_name_en"), "AR":record.get("member_name_ar")},
             "AttendanceStateID": record.get("attendance_state_id"),
             "AttendanceStateName":{"EN": record.get("attendance_state_name_en"), "AR": record.get("attendance_state_name_ar")},
         }
@@ -126,7 +126,7 @@ if __name__ == "__main__":
     dotenv.load_dotenv()
     event = {
         "pathParameters": {
-            "eventID": "23",
+            "eventID": "25",
         },
         "requestContext": {
             "requestId": uuid.uuid4(),

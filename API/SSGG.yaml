@@ -1653,6 +1653,13 @@ components:
             properties:
               MemberID:
                 type: string
+              MemberName:
+                type: object
+                properties:
+                  EN:
+                    type: string
+                  AR:
+                    type: string
               AttendanceStateID:
                 type: integer
                 enum:
@@ -1661,3 +1668,10 @@ components:
                   - 3
                   - 4
                   - 5
+              AttendanceStateName:
+                type: object
+                properties:
+                  EN:
+                    type: string
+                  AR:
+                    type: string

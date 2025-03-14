@@ -1,4 +1,4 @@
-name: Update SwaggerUI
+name: Update SwaggerUI Old
 on:
   workflow_dispatch:
   # push:

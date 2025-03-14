@@ -45,12 +45,12 @@ jobs:
       - name: Check for files to commit
         run: |
           if [ -z "$(git status --porcelain)" ]; then
+              echo "No change to Swagger file"
+          else
               git config --global user.name 'GitHub Actions'
               git config --global user.email 'actions@github.com'
               git add .
               git commit -m "Update API definition file"
               git push
-          else
-              echo "There are changes to commit"
           fi
         shell: bash

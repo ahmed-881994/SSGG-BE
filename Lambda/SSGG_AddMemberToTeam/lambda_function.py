@@ -52,7 +52,7 @@ def lambda_handler(event, context):
             try:
                 cursor = conn.cursor()
                 body = json.loads(event["body"])
-                memberID = body.get("Member").get("MemberID")
+                memberID = body.get("MemberID")
                 teamID = event['pathParameters']['teamID']
                 cursor.callproc("GetMember", [memberID])
                 records = cursor.fetchone()
@@ -113,3 +113,25 @@ def lambda_handler(event, context):
             conn.commit()
 
     return response
+
+if __name__ == "__main__":
+    import dotenv
+    import uuid
+    import time
+    dotenv.load_dotenv()
+    event = {
+        "pathParameters": {
+            "teamID": "1",
+        },
+        "body": """{
+                    "MemberID": "S413-02028",
+                    "IsLeader": true,
+                    "FromDate": "2025-03-14"
+                    }""",
+        "requestContext": {
+            "requestId": uuid.uuid4(),
+            "requestTimeEpoch": time.time() * 1000,
+        },
+    }
+    context = None
+    print(lambda_handler(event, context))

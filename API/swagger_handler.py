@@ -14,8 +14,6 @@ response = client.get_export(
     accepts='application/json'
 )
 
-print(response)
-
 # Read the stream to get the raw bytes
 body_bytes = response['body'].read()
 

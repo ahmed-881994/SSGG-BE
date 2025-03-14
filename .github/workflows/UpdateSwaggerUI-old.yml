@@ -1,0 +1,28 @@
+name: Update SwaggerUI Old
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - 'staging'
+  #   paths:
+  #     - SwaggerUI/*
+  #     - API/*
+  #     - .github/workflows/UpdateSwaggerUI.yml
+jobs:
+  checkout-and-upload-swagger:
+    name: Checkout and upload swagger
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Update Swagger bucket
+        run: |
+          aws s3 rm s3://ssgg-swagger/ --recursive
+          aws s3 sync SwaggerUI s3://ssgg-swagger/
+          aws s3 sync API s3://ssgg-swagger/

@@ -40,7 +40,7 @@ jobs:
         run: |
           aws s3 rm s3://ssgg-swagger/ --recursive
           aws s3 sync SwaggerUI s3://ssgg-swagger/
-          aws s3 sync API s3://ssgg-swagger/SSGG.json
+          aws s3 sync API/SSGG.json s3://ssgg-swagger/
 
       - name: Check for files to commit
         run: |

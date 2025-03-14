@@ -8,6 +8,8 @@ on:
       - SwaggerUI/*
       - API/*
       - .github/workflows/UpdateSwaggerUI.yml
+permissions:
+  contents: write
 jobs:
   get-and-update-swagger:
     name: Get and update swagger

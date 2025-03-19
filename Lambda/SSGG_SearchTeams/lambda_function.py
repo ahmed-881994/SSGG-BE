@@ -127,7 +127,8 @@ def lambda_handler(event, context):
                                     'Access-Control-Allow-Methods': '*'},
                     "body": json.dumps({"message": error.args}),
                 }
-            insert_log(cursor, event, response, "SearchTeams")
-            conn.commit()
+            finally:
+                insert_log(cursor, event, response, "SearchTeams")
+                conn.commit()
 
     return response

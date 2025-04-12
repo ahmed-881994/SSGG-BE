@@ -47,26 +47,53 @@ def connect():
 
 def format_records(records):
     result = []
+    
     for record in records:
-        entry={
-            "AttendanceID": record.get('attendance_id'),
-            "MemberID": record.get('member_id'),
-            "MemberNameEN": record.get('name_en'),
-            "MemberNameAR": record.get('name_ar'),
-            "AttendanceStateID": record.get("attendance_state_id"),
-            "AttendanceStateNameEN": record.get("attendance_state_name_en"),
-            "AttendanceStateNameAR": record.get("attendance_state_name_ar"),
-            "EventID": record.get('event_id'),
-            "EventNameEN": record.get('event_id'),
-            "EventNameEN": record.get('event_name_en'),
-            "EventNameAR": record.get('event_name_ar'),
-            "EventStartDate": record.get("event_start_date"),
-            "EventEndDate": record.get("event_end_date"),
-            "EventTypeID": record.get("event_type_id"),
-            "EventTypeNameEN": record.get("event_type_name_en"),
-            "EventTypeNameAR": record.get("event_type_name_ar"),
-        }
-        result.append(entry)
+        # Check if an entry for this member already exists
+        existing_entry = next(
+            (
+                entry
+                for entry in result
+                if entry.get("EventID") == record.get("event_id")
+            ),
+            None,
+        )
+        if existing_entry:
+            # If it exists, append the attendance to the existing entry
+            existing_entry["Attendance"].append({
+                "MemberID": record.get('member_id'),
+                "MemberNameEN": record.get('name_en'),
+                "MemberNameAR": record.get('name_ar'),
+                "AttendanceID": record.get('attendance_id'),
+                "AttendanceStateID": record.get("attendance_state_id"),
+                "AttendanceStateNameEN": record.get("attendance_state_name_en"),
+                "AttendanceStateNameAR": record.get("attendance_state_name_ar")
+            })
+        else:
+            # If it doesn't exist, create a new entry
+            row = {
+                "EventID": record.get('event_id'),
+                "EventNameEN": record.get('event_name_en'),
+                "EventNameAR": record.get('event_name_ar'),
+                "EventStartDate": record.get("event_start_date"),
+                "EventEndDate": record.get("event_end_date"),
+                "EventTypeID": record.get("event_type_id"),
+                "EventTypeNameEN": record.get("event_type_name_en"),
+                "EventTypeNameAR": record.get("event_type_name_ar"),
+                "Attendance": []
+            }
+            # Add attendance details to the new entry
+            row["Attendance"].append({
+                "MemberID": record.get('member_id'),
+                "MemberNameEN": record.get('name_en'),
+                "MemberNameAR": record.get('name_ar'),
+                "AttendanceID": record.get('attendance_id'),
+                "AttendanceStateID": record.get("attendance_state_id"),
+                "AttendanceStateNameEN": record.get("attendance_state_name_en"),
+                "AttendanceStateNameAR": record.get("attendance_state_name_ar")
+            })
+            # Append the new entry to the result list
+        result.append(row)
     return result
 
 
@@ -134,7 +161,7 @@ if __name__ == "__main__":
     dotenv.load_dotenv()
     event = {
         "pathParameters": {
-            "teamID": "g",
+            "teamID": "1",
         },
         "requestContext": {
             "requestId": uuid.uuid4(),

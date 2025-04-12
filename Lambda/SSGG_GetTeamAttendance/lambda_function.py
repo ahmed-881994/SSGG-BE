@@ -93,7 +93,7 @@ def format_records(records):
                 "AttendanceStateNameAR": record.get("attendance_state_name_ar")
             })
             # Append the new entry to the result list
-        result.append(row)
+            result.append(row)
     return result
 
 

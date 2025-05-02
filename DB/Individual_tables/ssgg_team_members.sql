@@ -1,6 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.34, for macos13 (x86_64)
+CREATE DATABASE  IF NOT EXISTS `ssgg` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `ssgg`;
+-- MySQL dump 10.13  Distrib 8.0.40, for macos14 (arm64)
 --
--- Host: 0.0.0.0    Database: ssgg
+-- Host: 127.0.0.1    Database: ssgg
 -- ------------------------------------------------------
 -- Server version	8.0.34
 
@@ -24,25 +26,13 @@ DROP TABLE IF EXISTS `team_members`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `team_members` (
   `member_id` varchar(255) NOT NULL,
-  `team_id` int DEFAULT NULL,
+  `team_id` int NOT NULL,
   `date_from` date DEFAULT NULL,
   `date_to` date DEFAULT NULL,
-  `is_leader` bit(1) NOT NULL DEFAULT b'0',
-  PRIMARY KEY (`member_id`),
-  KEY `team_member_idx` (`team_id`),
-  CONSTRAINT `member_team` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`),
-  CONSTRAINT `team_member` FOREIGN KEY (`team_id`) REFERENCES `teams` (`team_id`)
+  `is_leader` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`member_id`,`team_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `team_members`
---
-
-LOCK TABLES `team_members` WRITE;
-/*!40000 ALTER TABLE `team_members` DISABLE KEYS */;
-/*!40000 ALTER TABLE `team_members` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -53,4 +43,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-26 12:25:05
+-- Dump completed on 2024-10-18 16:35:54

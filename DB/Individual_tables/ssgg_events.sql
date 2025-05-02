@@ -1,6 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.34, for macos13 (x86_64)
+CREATE DATABASE  IF NOT EXISTS `ssgg` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `ssgg`;
+-- MySQL dump 10.13  Distrib 8.0.40, for macos14 (arm64)
 --
--- Host: 0.0.0.0    Database: ssgg
+-- Host: 127.0.0.1    Database: ssgg
 -- ------------------------------------------------------
 -- Server version	8.0.34
 
@@ -23,31 +25,18 @@ DROP TABLE IF EXISTS `events`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `events` (
-  `event_id` int NOT NULL,
+  `event_id` int NOT NULL AUTO_INCREMENT,
   `event_type_id` int NOT NULL,
   `event_name_en` varchar(45) DEFAULT NULL,
   `event_name_ar` varchar(45) DEFAULT NULL,
   `event_location` varchar(45) DEFAULT NULL,
   `event_start_date` date NOT NULL,
   `event_end_date` date DEFAULT NULL,
-  `is_multi_team` bit(1) DEFAULT b'0',
+  `is_multi_team` tinyint(1) DEFAULT '0',
   `team_id` int NOT NULL,
-  PRIMARY KEY (`event_id`),
-  KEY `event_event_type_idx` (`event_type_id`),
-  KEY `event_team_idx` (`team_id`),
-  CONSTRAINT `event_event_type` FOREIGN KEY (`event_type_id`) REFERENCES `event_types` (`event_type_id`),
-  CONSTRAINT `event_team` FOREIGN KEY (`team_id`) REFERENCES `teams` (`team_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  PRIMARY KEY (`event_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `events`
---
-
-LOCK TABLES `events` WRITE;
-/*!40000 ALTER TABLE `events` DISABLE KEYS */;
-/*!40000 ALTER TABLE `events` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -58,4 +47,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-26 12:25:03
+-- Dump completed on 2024-10-18 16:35:54

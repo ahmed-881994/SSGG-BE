@@ -1,6 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.34, for macos13 (x86_64)
+CREATE DATABASE  IF NOT EXISTS `ssgg` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `ssgg`;
+-- MySQL dump 10.13  Distrib 8.0.40, for macos14 (arm64)
 --
--- Host: 0.0.0.0    Database: ssgg
+-- Host: 127.0.0.1    Database: ssgg
 -- ------------------------------------------------------
 -- Server version	8.0.34
 
@@ -27,17 +29,8 @@ CREATE TABLE `attendance_states` (
   `attendance_state_name_en` varchar(45) DEFAULT NULL,
   `attendance_state_name_ar` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`attendance_state_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `attendance_states`
---
-
-LOCK TABLES `attendance_states` WRITE;
-/*!40000 ALTER TABLE `attendance_states` DISABLE KEYS */;
-/*!40000 ALTER TABLE `attendance_states` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -48,4 +41,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-26 12:25:04
+-- Dump completed on 2024-10-18 16:35:54

@@ -1,6 +1,21 @@
+from datetime import datetime
 import json
 import os
 import pymysql.cursors
+
+def insert_log(cursor, event, response, function_name):
+    request_payload = response_payload = {}
+    request_id = event.get('requestContext').get('requestId')
+    request_payload['queryStringParameters'] = event.get("queryStringParameters")
+    request_payload['pathParameters'] = event.get("pathParameters")
+    request_payload['body'] = event.get("body")
+    request_time = datetime.fromtimestamp(event.get('requestContext').get('requestTimeEpoch')/1000).strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
+    response_payload = response
+    response_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
+    status_code = response.get("statusCode")
+    error_message = response.get("body") if response.get("statusCode") != 200 else 'Success'
+    cursor.callproc("InsertLogs", [request_id, function_name, json.dumps(request_payload), request_time, json.dumps(response_payload), response_time, status_code, error_message])
+    return
 
 def connect():
     try:
@@ -8,101 +23,148 @@ def connect():
         cursor = pymysql.cursors.DictCursor
         conn = pymysql.connect(
             host=os.environ.get("host"),
-            port=int(os.environ.get("port")),
-            database=os.environ.get("database"),
-            user=os.environ.get("username"),
-            password=os.environ.get("password"),
+            port=int(os.environ["port"]),
+            database=os.environ["database"],
+            user=os.environ["username"],
+            password=os.environ["password"],
             cursorclass=cursor,
         )
         response = None
     except Exception as error:
-        print(error)
         conn = None
         response = {
             "isBase64Encoded": False,
             "statusCode": 500,
-            "headers": {"Content-Type": "application/json"},
-            "body": json.dumps({"message": "Couldn't reach the database"}),
+            "headers": {"Content-Type": "application/json",
+                                    'Access-Control-Allow-Headers': '*',
+                                    'Access-Control-Allow-Origin': '*',
+                                    'Access-Control-Allow-Methods': '*'},
+            "body": json.dumps({"message": error.args[1]}),
         }
     return conn, response
 
-def format_record(records):
-    data = {}
-    data['MemberID'] = records['member_id']
-    
-    field_mappings = {
-        'Name': {'EN': 'name_en', 'AR': 'name_ar'},
-        'TeamID': 'team_id',
-        'TeamName': {'EN': 'team_name_en', 'AR': 'team_name_ar'},
-        'PlaceOfBirth': 'place_of_birth',
-        'DateOfBirth': 'date_of_birth',
-        'Address': 'address',
-        'NationalIdNo': 'national_id_no',
-        'ClubIdNo': 'club_id_no',
-        'PassportNo': 'passport_no',
-        'DateJoined': 'date_joined',
-        'MobileNo': 'mobile_number',
-        'HomeContact': 'home_contact',
-        'Email': 'email',
-        'FacebookURL': 'facebook_url',
-        'SchoolName': 'school_name',
-        'EducationType': 'education_type',
-        'FatherName': 'father_name',
-        'FatherContact': 'father_contact',
-        'FatherJob': 'father_job',
-        'MotherName': 'mother_name',
-        'MotherContact': 'mother_contact',
-        'MotherJob': 'mother_job',
-        'GuardianName': 'guardian_name',
-        'GuardianContact': 'guardian_contact',
-        'GuardianRelationship': 'guardian_relationship',
-        'Hobbies': 'hobbies',
-        'HealthIssues': 'health_issues',
-        'Medications': 'medications',
-        'QRCodeURL': 'qr_code_url',
-        'ImageURL': 'image_url',
-        'NationalIdURL': 'national_id_url',
-        'ParentNationalIdURL': 'parent_national_id_url',
-        'ClubIdURL': 'club_id_url',
-        'PassportURL': 'passport_url',
-        'BirthCertificateURL': 'birth_certificate_url',
-        'PhotoConsent': 'photo_consent',
-        'ConditionsConsent': 'conditions_consent'
+
+def format_records(records):
+    formatted_entry = {
+        "MemberID": records[0].get("member_id"),
+        "Name": {
+            "EN": records[0].get("name_en"),
+            "AR": records[0].get("name_ar"),
+        },
+        "Teams": [],
+        "PlaceOfBirth": records[0].get("place_of_birth"),
+        "DateOfBirth": records[0].get("date_of_birth"),
+        "Address": records[0].get("address"),
+        "NationalIdNo": records[0].get("national_id_no"),
+        "ClubIdNo": records[0].get("club_id_no"),
+        "PassportNo": records[0].get("passport_no"),
+        "DateJoined": records[0].get("date_joined"),
+        "MobileNo": records[0].get("mobile_number"),
+        "HomeContact": records[0].get("home_contact"),
+        "Email": records[0].get("email"),
+        "FacebookURL": records[0].get("facebook_url"),
+        "SchoolName": records[0].get("school_name"),
+        "EducationType": records[0].get("education_type"),
+        "FatherName": records[0].get("father_name"),
+        "FatherContact": records[0].get("father_contact"),
+        "FatherJob": records[0].get("father_job"),
+        "MotherName": records[0].get("mother_name"),
+        "MotherContact": records[0].get("mother_contact"),
+        "MotherJob": records[0].get("mother_job"),
+        "GuardianName": records[0].get("guardian_name"),
+        "GuardianContact": records[0].get("guardian_contact"),
+        "GuardianRelationship": records[0].get("guardian_relationship"),
+        "Hobbies": records[0].get("hobbies"),
+        "HealthIssues": records[0].get("health_issues"),
+        "Medications": records[0].get("medications"),
+        "QRCodeURL": records[0].get("qr_code_url"),
+        "ImageURL": records[0].get("image_url"),
+        "NationalIdURL": records[0].get("national_id_url"),
+        "ParentNationalIdURL": records[0].get("parent_national_id_url"),
+        "ClubIdURL": records[0].get("club_id_url"),
+        "PassportURL": records[0].get("passport_url"),
+        "BirthCertificateURL": records[0].get("birth_certificate_url"),
+        "PhotoConsent": True if records[0].get("photo_consent") == 1 else False,
+        "ConditionsConsent": True if records[0].get("conditions_consent") == 1 else False,
     }
-    
-    for key, value in field_mappings.items():
-        if isinstance(value, str):
-            data[key] = records[value]
-        else:
-            data[key] = {
-                lang: records[field] for lang, field in value.items()
-            }
-    
-    return data
+
+    for record in records:
+        team_entry = {
+            "TeamID": record.get("team_id"),
+            "IsTeamLeader": True if record.get("is_leader") == 1 else False,
+            "DateJoined": record.get("team_join_date"),
+            "DateTransferred": record.get("team_transfer_date"),
+            "IsCurrentTeam": True if record.get("team_transfer_date") is None and record.get("is_leader") == 0 else False,
+            "TeamName": {
+                "EN": record.get("team_name_en"),
+                "AR": record.get("team_name_ar"),
+            },
+        }
+        formatted_entry["Teams"].append(team_entry)
+
+    return formatted_entry
+
 
 def lambda_handler(event, context):
     conn, response = connect()
-    
-    if response is None:
-        with conn.cursor() as cursor:
-            memberID = event['pathParameters']['memberID']
-            cursor.callproc("GetMember", [memberID])
-            records = cursor.fetchone()
-            
-            if records is not None:
-                data = format_record(records)
+
+    if conn is not None:
+        with conn as conn:
+            try:
+                cursor = conn.cursor()
+                memberID = event["pathParameters"].get("memberID")
+                cursor.callproc("GetMember", [memberID])
+                records = cursor.fetchall()
+
+                if records:
+                    data = format_records(records)
+                    response = {
+                        "isBase64Encoded": False,
+                        "statusCode": 200,
+                        "headers": {"Content-Type": "application/json",
+                                    'Access-Control-Allow-Headers': '*',
+                                    'Access-Control-Allow-Origin': '*',
+                                    'Access-Control-Allow-Methods': '*'},
+                        "body": json.dumps(data, default=str),
+                    }
+                else:
+                    response = {
+                        "isBase64Encoded": False,
+                        "statusCode": 404,
+                        "headers": {"Content-Type": "application/json",
+                                    'Access-Control-Allow-Headers': '*',
+                                    'Access-Control-Allow-Origin': '*',
+                                    'Access-Control-Allow-Methods': '*'},
+                        "body": json.dumps({"message": "Member not found"}),
+                    }
+            except Exception as error:
                 response = {
                     "isBase64Encoded": False,
-                    "statusCode": 200,
-                    "headers": {"Content-Type": "application/json"},
-                    "body": json.dumps(data, default=str),
+                    "statusCode": 500,
+                    "headers": {"Content-Type": "application/json",
+                                    'Access-Control-Allow-Headers': '*',
+                                    'Access-Control-Allow-Origin': '*',
+                                    'Access-Control-Allow-Methods': '*'},
+                    "body": json.dumps({"message": error.args[1]}),
                 }
-            else:
-                response = {
-                    "isBase64Encoded": False,
-                    "statusCode": 404,
-                    "headers": {"Content-Type": "application/json"},
-                    "body": json.dumps({"message": "Member not found"}),
-                }
-    
+            finally:
+                insert_log(cursor, event, response, "GetMember")
+                conn.commit()
     return response
+
+if __name__ == "__main__":
+    import dotenv
+    import uuid
+    import time
+    dotenv.load_dotenv()
+    event = {
+        "pathParameters": {
+            "memberID": "s123",
+        },
+        "requestContext": {
+            "requestId": uuid.uuid4(),
+            "requestTimeEpoch": time.time() * 1000,
+        },
+    }
+    context = None
+    print(lambda_handler(event, context))

@@ -1,6 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.34, for macos13 (x86_64)
+CREATE DATABASE  IF NOT EXISTS `ssgg` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `ssgg`;
+-- MySQL dump 10.13  Distrib 8.0.40, for macos14 (arm64)
 --
--- Host: 0.0.0.0    Database: ssgg
+-- Host: 127.0.0.1    Database: ssgg
 -- ------------------------------------------------------
 -- Server version	8.0.34
 
@@ -28,23 +30,9 @@ CREATE TABLE `stages` (
   `stage_name_ar` varchar(255) DEFAULT NULL,
   `age_group_id` int DEFAULT NULL,
   `gender_group_id` int DEFAULT NULL,
-  PRIMARY KEY (`stage_id`),
-  KEY `stage_age_group_idx` (`age_group_id`),
-  KEY `stage_gender_group_idx` (`gender_group_id`),
-  CONSTRAINT `stage_age_group` FOREIGN KEY (`age_group_id`) REFERENCES `age_groups` (`age_group_id`),
-  CONSTRAINT `stage_gender_group` FOREIGN KEY (`gender_group_id`) REFERENCES `gender_groups` (`gender_group_id`)
+  PRIMARY KEY (`stage_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `stages`
---
-
-LOCK TABLES `stages` WRITE;
-/*!40000 ALTER TABLE `stages` DISABLE KEYS */;
-INSERT INTO `stages` VALUES (1,'Smurfs','السنافر',NULL,NULL),(2,'Cubs','الاشبال',NULL,NULL),(3,'Scouts','الكشافة',NULL,NULL),(4,'Advanced Scouts','المتقدم',NULL,NULL),(5,'Rovers','الجوالة',NULL,NULL),(6,'Pres Janet','البراعم',NULL,NULL),(7,'Janet','الزهرات',NULL,NULL),(8,'Guides','المرشدات',NULL,NULL),(9,'Guideannes','المتقدمات',NULL,NULL),(10,'Routier','الجوالات',NULL,NULL);
-/*!40000 ALTER TABLE `stages` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -55,4 +43,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-26 12:25:05
+-- Dump completed on 2024-10-18 16:35:54

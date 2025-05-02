@@ -1,0 +1,56 @@
+name: Update SwaggerUI
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'staging'
+    paths:
+      - SwaggerUI/*
+      - API/*
+      - .github/workflows/UpdateSwaggerUI.yml
+permissions:
+  contents: write
+jobs:
+  get-and-update-swagger:
+    name: Get and update swagger
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Script
+        run: python API/swagger_handler.py
+      
+      - name: Update Swagger bucket
+        run: |
+          aws s3 rm s3://ssgg-swagger/ --recursive
+          aws s3 sync SwaggerUI s3://ssgg-swagger/
+          aws s3 sync API s3://ssgg-swagger/ --exclude "*.py" --exclude "*.yaml"
+
+      - name: Check for files to commit
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+              echo "No change to Swagger file"
+          else
+              git config --global user.name 'GitHub Actions'
+              git config --global user.email 'actions@github.com'
+              git add .
+              git commit -m "Update API definition file"
+              git push
+          fi
+        shell: bash

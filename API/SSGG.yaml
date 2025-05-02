@@ -1,12 +1,15 @@
-openapi: "3.0.2"
+openapi: 3.0.2
 info:
   title: SSGG
   version: "1.0"
-  description: This is the documentation for the backend APIs for the Sporting Scouts and Girl Guides members management app
+  description: This is the documentation for the backend APIs for the Sporting
+    Scouts and Girl Guides members management app
   contact:
-    email: ssgdts@gmail.com
+    email: ssgdtc@gmail.com
 servers:
-  - url: https://api.server.test/v1
+  - url: https://bqxf5y910f.execute-api.eu-north-1.amazonaws.com/stg
+security:
+  - cognito: []
 tags:
   - name: Members
     description: Everything about members
@@ -14,7 +17,110 @@ tags:
     description: Everything about teams
   - name: Events
     description: Everything about events
+  - name: Lookups
+    description: Everything about Lookups
 paths:
+  /members:
+    get:
+      tags:
+        - Members
+      operationId: searchMembers
+      description: Search members by (Name, Team)
+      parameters:
+        - in: query
+          name: teamID
+          required: false
+          schema:
+            type: integer
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+              - 6
+              - 7
+              - 8
+              - 9
+              - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              - 16
+              - 17
+              - 18
+          description: The team id
+        - in: query
+          name: name
+          required: false
+          schema:
+            type: string
+          description: The member's name
+      responses:
+        "200":
+          description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/members"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Member not found
+        "500":
+          description: Internal Server Error
+    post:
+      tags:
+        - Members
+      operationId: addMember
+      description: Adds a new member
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/memberAdd"
+      responses:
+        "201":
+          description: member added
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/member"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+    options:
+      tags:
+        - Members
+      responses:
+        "200":
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content: {}
   /members/{memberID}:
     get:
       tags:
@@ -31,6 +137,10 @@ paths:
       responses:
         "200":
           description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
           content:
             application/json:
               schema:
@@ -41,6 +151,8 @@ paths:
           description: Unauthorized
         "404":
           description: Member not found
+        "500":
+          description: Internal Server Error
     patch:
       tags:
         - Members
@@ -57,10 +169,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/member"
+              $ref: "#/components/schemas/memberUpdate"
       responses:
         "200":
-          description: member created
+          description: member updated
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
           content:
             application/json:
               schema:
@@ -71,62 +187,229 @@ paths:
           description: Unauthorized
         "404":
           description: Member not found
-  /members:
+        "500":
+          description: Internal Server Error
+    options:
+      tags:
+        - Members
+      parameters:
+        - name: memberID
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content: {}
+  /members/{memberID}/attendance:
+    options:
+      tags:
+        - Members
+      parameters:
+        - name: memberID
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content: {}
     get:
       tags:
         - Members
-      operationId: searchMembers
-      description: Search members by (Name, Team)
+      operationId: getMemberAttendance
+      description: Gets member attendance by ID
+      parameters:
+        - in: path
+          name: memberID
+          required: true
+          schema:
+            type: string
+          description: The member ID
+      responses:
+        "200":
+          description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/memberAttendance"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Member or Attendance not found
+        "500":
+          description: Internal Server Error
+  /events:
+    options:
+      tags:
+        - Events
+      responses:
+        "200":
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content: {}
+    get:
+      tags:
+        - Events
+      operationId: searchEvents
+      description: Search events by (Name, Team, Start and End dates)
       parameters:
         - in: query
           name: teamID
           required: false
           schema:
             type: integer
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+              - 6
+              - 7
+              - 8
+              - 9
+              - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              - 16
+              - 17
+              - 18
           description: The team id
         - in: query
           name: name
           required: false
           schema:
             type: string
-          description: The member's name
+          description: The event name
+        - in: query
+          name: startDate
+          required: false
+          schema:
+            type: string
+            format: date
+          description: The event's start date
+        - in: query
+          name: endDate
+          required: false
+          schema:
+            type: string
+            format: date
+          description: The event's end date
       responses:
         "200":
           description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/members"
+                $ref: "#/components/schemas/events"
         "400":
           description: Bad request
         "401":
           description: Unauthorized
         "404":
-          description: Member not found
+          description: Event not found
+        "500":
+          description: Internal Server Error
     post:
       tags:
-        - Members
-      operationId: addMember
-      description: Adds a new member
+        - Events
+      operationId: createEvent
+      description: Creates a new event
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/member"
+              $ref: "#/components/schemas/updateEvent"
       responses:
         "201":
-          description: member added
+          description: Event created
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/member"
+                $ref: "#/components/schemas/getEvent"
         "400":
           description: Bad request
         "401":
           description: Unauthorized
+        "500":
+          description: Internal Server Error
   /events/{eventID}:
+    options:
+      tags:
+        - Events
+      parameters:
+        - in: path
+          name: eventID
+          required: true
+          schema:
+            type: integer
+          description: The event ID
+      responses:
+        "200":
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content: {}
     get:
-      description: "get"
+      operationId: getEvent
+      description: Gets event by ID
       tags:
         - Events
       parameters:
@@ -139,16 +422,22 @@ paths:
       responses:
         "200":
           description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/event"
+                $ref: "#/components/schemas/getEvent"
         "400":
           description: Bad request
         "401":
           description: Unauthorized
         "404":
           description: Event not found
+        "500":
+          description: Internal Server Error
     patch:
       tags:
         - Events
@@ -165,143 +454,166 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/event"
+              $ref: "#/components/schemas/updateEvent"
       responses:
         "200":
-          description: member created
-          content:
-            application/json:
+          description: event updated
+          headers:
+            Access-Control-Allow-Origin:
               schema:
-                $ref: "#/components/schemas/event"
+                type: string
         "400":
           description: Bad request
         "401":
           description: Unauthorized
         "404":
           description: Event not found
-  /events:
-    get:
+        "500":
+          description: Internal Server Error
+  /events/{eventID}/attendance:
+    options:
       tags:
         - Events
-      operationId: searchEvents
-      description: Search events by (Name, Team, Start and End dates)
       parameters:
-        - in: query
-          name: teamID
-          required: false
+        - in: path
+          name: eventID
+          required: true
           schema:
             type: integer
-          description: The team id
-        - in: query
-          name: name
-          required: false
-          schema:
-            type: string
-          description: The event name
-        - in: query
-          name: startDate
-          required: false
-          schema:
-            type: string
-          description: The event's start date
-        - in: query
-          name: endDate
-          required: false
-          schema:
-            type: string
-          description: The event's end date
+          description: The event ID
       responses:
         "200":
-          description: OK
-          content:
-            application/json:
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
               schema:
-                $ref: "#/components/schemas/events"
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content: {}
+    post:
+      tags:
+        - Events
+      deprecated: true
+      operationId: takeAttendance
+      description: Records members attendance in an event
+      parameters:
+        - in: path
+          name: eventID
+          required: true
+          schema:
+            type: integer
+          description: The event ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/takeEventAttendance"
+      responses:
+        "200":
+          description: attendance taken
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
         "400":
           description: Bad request
         "401":
           description: Unauthorized
         "404":
           description: Event not found
-    post:
+        "500":
+          description: Internal Server Error
+    patch:
       tags:
         - Events
-      operationId: createEvent
-      description: Creates a new event
+      operationId: updateAttendance
+      description: Records members attendance in an event
+      parameters:
+        - in: path
+          name: eventID
+          required: true
+          schema:
+            type: integer
+          description: The event ID
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/event"
+              $ref: "#/components/schemas/takeEventAttendance"
       responses:
-        "201":
-          description: Event created
-          content:
-            application/json:
+        "200":
+          description: attendance updated
+          headers:
+            Access-Control-Allow-Origin:
               schema:
-                $ref: "#/components/schemas/event"
+                type: string
         "400":
           description: Bad request
         "401":
           description: Unauthorized
-  /teams/{teamID}/members:
+        "404":
+          description: Event not found
+        "500":
+          description: Internal Server Error
     get:
       tags:
-        - Teams
-      operationId: getTeamMembers
-      description: Get team members by team ID
+        - Events
+      operationId: getEventAttendance
+      description: Gets the attendance list of an event
       parameters:
         - in: path
-          name: teamID
+          name: eventID
           required: true
           schema:
             type: integer
-          description: The team ID
+          description: The event ID
       responses:
         "200":
-          description: OK
+          description: Success
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/team"
+                $ref: "#/components/schemas/getEventAttendance"
         "400":
           description: Bad request
         "401":
           description: Unauthorized
         "404":
-          description: Team not found
-    post:
-      tags:
-        - Teams
-      operationId: addTeamMembers
-      description: Add member to a team
-      parameters:
-        - in: path
-          name: teamID
-          required: true
-          schema:
-            type: integer
-          description: The team ID
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/teamMember"
-      responses:
-        "200":
-          description: Member added
-        "400":
-          description: Bad request
-        "401":
-          description: Unauthorized
-        "404":
-          description: Team not found
+          description: Event or Member not found
+        "500":
+          description: Internal Server Error
   /teams:
+    options:
+      tags:
+        - Teams
+      responses:
+        "200":
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content: {}
     get:
       tags:
         - Teams
       operationId: searchTeams
-      description: Search teams by (LeaderID, StageID)
+      description: Search teams by (TeamName, LeaderID, StageID)
       parameters:
         - in: query
           name: leaderID
@@ -315,9 +627,19 @@ paths:
           schema:
             type: integer
           description: The stage id
+        - in: query
+          name: teamName
+          required: false
+          schema:
+            type: string
+          description: The team name
       responses:
         "200":
           description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
           content:
             application/json:
               schema:
@@ -328,9 +650,392 @@ paths:
           description: Unauthorized
         "404":
           description: Team not found
-
+        "500":
+          description: Internal Server Error
+  /teams/{teamID}/members:
+    options:
+      tags:
+        - Teams
+      parameters:
+        - in: path
+          name: teamID
+          required: true
+          schema:
+            type: integer
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+              - 6
+              - 7
+              - 8
+              - 9
+              - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              - 16
+              - 17
+              - 18
+          description: The team ID
+      responses:
+        "200":
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content: {}
+    get:
+      tags:
+        - Teams
+      operationId: getTeamMembers
+      description: Get team members by team ID
+      parameters:
+        - in: path
+          name: teamID
+          required: true
+          schema:
+            type: integer
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+              - 6
+              - 7
+              - 8
+              - 9
+              - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              - 16
+              - 17
+              - 18
+          description: The team ID
+      responses:
+        "200":
+          description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/team"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Team not found
+        "500":
+          description: Internal Server Error
+    post:
+      tags:
+        - Teams
+      operationId: addTeamMembers
+      description: Add member to a team
+      parameters:
+        - in: path
+          name: teamID
+          required: true
+          schema:
+            type: integer
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+              - 6
+              - 7
+              - 8
+              - 9
+              - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              - 16
+              - 17
+              - 18
+          description: The team ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/teamMemberAdd"
+      responses:
+        "200":
+          description: Member added
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Team not found
+        "500":
+          description: Internal Server Error
+  /teams/{teamID}/attendance:
+    options:
+      tags:
+        - Teams
+      parameters:
+        - in: path
+          name: teamID
+          required: true
+          schema:
+            type: integer
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+              - 6
+              - 7
+              - 8
+              - 9
+              - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              - 16
+              - 17
+              - 18
+          description: The team ID
+      responses:
+        "200":
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content: {}
+    get:
+      tags:
+        - Teams
+      operationId: getTeamAttendance
+      description: Get team attendance by team ID
+      parameters:
+        - in: path
+          name: teamID
+          required: true
+          schema:
+            type: integer
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+              - 6
+              - 7
+              - 8
+              - 9
+              - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              - 16
+              - 17
+              - 18
+          description: The team ID
+      responses:
+        "200":
+          description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/teamAttendance"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Team not found
+        "500":
+          description: Internal Server Error
+  /teams/transfer:
+    options:
+      tags:
+        - Teams
+      responses:
+        "200":
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content: {}
+    post:
+      tags:
+        - Teams
+      operationId: transferTeam
+      description: Transfer member between teams
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/teamMemberTransfer"
+      responses:
+        "200":
+          description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Team not found
+        "500":
+          description: Internal Server Error
+  /lookups:
+    options:
+      tags:
+        - Lookups
+      operationId: getLookups
+      description: Gets all lookups
+      responses:
+        "200":
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content: {}
+    get:
+      tags:
+        - Lookups
+      responses:
+        "200":
+          description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/lookups"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Team not found
+        "500":
+          description: Internal Server Error
 components:
+  securitySchemes:
+    cognito:
+      type: oauth2
+      x-tokenName: id_token
+      flows:
+        authorizationCode:
+          authorizationUrl: https://ssgg-dev.auth.eu-north-1.amazoncognito.com/oauth2/authorize
+          tokenUrl: https://ssgg-dev.auth.eu-north-1.amazoncognito.com/oauth2/token
+          refreshUrl: https://ssgg-dev.auth.eu-north-1.amazoncognito.com/oauth2/token
+          scopes: {}
   schemas:
+    memberAttendance:
+      type: array
+      items:
+        type: object
+        properties:
+          EventID:
+            type: integer
+          EventNameEN:
+            type: string
+          EventNameAR:
+            type: string
+          EventStartDate:
+            type: string
+            format: date
+          EventEndDate:
+            type: string
+            format: date
+          EventTypeNameEN:
+            type: string
+          EventTypeNameAR:
+            type: string
+          AttendanceStateNameEN:
+            type: string
+          AttendanceStateNameAR:
+            type: string
+    lookups:
+      type: array
+      items:
+        type: object
+        properties:
+          LookupName:
+            type: string
+          Description:
+            type: string
+          LookupValues:
+            type: array
+            items:
+              type: object
+              properties:
+                LookupID:
+                  type: integer
+                LookupValue:
+                  type: object
+                  properties:
+                    EN:
+                      type: string
+                    AR:
+                      type: string
     member:
       type: object
       properties:
@@ -343,15 +1048,48 @@ components:
               type: string
             AR:
               type: string
-        TeamID:
-          type: integer
-        TeamName:
-          type: object
-          properties:
-            EN:
-              type: string
-            AR:
-              type: string
+        Teams:
+          type: array
+          items:
+            properties:
+              TeamID:
+                type: integer
+                enum:
+                  - 1
+                  - 2
+                  - 3
+                  - 4
+                  - 5
+                  - 6
+                  - 7
+                  - 8
+                  - 9
+                  - 10
+                  - 11
+                  - 12
+                  - 13
+                  - 14
+                  - 15
+                  - 16
+                  - 17
+                  - 18
+              IsTeamLeader:
+                type: boolean
+              DateJoined: 
+                type: string
+                format: date
+              DateTransferred: 
+                type: string
+                format: date
+              IsCurrentTeam:
+                type: boolean
+              TeamName:
+                type: object
+                properties:
+                  EN:
+                    type: string
+                  AR:
+                    type: string
         PlaceOfBirth:
           type: string
         DateOfBirth:
@@ -360,9 +1098,9 @@ components:
         Address:
           type: string
         NationalIdNo:
-          type: integer
+          type: string
         ClubIdNo:
-          type: integer
+          type: string
         PassportNo:
           type: string
         DateJoined:
@@ -428,19 +1166,198 @@ components:
           type: string
           format: uri
         PhotoConsent:
-          type: integer
+          type: boolean
         ConditionsConsent:
-          type: integer
-
+          type: boolean
+    memberAdd:
+      type: object
+      properties:
+        MemberID:
+          type: string
+        Name:
+          type: object
+          properties:
+            EN:
+              type: string
+            AR:
+              type: string
+        PlaceOfBirth:
+          type: string
+        DateOfBirth:
+          type: string
+          format: date
+        Address:
+          type: string
+        NationalIdNo:
+          type: string
+        ClubIdNo:
+          type: string
+        PassportNo:
+          type: string
+        DateJoined:
+          type: string
+          format: date
+        MobileNo:
+          type: string
+        HomeContact:
+          type: string
+        Email:
+          type: string
+          format: email
+        FacebookURL:
+          type: string
+          format: uri
+        SchoolName:
+          type: string
+        EducationType:
+          type: string
+        FatherName:
+          type: string
+        FatherContact:
+          type: string
+        FatherJob:
+          type: string
+        MotherName:
+          type: string
+        MotherContact:
+          type: string
+        MotherJob:
+          type: string
+        GuardianName:
+          type: string
+        GuardianContact:
+          type: string
+        GuardianRelationship:
+          type: string
+        Hobbies:
+          type: string
+        HealthIssues:
+          type: string
+        Medications:
+          type: string
+        QRCodeURL:
+          type: string
+          format: uri
+        ImageURL:
+          type: string
+          format: uri
+        NationalIdURL:
+          type: string
+          format: uri
+        ParentNationalIdURL:
+          type: string
+          format: uri
+        ClubIdURL:
+          type: string
+          format: uri
+        PassportURL:
+          type: string
+          format: uri
+        BirthCertificateURL:
+          type: string
+          format: uri
+        PhotoConsent:
+          type: boolean
+        ConditionsConsent:
+          type: boolean
+    memberUpdate:
+      type: object
+      properties:
+        Name:
+          type: object
+          properties:
+            EN:
+              type: string
+            AR:
+              type: string
+        PlaceOfBirth:
+          type: string
+        DateOfBirth:
+          type: string
+          format: date
+        Address:
+          type: string
+        NationalIdNo:
+          type: string
+        ClubIdNo:
+          type: string
+        PassportNo:
+          type: string
+        DateJoined:
+          type: string
+          format: date
+        MobileNo:
+          type: string
+        HomeContact:
+          type: string
+        Email:
+          type: string
+          format: email
+        FacebookURL:
+          type: string
+          format: uri
+        SchoolName:
+          type: string
+        EducationType:
+          type: string
+        FatherName:
+          type: string
+        FatherContact:
+          type: string
+        FatherJob:
+          type: string
+        MotherName:
+          type: string
+        MotherContact:
+          type: string
+        MotherJob:
+          type: string
+        GuardianName:
+          type: string
+        GuardianContact:
+          type: string
+        GuardianRelationship:
+          type: string
+        Hobbies:
+          type: string
+        HealthIssues:
+          type: string
+        Medications:
+          type: string
+        QRCodeURL:
+          type: string
+          format: uri
+        ImageURL:
+          type: string
+          format: uri
+        NationalIdURL:
+          type: string
+          format: uri
+        ParentNationalIdURL:
+          type: string
+          format: uri
+        ClubIdURL:
+          type: string
+          format: uri
+        PassportURL:
+          type: string
+          format: uri
+        BirthCertificateURL:
+          type: string
+          format: uri
+        PhotoConsent:
+          type: boolean
+        ConditionsConsent:
+          type: boolean
     members:
       type: array
       items:
         $ref: "#/components/schemas/member"
-    event:
+    updateEvent:
       type: object
       properties:
-        EventType:
-          type: string
+        EventTypeID:
+          type: integer
         EventName:
           type: object
           properties:
@@ -460,15 +1377,143 @@ components:
           type: boolean
         TeamID:
           type: integer
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+            - 8
+            - 9
+            - 10
+    getEvent:
+      type: object
+      properties:
+        EventID:
+          type: integer
+        EventTypeID:
+          type: integer
+        Name:
+          type: object
+          properties:
+            EN:
+              type: string
+            AR:
+              type: string
+        Location:
+          type: string
+        StartDate:
+          type: string
+          format: date
+        EndDate:
+          type: string
+          format: date
+        IsMultiTeam:
+          type: boolean
+        TeamID:
+          type: integer
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+            - 8
+            - 9
+            - 10
+            - 11
+            - 12
+            - 13
+            - 14
+            - 15
+            - 16
+            - 17
+            - 18
     events:
       type: array
       items:
-        $ref: "#/components/schemas/event"
+        $ref: "#/components/schemas/getEvent"
     team:
       type: object
       properties:
         TeamID:
           type: integer
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+            - 8
+            - 9
+            - 10
+            - 11
+            - 12
+            - 13
+            - 14
+            - 15
+            - 16
+            - 17
+            - 18
+        TeamName:
+          type: object
+          properties:
+            EN:
+              type: string
+            AR:
+              type: string
+        StageID:
+          type: integer
+        StageName:
+          type: object
+          properties:
+            EN:
+              type: string
+            AR:
+              type: string
+        Leaders:
+          type: array
+          items:
+            properties:
+              MemberID:
+                type: string
+              Name:
+                type: object
+                properties:
+                  EN:
+                    type: string
+                  AR:
+                    type: string
+    teamAttendance:
+      type: object
+      properties:
+        TeamID:
+          type: integer
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+            - 8
+            - 9
+            - 10
+            - 11
+            - 12
+            - 13
+            - 14
+            - 15
+            - 16
+            - 17
+            - 18
         TeamName:
           type: object
           properties:
@@ -511,9 +1556,68 @@ components:
                     type: string
                   AR:
                     type: string
-    teamMember:
+    teamMemberAdd:
       type: object
       properties:
+        MemberID:
+          type: string
+        IsLeader:
+          type: boolean
+        FromDate:
+          type: string
+          format: date
+    teams:
+      type: array
+      items:
+        $ref: "#/components/schemas/team"
+    teamMemberTransfer:
+      type: object
+      properties:
+        FromTeamID:
+          type: integer
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+            - 8
+            - 9
+            - 10
+            - 11
+            - 12
+            - 13
+            - 14
+            - 15
+            - 16
+            - 17
+            - 18
+        ToTeamID:
+          type: integer
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+            - 8
+            - 9
+            - 10
+            - 11
+            - 12
+            - 13
+            - 14
+            - 15
+            - 16
+            - 17
+            - 18
+        TransferDate:
+          type: string
+          format: date
         Member:
           type: object
           properties:
@@ -521,7 +1625,53 @@ components:
               type: string
             IsLeader:
               type: boolean
-    teams:
-      type: array
-      items:
-        $ref: "#/components/schemas/team"
+    takeEventAttendance:
+      type: object
+      properties:
+        Attendance:
+          type: array
+          items:
+            properties:
+              MemberID:
+                type: string
+              AttendanceStateID:
+                type: integer
+                enum:
+                  - 1
+                  - 2
+                  - 3
+                  - 4
+                  - 5
+    getEventAttendance:
+      type: object
+      properties:
+        EventID:
+          type: integer
+        Attendance:
+          type: array
+          items:
+            properties:
+              MemberID:
+                type: string
+              MemberName:
+                type: object
+                properties:
+                  EN:
+                    type: string
+                  AR:
+                    type: string
+              AttendanceStateID:
+                type: integer
+                enum:
+                  - 1
+                  - 2
+                  - 3
+                  - 4
+                  - 5
+              AttendanceStateName:
+                type: object
+                properties:
+                  EN:
+                    type: string
+                  AR:
+                    type: string

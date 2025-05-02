@@ -1,6 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.34, for macos13 (x86_64)
+CREATE DATABASE  IF NOT EXISTS `ssgg` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `ssgg`;
+-- MySQL dump 10.13  Distrib 8.0.40, for macos14 (arm64)
 --
--- Host: 0.0.0.0    Database: ssgg
+-- Host: 127.0.0.1    Database: ssgg
 -- ------------------------------------------------------
 -- Server version	8.0.34
 
@@ -27,21 +29,9 @@ CREATE TABLE `teams` (
   `team_name_en` varchar(255) DEFAULT NULL,
   `team_name_ar` varchar(255) DEFAULT NULL,
   `stage_id` int DEFAULT NULL,
-  PRIMARY KEY (`team_id`),
-  KEY `team_stage_idx` (`stage_id`),
-  CONSTRAINT `team_stage` FOREIGN KEY (`stage_id`) REFERENCES `stages` (`stage_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb3;
+  PRIMARY KEY (`team_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `teams`
---
-
-LOCK TABLES `teams` WRITE;
-/*!40000 ALTER TABLE `teams` DISABLE KEYS */;
-INSERT INTO `teams` VALUES (1,'Bagera','باجيرا',1),(2,'Raksha','راكشا',1),(3,'Medterranean Sea','بحر متوسط',2),(4,'Red Sea','بحر احمر',2),(5,'Atlantic','اطلنطي',3),(6,'Pacific','هادي',3),(7,'Advanced Scouts','المتقدم',4),(8,'Rovers','الجوالة',5),(9,'Pres janet','',6),(10,'Sunflowers','',7),(11,'Daisy','',7),(12,'Rose','',7),(13,'Guides','',8),(14,'Guideannes','',9),(15,'Routierers','',10);
-/*!40000 ALTER TABLE `teams` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -52,4 +42,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-26 12:25:06
+-- Dump completed on 2024-10-18 16:35:54

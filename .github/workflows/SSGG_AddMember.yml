@@ -68,6 +68,6 @@ jobs:
           aws lambda update-function-configuration \
             --function-name $lambda_name \
             --timeout 60 \
-            --environment "Variables={database="${{ secrets.DATABASE }}",host="${{ secrets.HOST }}",password="${{ secrets.PASSWORD }}",port="${{ secrets.PORT }}",username="${{ secrets.USERNAME }}"}" \
+            --environment "Variables={database=${{ secrets.DATABASE }},host=${{ secrets.HOST }},password=${{ secrets.PASSWORD }},port=${{ secrets.PORT }},username=${{ secrets.USERNAME }}}" \
             --runtime python3.11
       

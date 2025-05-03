@@ -55,7 +55,7 @@ jobs:
             --timeout 60 \
             --architectures arm64 \
             --zip-file fileb://${{ steps.set-service-name.outputs.service_name }}.zip \
-            --environment "Variables={database="${{ secrets.DATABASE }}",host="${{ secrets.HOST }}",password="${{ secrets.PASSWORD }}",port="${{ secrets.PORT }}",username="${{ secrets.USERNAME }}"}" \
+            --environment "Variables={database=${{ secrets.DATABASE }},host=${{ secrets.HOST }},password=${{ secrets.PASSWORD }},port=${{ secrets.PORT }},username=${{ secrets.USERNAME }}}" \
             --layers arn:aws:lambda:eu-north-1:998833888842:layer:pymysql:3
       - name: Update Lambda Function
         if: steps.lambda-exists.outputs.exists == 'true'

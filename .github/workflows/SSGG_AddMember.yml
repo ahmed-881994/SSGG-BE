@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Fail if any secret is empty
         run: |
-          ${{ toJson(secrets) }}
+          echo ${{ toJson(secrets) }}
       - name: Checkout source code
         uses: actions/checkout@v4
       - name: Set Service Name

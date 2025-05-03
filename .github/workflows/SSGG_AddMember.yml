@@ -14,6 +14,16 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ github.ref_name == 'main' && 'production' || github.ref_name == 'staging' && 'staging' }}
     steps:
+      - name: Fail if any secret is empty
+        run: |
+          if [ -z "${{ secrets.AWS_ACCESS_KEY_ID }}" ]; then echo "AWS_ACCESS_KEY_ID is empty"; exit 1; fi
+          if [ -z "${{ secrets.AWS_SECRET_ACCESS_KEY }}" ]; then echo "AWS_SECRET_ACCESS_KEY is empty"; exit 1; fi
+          if [ -z "${{ secrets.AWS_REGION }}" ]; then echo "AWS_REGION is empty"; exit 1; fi
+          if [ -z "${{ secrets.DATABASE }}" ]; then echo "DATABASE is empty"; exit 1; fi
+          if [ -z "${{ secrets.HOST }}" ]; then echo "HOST is empty"; exit 1; fi
+          if [ -z "${{ secrets.PASSWORD }}" ]; then echo "PASSWORD is empty"; exit 1; fi
+          if [ -z "${{ secrets.PORT }}" ]; then echo "PORT is empty"; exit 1; fi
+          if [ -z "${{ secrets.USERNAME }}" ]; then echo "USERNAME is empty"; exit 1; fi
       - name: Checkout source code
         uses: actions/checkout@v4
       - name: Set Service Name

@@ -73,7 +73,6 @@ def lambda_handler(event, context):
                                     }
                                     record['LookupValues'].append(record_entry)
                             data.append(record)
-                        data.append(record)
                     response = {
                         "isBase64Encoded": False,
                         "statusCode": 200,
